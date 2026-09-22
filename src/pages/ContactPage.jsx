@@ -4,7 +4,7 @@ export default function ContactPage() {
       <p className="eyebrow">Open channel</p>
       <h1>Make contact</h1>
       <p>Replace this email and add your preferred social links.</p>
-      <a className="button-link" href="mailto:hello@example.com">hello@example.com</a>
+      <a className="button-link" href="mailto:evanoctav3@gmail.com">email</a>
     </section>
   )
 }
