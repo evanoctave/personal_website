@@ -16,6 +16,9 @@ export const projects = [
     gallery: [],
     liveUrl: null,
     codeUrl: null,
+    githubUrl: null,
+    featured: true,
+    media: [],
   },
   {
     slug: 'signal-garden',
@@ -34,6 +37,9 @@ export const projects = [
     gallery: [],
     liveUrl: null,
     codeUrl: null,
+    githubUrl: null,
+    featured: true,
+    media: [],
   },
   {
     slug: 'comet-care',
@@ -52,6 +58,9 @@ export const projects = [
     gallery: [],
     liveUrl: null,
     codeUrl: null,
+    githubUrl: null,
+    featured: false,
+    media: [],
   },
 ]
 
