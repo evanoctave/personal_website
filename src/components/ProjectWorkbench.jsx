@@ -1,79 +1,77 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 import Moveable from 'react-moveable'
-import { getProjectBySlug, projects } from '../data/projects.js'
-import { createSeedWorkbench } from '../data/workbench.js'
+import { projects } from '../data/projects.js'
+import { useWorkbenchState } from '../hooks/useWorkbenchState.js'
 import WorkbenchTile from './WorkbenchTile.jsx'
 
 const clamp = (value, minimum, maximum) => Math.min(Math.max(value, minimum), maximum)
 
 export default function ProjectWorkbench() {
   const workbenchRef = useRef(null)
-  const [items, setItems] = useState(createSeedWorkbench)
-  const [selectedId, setSelectedId] = useState(null)
+  const fileInputRef = useRef(null)
+  const {
+    addImage,
+    items,
+    moveItem,
+    removeItem,
+    resizeItem,
+    rotateItem,
+    selectItem,
+    selectedId,
+    status,
+    updateAlt,
+    updateItem,
+  } = useWorkbenchState()
   const [selectedNode, setSelectedNode] = useState(null)
   const [workbenchSize] = useState({ width: 1200, height: 680 })
 
   const projectMap = useMemo(() => new Map(projects.map((project) => [project.slug, project])), [])
-  const updateItem = useCallback((id, updater) => {
-    setItems((current) => current.map((item) => item.id === id ? updater(item) : item))
-  }, [])
-
-  const selectItem = useCallback((id) => setSelectedId(id), [])
-  const moveItem = useCallback((id, direction, largerStep = false) => {
-    const step = largerStep ? 32 : 8
-    const delta = {
-      down: [0, step],
-      left: [-step, 0],
-      right: [step, 0],
-      up: [0, -step],
-    }[direction]
-    if (!delta) return
-    updateItem(id, (item) => ({
-      ...item,
-      x: clamp(item.x + delta[0], 0, workbenchSize.width - item.width),
-      y: clamp(item.y + delta[1], 0, workbenchSize.height - item.height),
-    }))
-  }, [updateItem, workbenchSize])
-
-  const resizeItem = useCallback((id, delta) => {
-    updateItem(id, (item) => ({
-      ...item,
-      height: clamp(item.height + delta, 160, 720),
-      width: clamp(item.width + delta, 200, 720),
-    }))
-  }, [updateItem])
-
-  const rotateItem = useCallback((id, delta) => {
-    updateItem(id, (item) => ({ ...item, rotation: item.rotation + delta }))
-  }, [updateItem])
-
   const updatePosition = useCallback((lastEvent) => {
     if (!lastEvent || !selectedId) return
-    updateItem(selectedId, (item) => ({
-      ...item,
+    const item = items.find((candidate) => candidate.id === selectedId)
+    if (!item) return
+    updateItem(selectedId, {
       x: clamp(item.x + (lastEvent.lastEvent?.dist?.[0] || 0), 0, workbenchSize.width - item.width),
       y: clamp(item.y + (lastEvent.lastEvent?.dist?.[1] || 0), 0, workbenchSize.height - item.height),
-    }))
-  }, [selectedId, updateItem, workbenchSize])
+    })
+  }, [items, selectedId, updateItem, workbenchSize])
 
   const updateSize = useCallback((lastEvent) => {
     if (!lastEvent || !selectedId) return
-    updateItem(selectedId, (item) => ({
-      ...item,
+    const item = items.find((candidate) => candidate.id === selectedId)
+    if (!item) return
+    updateItem(selectedId, {
       width: clamp(lastEvent.lastEvent?.width || item.width, 200, workbenchSize.width),
       height: clamp(lastEvent.lastEvent?.height || item.height, 160, workbenchSize.height),
-    }))
-  }, [selectedId, updateItem, workbenchSize])
+    })
+  }, [items, selectedId, updateItem, workbenchSize])
 
   const updateRotation = useCallback((lastEvent) => {
     if (!lastEvent || !selectedId) return
-    updateItem(selectedId, (item) => ({ ...item, rotation: lastEvent.lastEvent?.rotation || item.rotation }))
-  }, [selectedId, updateItem])
+    const item = items.find((candidate) => candidate.id === selectedId)
+    if (!item) return
+    updateItem(selectedId, { rotation: lastEvent.lastEvent?.rotation || item.rotation })
+  }, [items, selectedId, updateItem])
 
   const setSelectedTileRef = useCallback((node) => setSelectedNode(node), [])
-  const selectedProject = selectedId
-    ? projectMap.get(items.find((item) => item.id === selectedId)?.projectSlug)
-    : undefined
+  const selectedProject = selectedId ? items.find((item) => item.id === selectedId) : undefined
+
+  const handleDrop = (event) => {
+    event.preventDefault()
+    addImage(event.dataTransfer.files?.[0])
+  }
+
+  const handleFileChange = (event) => {
+    addImage(event.target.files?.[0])
+    event.target.value = ''
+  }
+
+  const handleDropzoneKeyDown = (event) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      fileInputRef.current?.click()
+    }
+  }
 
   return (
     <section aria-label="Project workbench" className="project-workbench" ref={workbenchRef}>
@@ -81,9 +79,24 @@ export default function ProjectWorkbench() {
         <p className="eyebrow">Work in progress</p>
         <p>Select a tile to move, resize, or rotate it.</p>
       </div>
+      <div
+        className="project-workbench__dropzone"
+        onClick={() => fileInputRef.current?.click()}
+        onDragOver={(event) => event.preventDefault()}
+        onDrop={handleDrop}
+        onKeyDown={handleDropzoneKeyDown}
+        role="button"
+        tabIndex="0"
+      >
+        Drop photo or <span>browse files</span>
+        <input accept="image/*" aria-label="Add a workbench image" hidden onChange={handleFileChange} ref={fileInputRef} type="file" />
+      </div>
+      <p aria-live="polite" className="project-workbench__status" role="status">{status}</p>
       <div className="project-workbench__canvas">
         {items.map((item) => {
-          const project = projectMap.get(item.projectSlug) || getProjectBySlug(item.projectSlug)
+          const project = item.type === 'image'
+            ? { eyebrow: 'Local image', slug: item.id, summary: item.alt || 'Untitled image', title: item.alt || 'Untitled image', year: 'Local' }
+            : projectMap.get(item.projectSlug)
           if (!project) return null
           return (
             <WorkbenchTile
@@ -94,6 +107,8 @@ export default function ProjectWorkbench() {
               onResize={resizeItem}
               onRotate={rotateItem}
               onSelect={selectItem}
+              onRemove={removeItem}
+              onUpdateAlt={updateAlt}
               project={project}
               selected={selectedId === item.id}
             />

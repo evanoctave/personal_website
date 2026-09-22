@@ -1,11 +1,18 @@
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import ProjectWorkbench from './ProjectWorkbench'
 
 describe('ProjectWorkbench', () => {
-  afterEach(cleanup)
+  beforeEach(() => {
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:portrait')
+  })
+
+  afterEach(() => {
+    cleanup()
+    vi.restoreAllMocks()
+  })
 
   it('renders featured project tiles with accessible names', () => {
     render(<MemoryRouter><ProjectWorkbench /></MemoryRouter>)
@@ -23,5 +30,27 @@ describe('ProjectWorkbench', () => {
 
     expect(screen.getByRole('group', { name: 'Nebula Notes tile controls' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Move Nebula Notes left' })).toBeInTheDocument()
+  })
+
+  it('adds dropped images and exposes editable fallback content', () => {
+    render(<MemoryRouter><ProjectWorkbench /></MemoryRouter>)
+    const file = new File(['x'], 'portrait.jpg', { type: 'image/jpeg' })
+
+    fireEvent.drop(screen.getByRole('button', { name: /Drop photo/ }), {
+      dataTransfer: { files: [file] },
+    })
+
+    expect(screen.getByRole('img', { name: 'portrait.jpg' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Remove image' })).toBeInTheDocument()
+  })
+
+  it('moves focused tile with arrow keys', () => {
+    render(<MemoryRouter><ProjectWorkbench /></MemoryRouter>)
+    const tile = screen.getByRole('article', { name: 'Nebula Notes workbench tile' })
+
+    tile.focus()
+    fireEvent.keyDown(tile, { key: 'ArrowRight' })
+
+    expect(tile).toHaveStyle({ left: '32px' })
   })
 })

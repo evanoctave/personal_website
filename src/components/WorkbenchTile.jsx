@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function WorkbenchTile({ item, project, selected, onSelect, onMove, onResize, onRotate, nodeRef }) {
+export default function WorkbenchTile({ item, project, selected, onSelect, onMove, onResize, onRotate, onRemove, onUpdateAlt, nodeRef }) {
+  const [imageBroken, setImageBroken] = useState(false)
   const tileStyle = {
     height: `${item.height}px`,
     left: `${item.x}px`,
@@ -9,14 +11,32 @@ export default function WorkbenchTile({ item, project, selected, onSelect, onMov
     width: `${item.width}px`,
   }
 
-  const move = (direction) => onMove(item.id, direction, false)
+  const move = (direction, keyboard = false) => onMove(item.id, direction, keyboard)
+
+  const handleKeyDown = (event) => {
+    const directionByKey = { ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up' }
+    const direction = directionByKey[event.key]
+    if (!direction) return
+    event.preventDefault()
+    if (event.shiftKey) {
+      onResize(item.id, ['right', 'down'].includes(direction) ? 24 : -24)
+      return
+    }
+    if (event.altKey) {
+      onRotate(item.id, ['right', 'down'].includes(direction) ? 5 : -5)
+      return
+    }
+    move(direction, true)
+  }
 
   return (
     <article
       aria-label={`${project.title} workbench tile`}
       className={`workbench-tile${selected ? ' is-selected' : ''}`}
+      onKeyDown={handleKeyDown}
       ref={nodeRef}
       style={tileStyle}
+      tabIndex="0"
     >
       <button
         aria-pressed={selected}
@@ -26,10 +46,28 @@ export default function WorkbenchTile({ item, project, selected, onSelect, onMov
       >
         Select {project.title} tile
       </button>
-      <p className="workbench-tile__index">{project.year} / {project.eyebrow}</p>
-      <h3>{project.title}</h3>
-      <p>{project.summary}</p>
-      <Link to={`/projects/${project.slug}`}>Open project</Link>
+      {item.type === 'image' ? (
+        <>
+          <p className="workbench-tile__index">{project.year} / {project.eyebrow}</p>
+          {imageBroken ? (
+            <div className="workbench-tile__image-fallback" role="img" aria-label={`${project.title} unavailable`}>Image unavailable</div>
+          ) : (
+            <img alt={project.title} className="workbench-tile__image" onError={() => setImageBroken(true)} src={item.src} />
+          )}
+          <label className="workbench-tile__alt-label">
+            Image description
+            <input aria-label={`Edit description for ${project.title}`} onChange={(event) => onUpdateAlt(item.id, event.target.value)} value={item.alt} />
+          </label>
+          <button className="workbench-tile__remove" onClick={() => onRemove(item.id)} type="button">Remove image</button>
+        </>
+      ) : (
+        <>
+          <p className="workbench-tile__index">{project.year} / {project.eyebrow}</p>
+          <h3>{project.title}</h3>
+          <p>{project.summary}</p>
+          <Link to={`/projects/${project.slug}`}>Open project</Link>
+        </>
+      )}
       {selected && (
         <div aria-label={`${project.title} tile controls`} className="workbench-tile__controls" role="group">
           <button aria-label={`Move ${project.title} left`} onClick={() => move('left')} type="button">←</button>
