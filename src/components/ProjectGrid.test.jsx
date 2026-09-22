@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import ProjectGrid from './ProjectGrid'
+import '../styles/base.css'
+import '../styles/cosmic.css'
 
 describe('ProjectGrid', () => {
   it('filters cards by selected tag and restores all cards', async () => {
@@ -17,5 +19,14 @@ describe('ProjectGrid', () => {
 
     await user.click(screen.getByRole('button', { name: 'All' }))
     expect(screen.getAllByRole('article')).toHaveLength(3)
+  })
+
+  it('gives each case-study link a 44px touch target', () => {
+    render(<MemoryRouter><ProjectGrid /></MemoryRouter>)
+
+    for (const link of screen.getAllByRole('link', { name: /Open case study/ })) {
+      expect(getComputedStyle(link).display).toBe('inline-flex')
+      expect(getComputedStyle(link).minHeight).toBe('44px')
+    }
   })
 })
