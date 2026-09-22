@@ -34,6 +34,14 @@ describe('ProjectDetailPage', () => {
     expect(screen.queryByRole('link', { name: 'View source code' })).not.toBeInTheDocument()
   })
 
+  it('renders optional GitHub links only when supplied', () => {
+    const previous = projects[2]
+    const next = projects[1]
+    render(<MemoryRouter><ProjectDetail project={{ ...projects[0], githubUrl: 'https://github.com/evan/studio' }} next={next} previous={previous} /></MemoryRouter>)
+    expect(screen.getByRole('link', { name: 'View on GitHub' })).toHaveAttribute('target', '_blank')
+    expect(screen.getByRole('link', { name: 'View on GitHub' })).toHaveAttribute('rel', 'noreferrer')
+  })
+
   it('hides absent galleries and renders supplied gallery images', () => {
     const projectWithoutGallery = { ...projects[0] }
     delete projectWithoutGallery.gallery

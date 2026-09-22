@@ -3,6 +3,7 @@ import TemplateNotice from './TemplateNotice.jsx'
 
 export default function ProjectDetail({ project, previous, next }) {
   const gallery = project.gallery ?? []
+  const media = project.media ?? []
 
   return (
     <article className="project-detail">
@@ -56,6 +57,22 @@ export default function ProjectDetail({ project, previous, next }) {
               {project.liveUrl && <a href={project.liveUrl} rel="noreferrer" target="_blank">Visit live site</a>}
               {project.codeUrl && <a href={project.codeUrl} rel="noreferrer" target="_blank">View source code</a>}
             </div>
+          )}
+
+          {project.githubUrl && (
+            <div className="detail-links">
+              <a href={project.githubUrl} rel="noreferrer" target="_blank">View on GitHub</a>
+            </div>
+          )}
+
+          {media.length > 0 && (
+            <section aria-labelledby="media-title">
+              <p className="eyebrow">04</p>
+              <h2 id="media-title">Project media</h2>
+              <div className="gallery-grid">
+                {media.map((item, index) => item?.src ? <img alt={item.alt || `${project.title} media ${index + 1}`} key={item.src} src={item.src} /> : <p key={`missing-media-${index}`}>Media unavailable.</p>)}
+              </div>
+            </section>
           )}
 
           <TemplateNotice />

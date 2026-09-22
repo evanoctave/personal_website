@@ -1,6 +1,6 @@
-# Orbitfolio
+# Evan Octave — creative development portfolio
 
-Original cosmic-platformer portfolio template. CSS planets, rings, stars, and motion are built from scratch. No game art, music, characters, logos, or copied level design ships with this template.
+Professional portfolio workbench for product, data, and brand-forward web work. Local images stay in browser storage; no uploads or GitHub API calls run by default.
 
 ## Run locally
 
@@ -20,6 +20,14 @@ npm run test:run
 ```bash
 npm run build
 ```
+
+## Editing work
+
+- Edit `src/data/projects.js` for project records, case-study copy, links, and optional media.
+- Change a GitHub repository to public before future ingestion. Current build does not authenticate or call GitHub APIs; add normalized public repo data to project records when ready.
+- On home page, drop local images into workbench, edit alt text, drag, resize, rotate, or remove. Keyboard: arrows move, Shift + arrows resize, Alt + arrows rotate.
+- Clear `orbitfolio-workbench-v1` from browser storage to reset workbench layout.
+- `react-moveable` powers direct manipulation. Keyboard controls remain available.
 
 ## Replace template content
 

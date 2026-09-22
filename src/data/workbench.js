@@ -1,4 +1,5 @@
 import { projects } from './projects.js'
+export { normalizeGithubRepo } from './github.js'
 
 export const WORKBENCH_STORAGE_KEY = 'orbitfolio-workbench-v1'
 export const WORKBENCH_STORAGE_VERSION = 1
