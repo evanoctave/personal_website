@@ -1,6 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
+import ProjectDetail from '../components/ProjectDetail'
+import { projects } from '../data/projects'
 import ProjectDetailPage from './ProjectDetailPage'
 import NotFoundPage from './NotFoundPage'
 
@@ -30,5 +32,30 @@ describe('ProjectDetailPage', () => {
     renderDetail('/projects/nebula-notes')
     expect(screen.queryByRole('link', { name: 'Visit live site' })).not.toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'View source code' })).not.toBeInTheDocument()
+  })
+
+  it('hides absent galleries and renders supplied gallery images', () => {
+    const projectWithoutGallery = { ...projects[0] }
+    delete projectWithoutGallery.gallery
+    const previous = projects[2]
+    const next = projects[1]
+    const renderProject = (project) => (
+      <MemoryRouter><ProjectDetail next={next} previous={previous} project={project} /></MemoryRouter>
+    )
+    const { rerender } = render(renderProject(projectWithoutGallery))
+
+    expect(screen.queryByRole('heading', { name: 'Gallery' })).not.toBeInTheDocument()
+
+    rerender(renderProject({ ...projects[0], gallery: null }))
+    expect(screen.queryByRole('heading', { name: 'Gallery' })).not.toBeInTheDocument()
+
+    rerender(renderProject({ ...projects[0], gallery: [] }))
+    expect(screen.queryByRole('heading', { name: 'Gallery' })).not.toBeInTheDocument()
+
+    rerender(renderProject({
+      ...projects[0],
+      gallery: [{ alt: 'Nebula Notes interface', src: '/nebula-notes.png' }],
+    }))
+    expect(screen.getByRole('img', { name: 'Nebula Notes interface' })).toHaveAttribute('src', '/nebula-notes.png')
   })
 })

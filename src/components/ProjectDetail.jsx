@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import TemplateNotice from './TemplateNotice.jsx'
 
 export default function ProjectDetail({ project, previous, next }) {
+  const gallery = project.gallery ?? []
+
   return (
     <article className="project-detail">
       <header className={`detail-cover detail-cover--${project.cover.tone}`}>
@@ -39,12 +41,12 @@ export default function ProjectDetail({ project, previous, next }) {
             <p>{project.outcome}</p>
           </section>
 
-          {project.gallery.length > 0 && (
+          {gallery.length > 0 && (
             <section aria-labelledby="gallery-title">
               <p className="eyebrow">04</p>
               <h2 id="gallery-title">Gallery</h2>
               <div className="gallery-grid">
-                {project.gallery.map((item) => <img alt={item.alt} key={item.src} src={item.src} />)}
+                {gallery.map((item) => <img alt={item.alt} key={item.src} src={item.src} />)}
               </div>
             </section>
           )}
