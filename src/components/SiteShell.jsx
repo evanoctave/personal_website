@@ -8,9 +8,9 @@ const getPageTitle = (pathname) => {
   if (pathname === '/about') return 'About this orbit'
   if (pathname === '/contact') return 'Make contact'
   if (pathname.startsWith('/projects/')) {
-    return getProjectBySlug(pathname.slice('/projects/'.length))?.title ?? 'You found empty space'
+    return getProjectBySlug(pathname.slice('/projects/'.length))?.title ?? 'Not found'
   }
-  return 'You found empty space'
+  return 'Not found'
 }
 
 export default function SiteShell() {
@@ -35,7 +35,7 @@ export default function SiteShell() {
       <a className="skip-link" href="#main-content">Skip to content</a>
       <div className="starfield" aria-hidden="true" />
       <header className="site-header">
-        <NavLink className="wordmark" to="/" aria-label="Orbitfolio home">Orbitfolio</NavLink>
+      <NavLink className="wordmark" to="/" aria-label="Evan Octave home">EVAN OCTAVE / DEV + DESIGN</NavLink>
         <nav aria-label="Primary">
           <NavLink to="/projects">Projects</NavLink>
           <NavLink to="/about">About</NavLink>
@@ -43,7 +43,7 @@ export default function SiteShell() {
         </nav>
       </header>
       <main id="main-content" ref={mainRef} tabIndex="-1"><Outlet /></main>
-      <footer className="site-footer"><p>Built to be replaced with your next great thing.</p></footer>
+      <footer className="site-footer"><p>Independent creative developer · Available for select collaborations.</p></footer>
     </div>
   )
 }
