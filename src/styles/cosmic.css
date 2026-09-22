@@ -268,11 +268,13 @@
 @keyframes bob { 50% { transform: translateY(-0.55rem) rotate(5deg); } }
 @keyframes core-wobble { 50% { transform: translate(-50%, -50%) rotate(10deg) scale(1.06); } }
 
-@media (max-width: 760px) {
+@media (max-width: 768px) {
   .orbit-hero { grid-template-columns: 1fr; padding-top: 3.5rem; }
   .hero-copy { text-align: center; margin-inline: auto; }
   .hero-intro { margin-inline: auto; }
   .orbit-stage { max-width: 31rem; }
+  .site-header { align-items: flex-start; }
+  .site-header nav { flex-wrap: wrap; justify-content: flex-end; }
   .project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .detail-cover, .detail-layout { grid-template-columns: 1fr; }
   .detail-facts { position: static; grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -303,6 +305,13 @@
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
   }
+
+  .starfield,
+  .orbit-track,
+  .hero-core,
+  .hero-moon,
+  .orbit-planet,
+  .orbit-planet > span { animation: none !important; }
 
   .orbit-planet { transform: rotate(var(--orbit-angle)) translateX(clamp(7rem, 22vw, 14rem)) rotate(calc(-1 * var(--orbit-angle))); }
 }
