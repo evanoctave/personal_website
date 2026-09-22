@@ -1,0 +1,57 @@
+.project-workbench {
+  position: relative;
+  min-height: 44rem;
+  margin-top: 2.5rem;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--ink);
+}
+
+.project-workbench__header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+}
+
+.project-workbench__header .eyebrow { margin: 0; color: var(--lime); }
+.project-workbench__canvas { position: relative; min-height: 40rem; }
+
+.workbench-tile {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0.8rem 0.8rem 0 color-mix(in oklch, var(--ink), transparent 20%);
+  transform-origin: center;
+}
+
+.workbench-tile.is-selected { outline: 2px solid var(--lime); outline-offset: 0.35rem; }
+.workbench-tile__select { align-self: flex-start; min-height: 44px; border: 0; background: transparent; color: var(--ink-soft); font-size: 0.72rem; font-weight: 800; text-align: left; text-transform: uppercase; }
+.workbench-tile__index { color: var(--cobalt); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.workbench-tile h3 { font-size: clamp(1.4rem, 2vw, 2rem); }
+.workbench-tile > p:not(.workbench-tile__index) { color: var(--ink-soft); line-height: 1.45; }
+.workbench-tile > a { margin-top: auto; color: var(--ink); font-weight: 800; text-underline-offset: 0.25em; }
+.workbench-tile__controls { display: grid; grid-template-columns: repeat(4, minmax(44px, 1fr)); gap: 0.25rem; margin-top: auto; }
+.workbench-tile__controls button { min-height: 44px; border: 1px solid var(--ink); background: transparent; color: var(--ink); font-weight: 900; }
+
+@media (max-width: 768px) {
+  .project-workbench { min-height: 38rem; }
+  .project-workbench__canvas { min-height: 34rem; transform: scale(0.8); transform-origin: top left; width: 125%; }
+}
+
+@media (max-width: 480px) {
+  .project-workbench { min-height: 0; }
+  .project-workbench__header { display: block; }
+  .project-workbench__header > p:last-child { margin-top: 0.5rem; }
+  .project-workbench__canvas { display: grid; gap: 1rem; min-height: 0; padding: 1rem; transform: none; width: auto; }
+  .workbench-tile { position: relative; inset: auto !important; width: auto !important; height: auto !important; min-height: 15rem; transform: none !important; }
+}
