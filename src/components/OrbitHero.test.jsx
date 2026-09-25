@@ -10,4 +10,13 @@ describe('OrbitHero', () => {
     expect(screen.getByRole('link', { name: 'Open Digital Package Tracker project' })).toHaveAttribute('href', '/projects/digital-package-tracker')
     expect(screen.getByRole('link', { name: 'Open AI Sentiment Analysis System project' })).toHaveAttribute('href', '/projects/ai-sentiment-analysis')
   })
+
+  it('renders approved hero art as decorative media', () => {
+    const { container } = render(<MemoryRouter><OrbitHero /></MemoryRouter>)
+    const image = container.querySelector('.hero-art img')
+
+    expect(image).toHaveAttribute('src', '/assets/hero-orb-server-v1.png')
+    expect(image).toHaveAttribute('alt', '')
+    expect(image?.parentElement).toHaveAttribute('aria-hidden', 'true')
+  })
 })

@@ -93,6 +93,9 @@ export default function ProjectWorkbench() {
       </div>
       <p aria-live="polite" className="project-workbench__status" role="status">{status}</p>
       <div className="project-workbench__canvas">
+        <div aria-hidden="true" className="workbench-backdrop">
+          <img alt="" src="/assets/server-room-terrarium-v1.png" />
+        </div>
         {items.map((item) => {
           const project = item.type === 'image'
             ? { eyebrow: 'Local image', slug: item.id, summary: item.alt || 'Untitled image', title: item.alt || 'Untitled image', year: 'Local' }
