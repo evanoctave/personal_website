@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-23T00:00:00-07:00",
+  "title": "Design System: Evan Octave Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "void": { "role": "primary", "displayName": "Void", "canonical": "#101010", "tonalRamp": ["#101010", "#242424", "#3d3d3d", "#595959", "#767676", "#969696", "#b8b8b6", "#f7f7f4"] },
+      "hard-white": { "role": "neutral", "displayName": "Hard White", "canonical": "#f7f7f4", "tonalRamp": ["#181817", "#3a3a38", "#5e5e5a", "#83837e", "#a7a7a2", "#c9c9c4", "#dfdfdb", "#f7f7f4"] },
+      "silver": { "role": "neutral", "displayName": "Silver", "canonical": "#b8b8b6", "tonalRamp": ["#2b2b2a", "#464645", "#626260", "#80807d", "#9d9d99", "#b8b8b6", "#d4d4cf", "#eeeeea"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Poster Display", "purpose": "Route and hero headlines." },
+      "body": { "displayName": "Practical Body", "purpose": "Project detail and supporting copy." }
+    },
+    "shadows": [
+      { "name": "soft-float", "value": "0 20px 45px rgb(16 16 16 / 0.18)", "purpose": "Inflated objects and image tiles." },
+      { "name": "chrome-rim", "value": "inset 1px 1px 0 rgb(255 255 255 / 0.7), inset -2px -2px 5px rgb(16 16 16 / 0.25)", "purpose": "Reflective controls and metal objects." }
+    ],
+    "motion": [
+      { "name": "object-lift", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Short object movement and press feedback." },
+      { "name": "reduced-motion", "value": "none", "purpose": "Operating-system reduced-motion preference." }
+    ],
+    "breakpoints": [
+      { "name": "compact", "value": "480px" },
+      { "name": "tablet", "value": "768px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "High-contrast primary action.",
+      "html": "<button class=\"ds-btn-primary\">View work</button>",
+      "css": ".ds-btn-primary { min-height:44px; padding:12px 20px; border:1px solid #101010; border-radius:999px; background:#101010; color:#f7f7f4; font:800 14px Arial, sans-serif; cursor:pointer; transition:transform 180ms cubic-bezier(.22,1,.36,1), background 180ms cubic-bezier(.22,1,.36,1); } .ds-btn-primary:hover { background:#363636; transform:translateY(-2px); } .ds-btn-primary:focus-visible { outline:3px solid #101010; outline-offset:4px; }"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "filter-chip",
+      "description": "Pressed-state project filter.",
+      "html": "<button class=\"ds-chip\" aria-pressed=\"true\">Projects</button>",
+      "css": ".ds-chip { min-height:44px; padding:10px 16px; border:1px solid #101010; border-radius:14px; background:#101010; color:#f7f7f4; font:800 12px Arial, sans-serif; cursor:pointer; } .ds-chip:hover { box-shadow:inset 1px 1px 0 rgb(255 255 255 / .35); } .ds-chip:focus-visible { outline:3px solid #101010; outline-offset:4px; }"
+    },
+    {
+      "name": "Chrome Orb",
+      "kind": "custom",
+      "refersTo": "spatial-object",
+      "description": "Signature spherical object, decorative unless given an accessible control label.",
+      "html": "<div class=\"ds-orb\" aria-hidden=\"true\"></div>",
+      "css": ".ds-orb { width:120px; aspect-ratio:1; border-radius:999px; background:radial-gradient(circle at 30% 25%, #f7f7f4 0 5%, #b8b8b6 21%, #363636 55%, #101010 78%); box-shadow:0 20px 45px rgb(16 16 16 / .18), inset 1px 1px 0 rgb(255 255 255 / .7), inset -2px -2px 5px rgb(16 16 16 / .25); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Moonbase Bedroom / Orbital Toybox / Server-room Terrarium",
+    "overview": "A tactile, interactive monochrome portfolio using inflated plastic, hard chrome, and shiny spatial objects. Project evidence stays first; interaction rewards curiosity without gating access.",
+    "keyCharacteristics": ["Hard black and hard white", "Soft plastic and hard chrome", "Keyboard-equivalent spatial interaction", "Motion that can turn off"],
+    "rules": [{ "name": "Black-or-White First Rule", "body": "Establish hierarchy with Void and Hard White before adding accent color.", "section": "colors" }],
+    "dos": ["Do use 44px controls.", "Do retain a still reduced-motion path."],
+    "donts": ["Don't use generic recruiter-bait.", "Don't use decorative glassmorphism.", "Don't gate content behind interaction."]
+  }
+}
