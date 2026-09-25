@@ -74,7 +74,7 @@ export default function SiteShell() {
       <main id="main-content" ref={mainRef} tabIndex="-1"><Outlet /></main>
 
       <footer className="site-footer">
-        <p>Made by hand by Evan Octave, {new Date().getFullYear()}.</p>
+        <p>Evan Octave: Made by hand (or by keyboard, if you will) {new Date().getFullYear()}.</p>
         <p>{eggs.size} of {Object.keys(EGGS).length} secrets found.</p>
       </footer>
 

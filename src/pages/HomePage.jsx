@@ -18,17 +18,15 @@ export default function HomePage() {
     <div className="home">
       <section className="intro">
         <h1 className="name">
-          <Scramble duration={3} text="Evan" />{' '}
-          <Scramble duration={3} text="Octave" />
+          <Scramble duration={3} text="What's" />{' '}
+          <Scramble duration={3} text="up" />
         </h1>
         <p>
-          I'm a developer. Right now I'm building internal tools for CSUF IT and Building
-          Engineering, and on the side I mess around with machine learning and keep a small
-          server rack alive.
+          SWE (larper) / IT Assistant at California State University, Fullerton
         </p>
         <p className="muted">
-          This site is mostly a place to put things I've made. Some of it is hidden. Try
-          pressing <kbd>?</kbd>.
+          This site is used to keep track of my work and projects.
+          Press <kbd>?</kbd> for...idk figure it out.
         </p>
       </section>
 
@@ -46,9 +44,10 @@ export default function HomePage() {
         <Reveal>
           <h2 id="about-title">About</h2>
           <p>
-            Most of what I do sits somewhere between writing software and physically plugging
-            things in. I like tools that people actually use every day, and I like it when
-            the boring parts are done right.
+            Most of what I do professionally includes going ham on a keyboard, glazing Linus Torvalds, and plugging in cables.
+            Ask me about Typescript. Or gcc vs. clang. or bit-packing. Or my sister's art!</p>
+            
+            <p>Don't ask me about LeBron leaving the Lakers. I'm heartbroken, too.
           </p>
           <p><Link to="/about">More about me</Link></p>
         </Reveal>

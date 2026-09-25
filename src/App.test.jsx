@@ -22,7 +22,7 @@ describe('site', () => {
     renderAt('/')
     expect(screen.getByRole('link', { name: 'Skip to content' })).toHaveAttribute('href', '#main-content')
     expect(screen.getByRole('navigation', { name: 'Primary' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { level: 1, name: 'Evan Octave' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: "What's up" })).toBeInTheDocument()
     expect(screen.getByRole('img', { name: 'Image placeholder: big photo' })).toBeInTheDocument()
   })
 
@@ -44,7 +44,7 @@ describe('site', () => {
 
   it('shows 404 page and records the lost easter egg', () => {
     renderAt('/drifted-away')
-    expect(screen.getByRole('heading', { name: 'Nothing here.' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Not sure how YOU got here...' })).toBeInTheDocument()
     expect(JSON.parse(window.localStorage.getItem('eo-eggs'))).toContain('lost')
   })
 
@@ -53,7 +53,7 @@ describe('site', () => {
     renderAt('/')
     const main = screen.getByRole('main')
     await user.click(screen.getByRole('link', { name: 'About' }))
-    expect(screen.getByRole('heading', { level: 1, name: "Hi, I'm Evan." })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'me' })).toBeInTheDocument()
     expect(main).toHaveFocus()
     expect(document.title).toBe('About | Evan Octave')
   })

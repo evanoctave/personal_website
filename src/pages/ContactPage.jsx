@@ -8,7 +8,7 @@ export default function ContactPage() {
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(EMAIL)
-      toast('copied')
+      toast('evan\'s email #copied, nice.')
     } catch {
       toast(EMAIL)
     }
@@ -29,7 +29,7 @@ export default function ContactPage() {
       <h2>Elsewhere</h2>
       <ul>
         <li><a href="https://github.com/evanoctave" rel="noreferrer" target="_blank">GitHub</a></li>
-        <li><a href="https://www.linkedin.com/" rel="noreferrer" target="_blank">LinkedIn</a></li>
+        <li><a href="https://www.linkedin.com/in/evanbarreau" rel="noreferrer" target="_blank">LinkedIn</a></li>
         <li><a href="https://www.instagram.com/" rel="noreferrer" target="_blank">Instagram</a></li>
       </ul>
     </section>

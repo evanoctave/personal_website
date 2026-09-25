@@ -11,7 +11,7 @@ export default function NotFoundPage() {
   return (
     <section className="page">
       <p className="four-oh-four" aria-hidden="true">404</p>
-      <h1>Nothing here.</h1>
+      <h1>Not sure how YOU got here...</h1>
       <p>That page doesn't exist. <Link to="/">Go home</Link>, or press <kbd>1</kbd>.</p>
     </section>
   )
