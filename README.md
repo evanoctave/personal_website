@@ -1,43 +1,46 @@
-# Evan Octave — creative development portfolio
+# Evan Octave — portfolio
 
-Interactive monochrome portfolio for Evan Octave. Hero and workbench artwork live locally; personal photos stay replaceable placeholders until supplied.
-
-## Run locally
+Black-and-white interactive portfolio. React + Vite + React Router.
 
 ```bash
 npm install
-npm run dev
+npm run dev        # local dev
+npm run test:run   # tests
+npm run build      # production build
 ```
 
-## Run tests
+## Adding images
 
-```bash
-npm run test:run
+Every image slot is a `<Placeholder>` (`src/components/Placeholder.jsx`). It shows its label, aspect ratio, and live pixel size. To use a real photo, drop the file in `public/images/` and pass `src`:
+
+```jsx
+<Placeholder src="/images/me.jpg" alt="Evan at his desk" ratio="4 / 5" />
 ```
 
-## Create production build
+`ratio` is any CSS aspect-ratio. Change it to match your photo.
 
-```bash
-npm run build
-```
+| Where | File |
+| --- | --- |
+| Hero, portrait, snapshots | `src/pages/HomePage.jsx` (`SNAPSHOTS` array) |
+| About portrait + workbench strip | `src/pages/AboutPage.jsx` |
+| Project covers | `cover: { src, alt }` in `src/data/projects.js` |
+| Project galleries | `gallery: [{ src, alt, ratio }]` in `src/data/projects.js` |
 
-## Editing work
+## Content
 
-- Edit `src/data/projects.js` for project records, case-study copy, links, and optional media.
-- Change a GitHub repository to public before future ingestion. Current build does not authenticate or call GitHub APIs; add normalized public repo data to project records when ready.
-- On home page, drop local images into workbench, edit alt text, drag, resize, rotate, or remove. Keyboard: arrows move, Shift + arrows resize, Alt + arrows rotate.
-- Clear `orbitfolio-workbench-v1` from browser storage to reset workbench layout.
-- `react-moveable` powers direct manipulation. Keyboard controls remain available.
-- Replace `public/assets/hero-orb-server-v1.png` or `public/assets/server-room-terrarium-v1.png` only with new decorative, text-free landscape art.
-- Replace portrait and server-rack placeholders in `src/components/PersonalMediaPanel.jsx` with real images and meaningful alt text when ready.
+- `src/data/projects.js`: projects (a new object gets a route at `/work/<slug>`).
+- `src/pages/AboutPage.jsx`: bio + facts.
+- `src/pages/ContactPage.jsx`: email + social links.
+- `src/components/SiteShell.jsx`: header, footer, location.
 
-## Replace template content
+## Effects
 
-Edit these files:
+All under `src/fx/`. Press `?` on the site for controls.
 
-- `src/data/projects.js`: project names, case-study copy, tags, links, and optional gallery images.
-- `src/pages/AboutPage.jsx`: biography copy.
-- `src/pages/ContactPage.jsx`: email and social links.
-- `src/components/SiteShell.jsx`: site name, navigation, and footer text.
+- `DotField.jsx`: reactive dot grid, click ripples, cursor trail.
+- `Cursor.jsx`: custom blend-mode cursor with hover labels (`data-cursor="LABEL"` on any element).
+- `FxProvider.jsx`: keyboard shortcuts, typed words, konami code, easter egg tracking.
+- `Terminal.jsx`: `/` opens a fake shell.
+- `Overlays.jsx`: key pops, toasts, controls panel, grid, rain, idle screensaver.
 
-Each project card, home-orbit world, filter, and project detail route uses `src/data/projects.js`. Add a project object there and its route appears automatically.
+Easter eggs (spoilers): konami code, typing `evan`, clicking the logo 7×, idling 45s, `sudo` in the terminal, shaking the mouse, visiting a 404. Typing `neo` or `hello` also does things.
