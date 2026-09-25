@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export const EGGS = {
@@ -113,7 +113,8 @@ export function FxProvider({ children }) {
     godMode,
   }), [godMode, startRain])
 
-  useEffect(() => {
+  // layout effect so children (DotField) read the new --fg in their effects
+  useLayoutEffect(() => {
     document.documentElement.dataset.fxInverted = inverted ? 'true' : 'false'
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', inverted ? '#f4f3ef' : '#0d0d0d')
   }, [inverted])
