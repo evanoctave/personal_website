@@ -24,9 +24,9 @@ describe('application routes', () => {
     expect(screen.getByRole('navigation', { name: 'Primary' })).toBeInTheDocument()
   })
 
-  it('renders about template route', () => {
+  it('renders about route', () => {
     renderAt('/about')
-    expect(screen.getByRole('heading', { name: 'About this orbit' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Built in public, kept personal.' })).toBeInTheDocument()
   })
 
   it('renders original recovery page for unknown routes', () => {
