@@ -4,7 +4,7 @@ import { prefersReducedMotion } from '../fx/FxProvider.jsx'
 const GLYPHS = '!<>-_\\/[]{}—=+*^?#01ABCDEFXYZ'
 
 /* Decoding text effect. Screen readers always get the real text. */
-export default function Scramble({ text, onHover = true, onMount = true, className = '' }) {
+export default function Scramble({ text, onHover = true, onMount = true, className = '', duration = 1 }) {
   const [display, setDisplay] = useState(text)
   const frame = useRef(0)
 
@@ -12,7 +12,7 @@ export default function Scramble({ text, onHover = true, onMount = true, classNa
     if (prefersReducedMotion()) return
     window.cancelAnimationFrame(frame.current)
     let tick = 0
-    const total = text.length * 1.6 + 8
+    const total = (text.length * 1.6 + 8) * duration
     const step = () => {
       tick += 1
       const settled = Math.floor((tick / total) * text.length)
@@ -24,7 +24,7 @@ export default function Scramble({ text, onHover = true, onMount = true, classNa
       else setDisplay(text)
     }
     frame.current = window.requestAnimationFrame(step)
-  }, [text])
+  }, [duration, text])
 
   useEffect(() => {
     setDisplay(text)

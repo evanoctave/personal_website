@@ -1,98 +1,76 @@
 import { Link } from 'react-router-dom'
-import Clock from '../components/Clock.jsx'
-import Magnetic from '../components/Magnetic.jsx'
-import Marquee from '../components/Marquee.jsx'
 import Placeholder from '../components/Placeholder.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Scramble from '../components/Scramble.jsx'
 import WorkList from '../components/WorkList.jsx'
 import { projects } from '../data/projects.js'
 
-const STACK = ['React', 'Node.js', 'Python', 'Express', 'SQLite', 'scikit-learn', 'Figma', 'Hardware', 'PWAs', 'Linux']
-
-// Swap `src` in for real photos. Ratios are free to change.
-const SNAPSHOTS = [
-  { label: 'Snapshot 01', ratio: '3 / 4' },
-  { label: 'Snapshot 02', ratio: '1' },
-  { label: 'Snapshot 03', ratio: '4 / 5' },
-  { label: 'Snapshot 04', ratio: '16 / 10' },
-  { label: 'Snapshot 05', ratio: '3 / 4' },
-  { label: 'Snapshot 06', ratio: '1' },
+// photos go here eventually. src: '/images/whatever.jpg'
+const snapshots = [
+  { label: 'photo', ratio: '3 / 4' },
+  { label: 'photo', ratio: '1' },
+  { label: 'photo', ratio: '4 / 5' },
+  { label: 'photo', ratio: '3 / 2' },
 ]
 
 export default function HomePage() {
   return (
-    <>
-      <section className="hero">
-        <div className="hero-meta">
-          <span>Portfolio ’26</span>
-          <span>Developer / Designer</span>
-          <span><Clock /></span>
-          <span className="hero-hint">Press <kbd>?</kbd></span>
-        </div>
-        <h1 className="hero-title">
-          <span className="hero-line"><Scramble text="Evan" /></span>{' '}
-          <span className="hero-line hero-line--offset"><Scramble text="Octave" /></span>
+    <div className="home">
+      <section className="intro">
+        <h1 className="name">
+          <Scramble duration={3} text="Evan" />{' '}
+          <Scramble duration={3} text="Octave" />
         </h1>
-        <div className="hero-foot">
-          <p className="hero-lede">
-            I build product systems, creative interfaces, and small technical worlds —
-            <em> things that work hard and still feel good to touch.</em>
-          </p>
-          <Placeholder className="hero-image" label="Hero image" ratio="16 / 9" />
-        </div>
-        <p aria-hidden="true" className="hero-scroll">Scroll ↓</p>
+        <p>
+          I'm a developer. Right now I'm building internal tools for CSUF IT and Building
+          Engineering, and on the side I mess around with machine learning and keep a small
+          server rack alive.
+        </p>
+        <p className="muted">
+          This site is mostly a place to put things I've made. Some of it is hidden. Try
+          pressing <kbd>?</kbd>.
+        </p>
       </section>
 
-      <Marquee items={STACK} />
+      <Placeholder className="intro-photo" label="big photo" ratio="3 / 2" />
 
-      <section className="section" aria-labelledby="work-title">
-        <Reveal className="section-head">
-          <p className="eyebrow">(01) Selected work</p>
-          <h2 id="work-title">Things I made</h2>
-          <Link className="text-link" data-cursor="ALL" to="/work">All work →</Link>
-        </Reveal>
+      <section className="block" aria-labelledby="work-title">
+        <div className="block-head">
+          <h2 id="work-title">Work</h2>
+          <Link to="/work">see all</Link>
+        </div>
         <WorkList projects={projects} />
       </section>
 
-      <section className="section split" aria-labelledby="about-teaser">
-        <Reveal className="split-text">
-          <p className="eyebrow">(02) About</p>
-          <h2 id="about-teaser">Hands on keyboard. Hands on hardware.</h2>
+      <section className="block about-bit" aria-labelledby="about-title">
+        <Reveal>
+          <h2 id="about-title">About</h2>
           <p>
-            Most of my work lives between the screen and the rack — building tools people use every day,
-            then wiring up the machines they run on. I care about clear systems and the last ten percent.
+            Most of what I do sits somewhere between writing software and physically plugging
+            things in. I like tools that people actually use every day, and I like it when
+            the boring parts are done right.
           </p>
-          <Link className="text-link" data-cursor="READ" to="/about">More about me →</Link>
+          <p><Link to="/about">More about me</Link></p>
         </Reveal>
-        <Reveal className="split-media" delay={120}>
-          <Placeholder label="Portrait" ratio="4 / 5" />
-        </Reveal>
+        <Placeholder label="me" ratio="4 / 5" />
       </section>
 
-      <section className="section" aria-labelledby="snaps-title">
-        <Reveal className="section-head">
-          <p className="eyebrow">(03) Off-screen</p>
-          <h2 id="snaps-title">Snapshots</h2>
-        </Reveal>
-        <div className="snaps">
-          {SNAPSHOTS.map((snap, i) => (
-            <Reveal delay={i * 70} key={snap.label}>
-              <Placeholder label={snap.label} ratio={snap.ratio} src={snap.src} />
-            </Reveal>
+      <section className="block" aria-labelledby="photos-title">
+        <h2 id="photos-title">Photos</h2>
+        <div className="photos">
+          {snapshots.map((snap, i) => (
+            <Placeholder key={i} label={snap.label} ratio={snap.ratio} src={snap.src} />
           ))}
         </div>
       </section>
 
-      <Marquee items={['Available for work', 'Say hello', 'Let’s build something']} reverse />
-
-      <section className="cta" aria-labelledby="cta-title">
-        <p className="eyebrow">(04) Contact</p>
-        <h2 id="cta-title">Got an idea?</h2>
-        <Magnetic>
-          <Link className="big-button" data-cursor="GO" to="/contact">Let’s talk</Link>
-        </Magnetic>
+      <section className="block" aria-labelledby="contact-title">
+        <h2 id="contact-title">Say hi</h2>
+        <p>
+          Best way to reach me is email: <a href="mailto:evanoctav3@gmail.com">evanoctav3@gmail.com</a>.
+          Or go to the <Link to="/contact">contact page</Link>.
+        </p>
       </section>
-    </>
+    </div>
   )
 }

@@ -48,7 +48,7 @@ export default function Cursor() {
           if (shake.flips.length >= 7) {
             shake.flips = []
             findEgg('shake')
-            pop('WHOA')
+            pop('whoa')
             pulse('fx-wobble', 700)
           }
         }

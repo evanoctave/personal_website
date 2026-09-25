@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Placeholder from './Placeholder.jsx'
-import Scramble from './Scramble.jsx'
 
-/* Row list. On fine pointers a preview image follows the cursor over each row. */
+// the preview image follows the mouse around while you hover a row
 export default function WorkList({ projects }) {
   const previewRef = useRef(null)
   const [active, setActive] = useState(null)
@@ -13,60 +12,45 @@ export default function WorkList({ projects }) {
     if (!preview) return undefined
     const pos = { x: 0, y: 0, tx: 0, ty: 0 }
     let frame = 0
-    const onMove = (event) => {
-      pos.tx = event.clientX
-      pos.ty = event.clientY
+    const onMove = (e) => {
+      pos.tx = e.clientX
+      pos.ty = e.clientY
     }
     const tick = () => {
-      const vx = pos.tx - pos.x
-      pos.x += vx * 0.14
-      pos.y += (pos.ty - pos.y) * 0.14
-      preview.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) rotate(${Math.max(-12, Math.min(12, vx * 0.08))}deg)`
-      frame = window.requestAnimationFrame(tick)
+      pos.x += (pos.tx - pos.x) * 0.15
+      pos.y += (pos.ty - pos.y) * 0.15
+      preview.style.transform = `translate(${pos.x + 24}px, ${pos.y - 80}px)`
+      frame = requestAnimationFrame(tick)
     }
     window.addEventListener('pointermove', onMove, { passive: true })
-    frame = window.requestAnimationFrame(tick)
+    frame = requestAnimationFrame(tick)
     return () => {
-      window.cancelAnimationFrame(frame)
+      cancelAnimationFrame(frame)
       window.removeEventListener('pointermove', onMove)
     }
   }, [])
 
-  const current = projects.find((project) => project.slug === active)
+  const current = projects.find((p) => p.slug === active)
 
   return (
     <div className="work-list" onPointerLeave={() => setActive(null)}>
-      <ol>
-        {projects.map((project, i) => (
+      <ul>
+        {projects.map((project) => (
           <li key={project.slug}>
             <Link
-              className="work-row"
-              data-cursor="VIEW"
               onFocus={() => setActive(project.slug)}
               onPointerEnter={() => setActive(project.slug)}
               to={`/work/${project.slug}`}
             >
-              <span className="work-index">{String(i + 1).padStart(2, '0')}</span>
-              <span className="work-title"><Scramble onMount={false} text={project.title} /></span>
-              <span className="work-tags">{project.tags.join(' / ')}</span>
               <span className="work-year">{project.year}</span>
-              <span aria-hidden="true" className="work-arrow">→</span>
+              <span className="work-title">{project.title}</span>
+              <span className="work-summary">{project.summary}</span>
             </Link>
           </li>
         ))}
-      </ol>
+      </ul>
       <div aria-hidden="true" className={`work-preview${current ? ' is-on' : ''}`} ref={previewRef}>
-        <div className="work-preview-inner">
-          {projects.map((project) => (
-            <Placeholder
-              className={project.slug === active ? 'is-current' : ''}
-              key={project.slug}
-              label={`${project.title} cover`}
-              ratio="4 / 3"
-              src={project.cover?.src}
-            />
-          ))}
-        </div>
+        {current && <Placeholder label={current.title} ratio="4 / 3" src={current.cover?.src} />}
       </div>
     </div>
   )

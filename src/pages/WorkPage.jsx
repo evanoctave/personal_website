@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import Reveal from '../components/Reveal.jsx'
-import Scramble from '../components/Scramble.jsx'
 import WorkList from '../components/WorkList.jsx'
 import { getProjectTags, projects } from '../data/projects.js'
 
@@ -10,15 +8,14 @@ export default function WorkPage() {
 
   return (
     <section className="page">
-      <p className="eyebrow">Index — {String(projects.length).padStart(2, '0')} projects</p>
-      <h1 className="page-title"><Scramble text="Work" /></h1>
-      <Reveal className="filters" role="group" aria-label="Filter projects">
+      <h1>Work</h1>
+      <p className="muted">Things I've built, newest first. There's more that isn't up yet.</p>
+      <div className="filters" role="group" aria-label="Filter projects">
         {getProjectTags().map((item) => (
           <button aria-pressed={tag === item} key={item} onClick={() => setTag(item)} type="button">{item}</button>
         ))}
-      </Reveal>
+      </div>
       <WorkList projects={shown} />
-      <p className="page-note">More on the way. Some things are still under NDA, some are still on the workbench.</p>
     </section>
   )
 }

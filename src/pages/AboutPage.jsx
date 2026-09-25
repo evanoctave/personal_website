@@ -1,49 +1,34 @@
 import Placeholder from '../components/Placeholder.jsx'
-import Reveal from '../components/Reveal.jsx'
-import Scramble from '../components/Scramble.jsx'
-
-const FACTS = [
-  ['Now', 'Building internal tools for CSUF IT and Building Engineering.'],
-  ['Study', 'Add degree, school, and graduation details here.'],
-  ['Stack', 'React, Node, Python, SQL, and whatever the problem needs.'],
-  ['Off-hours', 'Racking servers, taking photos, breaking and fixing things.'],
-]
 
 export default function AboutPage() {
   return (
-    <section className="page about">
-      <p className="eyebrow">About</p>
-      <h1 className="page-title"><Scramble text="Hi, I’m Evan." /></h1>
+    <section className="page">
+      <h1>Hi, I'm Evan.</h1>
+      <Placeholder className="about-photo" label="me" ratio="4 / 5" />
+      <p className="lede">
+        I build software and occasionally the hardware it runs on.
+      </p>
+      <p>
+        (write the real bio here. where you grew up, how you got into this, what you're
+        looking for next. a paragraph or two is plenty.)
+      </p>
 
-      <div className="about-grid">
-        <Reveal className="about-portrait">
-          <Placeholder label="Portrait of Evan" ratio="3 / 4" />
-        </Reveal>
-        <Reveal className="about-copy" delay={100}>
-          <p className="about-lede">
-            I build product systems, creative interfaces, and small technical worlds with enough character to remember.
-          </p>
-          <p>
-            Write your longer bio here — where you come from, what you’re into, what you’re looking for next.
-            Keep it short enough that people actually finish it.
-          </p>
-          <dl className="about-facts">
-            {FACTS.map(([term, text]) => <div key={term}><dt>{term}</dt><dd>{text}</dd></div>)}
-          </dl>
-        </Reveal>
+      <h2>Right now</h2>
+      <ul>
+        <li>Building internal tools for CSUF IT and Building Engineering</li>
+        <li>Learning more ML than I probably need to</li>
+        <li>Keeping a home server rack running</li>
+      </ul>
+
+      <h2>School</h2>
+      <p>(degree, school, graduation year)</p>
+
+      <h2>Desk + rack</h2>
+      <div className="gallery gallery--three">
+        <Placeholder label="rack" ratio="2 / 3" />
+        <Placeholder label="desk" ratio="2 / 3" />
+        <Placeholder label="close-up" ratio="2 / 3" />
       </div>
-
-      <section aria-labelledby="bench-title" className="about-strip">
-        <Reveal className="section-head">
-          <p className="eyebrow">Hardware</p>
-          <h2 id="bench-title">The workbench</h2>
-        </Reveal>
-        <div className="strip">
-          <Placeholder label="Server rack" ratio="2 / 3" />
-          <Placeholder label="Desk setup" ratio="16 / 9" />
-          <Placeholder label="Close-up" ratio="1" />
-        </div>
-      </section>
     </section>
   )
 }

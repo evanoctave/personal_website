@@ -23,7 +23,7 @@ describe('site', () => {
     expect(screen.getByRole('link', { name: 'Skip to content' })).toHaveAttribute('href', '#main-content')
     expect(screen.getByRole('navigation', { name: 'Primary' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 1, name: 'Evan Octave' })).toBeInTheDocument()
-    expect(screen.getByRole('img', { name: 'Image placeholder: Hero image' })).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: 'Image placeholder: big photo' })).toBeInTheDocument()
   })
 
   it('lists every project on the work page and filters by tag', async () => {
@@ -39,7 +39,7 @@ describe('site', () => {
   it('renders a project case study and redirects legacy project urls', () => {
     renderAt('/projects/ai-sentiment-analysis')
     expect(screen.getByRole('heading', { level: 1, name: 'AI Sentiment Analysis System' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'GitHub ↗' })).toHaveAttribute('href', 'https://github.com/evanoctave/AI-project')
+    expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', 'https://github.com/evanoctave/AI-project')
   })
 
   it('shows 404 page and records the lost easter egg', () => {
@@ -52,10 +52,10 @@ describe('site', () => {
     const user = userEvent.setup()
     renderAt('/')
     const main = screen.getByRole('main')
-    await user.click(screen.getByRole('link', { name: /^About/ }))
-    expect(screen.getByRole('heading', { level: 1, name: 'Hi, I’m Evan.' })).toBeInTheDocument()
+    await user.click(screen.getByRole('link', { name: 'About' }))
+    expect(screen.getByRole('heading', { level: 1, name: "Hi, I'm Evan." })).toBeInTheDocument()
     expect(main).toHaveFocus()
-    expect(document.title).toBe('About — Evan Octave')
+    expect(document.title).toBe('About | Evan Octave')
   })
 
   it('opens the controls panel with ? and navigates with number keys', () => {
@@ -66,7 +66,7 @@ describe('site', () => {
     expect(screen.queryByRole('dialog', { name: 'Controls' })).not.toBeInTheDocument()
 
     fireEvent.keyDown(window, { key: '4' })
-    expect(screen.getByRole('heading', { level: 1, name: 'Say hello.' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 1, name: 'Contact' })).toBeInTheDocument()
   })
 
   it('inverts the theme with I and respects the shortcut switch', async () => {
@@ -99,7 +99,7 @@ describe('site', () => {
     renderAt('/')
     ;['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a']
       .forEach((key) => fireEvent.keyDown(window, { key }))
-    expect(screen.getByText('GOD MODE')).toBeInTheDocument()
+    expect(screen.getByText('god mode')).toBeInTheDocument()
     act(() => { vi.advanceTimersByTime(10) })
     expect(screen.getByRole('status')).toHaveTextContent('Entered the old code')
   })

@@ -1,44 +1,36 @@
-import Magnetic from '../components/Magnetic.jsx'
-import Scramble from '../components/Scramble.jsx'
-import { blast, useFx } from '../fx/FxProvider.jsx'
+import { useFx } from '../fx/FxProvider.jsx'
 
 const EMAIL = 'evanoctav3@gmail.com'
-const SOCIALS = [
-  ['GitHub', 'https://github.com/evanoctave'],
-  ['LinkedIn', 'https://www.linkedin.com/'],
-  ['Instagram', 'https://www.instagram.com/'],
-]
 
 export default function ContactPage() {
   const { toast } = useFx()
 
-  const copy = async (event) => {
-    blast(event.clientX, event.clientY, 1.4)
+  const copy = async () => {
     try {
       await navigator.clipboard.writeText(EMAIL)
-      toast('Email copied. Talk soon.')
+      toast('copied')
     } catch {
       toast(EMAIL)
     }
   }
 
   return (
-    <section className="page contact">
-      <p className="eyebrow">Contact</p>
-      <h1 className="page-title"><Scramble text="Say hello." /></h1>
-      <p className="contact-lede">Product work, creative development, or a useful rabbit hole. I read my own inbox.</p>
-
-      <Magnetic strength={0.12}>
-        <button className="contact-email" data-cursor="COPY" onClick={copy} type="button">
-          {EMAIL}
-        </button>
-      </Magnetic>
-      <p className="contact-hint">Click to copy · or <a href={`mailto:${EMAIL}`}>open mail app</a></p>
-
-      <ul className="contact-socials">
-        {SOCIALS.map(([label, href]) => (
-          <li key={label}><a data-cursor="OPEN" href={href} rel="noreferrer" target="_blank">{label} ↗</a></li>
-        ))}
+    <section className="page">
+      <h1>Contact</h1>
+      <p className="lede">
+        Email is best: <a href={`mailto:${EMAIL}`}>{EMAIL}</a>{' '}
+        <button className="copy" onClick={copy} type="button">copy</button>
+      </p>
+      <p>
+        Or, you can just take my number!{' '}
+        <button className="copy" onClick={() => toast('you thought i\'d publicly display my personal number? wow.')} type="button">copy</button>
+      </p>
+      <p>I usually reply within a day or two. Work stuff, project ideas, or just saying hi are all fine.</p>
+      <h2>Elsewhere</h2>
+      <ul>
+        <li><a href="https://github.com/evanoctave" rel="noreferrer" target="_blank">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/" rel="noreferrer" target="_blank">LinkedIn</a></li>
+        <li><a href="https://www.instagram.com/" rel="noreferrer" target="_blank">Instagram</a></li>
       </ul>
     </section>
   )

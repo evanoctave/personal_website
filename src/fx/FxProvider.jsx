@@ -92,7 +92,7 @@ export function FxProvider({ children }) {
 
   const godMode = useCallback(() => {
     findEgg('konami')
-    pop('GOD MODE', { x: 50, y: 50 })
+    pop('god mode', { x: 50, y: 50 })
     if (!prefersReducedMotion()) pulse('fx-barrel-roll', 1400)
     for (let i = 0; i < 6; i += 1) {
       window.setTimeout(() => blast(Math.random() * window.innerWidth, Math.random() * window.innerHeight, 1.6), i * 140)
@@ -115,7 +115,7 @@ export function FxProvider({ children }) {
 
   useEffect(() => {
     document.documentElement.dataset.fxInverted = inverted ? 'true' : 'false'
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', inverted ? '#f2f2ee' : '#0a0a0a')
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', inverted ? '#f4f3ef' : '#0d0d0d')
   }, [inverted])
 
   useEffect(() => {
@@ -147,17 +147,16 @@ export function FxProvider({ children }) {
         buffer.current = (buffer.current + key).slice(-12)
         if (buffer.current.endsWith('evan')) {
           findEgg('evan')
-          pop('E.O.', { x: 50, y: 45 })
-          toast('Hey, that’s me.')
+          pop('that’s me', { x: 50, y: 45 })
           return
         }
         if (buffer.current.endsWith('neo')) {
-          pop('WAKE UP', { x: 50, y: 45 })
+          pop('wake up', { x: 50, y: 45 })
           startRain()
           return
         }
         if (buffer.current.endsWith('hello')) {
-          pop('HI.', { x: 50, y: 45 })
+          pop('hi', { x: 50, y: 45 })
           return
         }
       }
@@ -171,19 +170,19 @@ export function FxProvider({ children }) {
           return
         case 'i':
           actions.invert()
-          pop('INVERT')
+          pop('invert')
           return
         case 't':
           setTrail(!trail)
-          pop(trail ? 'TRAIL OFF' : 'TRAIL ON')
+          pop(trail ? 'trail off' : 'trail on')
           return
         case 'g':
           setGrid(!grid)
-          pop(grid ? 'GRID OFF' : 'GRID ON')
+          pop(grid ? 'grid off' : 'grid on')
           return
         case 'x':
           actions.blast()
-          pop('BOOM', { x: 50, y: 50 })
+          pop('boom', { x: 50, y: 50 })
           return
         default:
           break

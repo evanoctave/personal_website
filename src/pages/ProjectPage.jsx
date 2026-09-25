@@ -1,16 +1,12 @@
 import { Link, useParams } from 'react-router-dom'
 import Placeholder from '../components/Placeholder.jsx'
-import Reveal from '../components/Reveal.jsx'
-import Scramble from '../components/Scramble.jsx'
 import { getAdjacentProjects, getProjectBySlug } from '../data/projects.js'
 import NotFoundPage from './NotFoundPage.jsx'
 
-// Default gallery slots until a project has `gallery: [{ src, alt, ratio }]`.
-const EMPTY_GALLERY = [
-  { label: 'Screenshot 01', ratio: '16 / 10' },
-  { label: 'Screenshot 02', ratio: '4 / 5' },
-  { label: 'Screenshot 03', ratio: '4 / 5' },
-  { label: 'Screenshot 04', ratio: '21 / 9' },
+// until a project has its own gallery: [{ src, alt, ratio }]
+const emptyGallery = [
+  { label: 'screenshot', ratio: '16 / 10' },
+  { label: 'screenshot', ratio: '16 / 10' },
 ]
 
 export default function ProjectPage() {
@@ -19,7 +15,7 @@ export default function ProjectPage() {
   if (!project) return <NotFoundPage />
 
   const { next } = getAdjacentProjects(slug)
-  const gallery = project.gallery?.length ? project.gallery : EMPTY_GALLERY
+  const gallery = project.gallery?.length ? project.gallery : emptyGallery
   const links = [
     project.liveUrl && ['Live site', project.liveUrl],
     project.codeUrl && ['Source', project.codeUrl],
@@ -28,52 +24,43 @@ export default function ProjectPage() {
 
   return (
     <article className="page project">
-      <Link className="text-link back-link" data-cursor="BACK" to="/work">← All work</Link>
-      <p className="eyebrow">{project.eyebrow} · {project.year}</p>
-      <h1 className="page-title page-title--project"><Scramble text={project.title} /></h1>
-      <p className="project-summary">{project.summary}</p>
+      <p><Link to="/work">← back</Link></p>
+      <h1>{project.title}</h1>
+      <p className="muted">{project.eyebrow}, {project.year}. {project.role}.</p>
+      <p className="lede">{project.summary}</p>
 
-      <Placeholder alt={project.cover?.alt} className="project-cover" label={`${project.title} cover`} ratio="16 / 9" src={project.cover?.src} />
+      <Placeholder alt={project.cover?.alt} label="cover" ratio="16 / 9" src={project.cover?.src} />
 
-      <div className="project-body">
-        <aside className="project-facts" aria-label="Project facts">
-          <dl>
-            <div><dt>Role</dt><dd>{project.role}</dd></div>
-            <div><dt>Year</dt><dd>{project.year}</dd></div>
-            <div><dt>Stack</dt><dd>{project.stack.join(', ')}</dd></div>
-          </dl>
-          {links.length > 0 && (
-            <ul className="project-links">
-              {links.map(([label, href]) => (
-                <li key={href}><a data-cursor="OPEN" href={href} rel="noreferrer" target="_blank">{label} ↗</a></li>
+      <dl className="facts">
+        <dt>Built with</dt>
+        <dd>{project.stack.join(', ')}</dd>
+        {links.length > 0 && (
+          <>
+            <dt>Links</dt>
+            <dd>
+              {links.map(([label, href], i) => (
+                <span key={href}>{i > 0 && ', '}<a href={href} rel="noreferrer" target="_blank">{label}</a></span>
               ))}
-            </ul>
-          )}
-        </aside>
-        <div className="project-story">
-          {[['Challenge', project.challenge], ['Solution', project.solution], ['Outcome', project.outcome]].map(([title, body], i) => (
-            <Reveal as="section" key={title}>
-              <p className="eyebrow">0{i + 1}</p>
-              <h2>{title}</h2>
-              <p>{body}</p>
-            </Reveal>
-          ))}
-        </div>
+            </dd>
+          </>
+        )}
+      </dl>
+
+      <h2>The problem</h2>
+      <p>{project.challenge}</p>
+      <h2>What I built</h2>
+      <p>{project.solution}</p>
+      <h2>How it went</h2>
+      <p>{project.outcome}</p>
+
+      <div className="gallery">
+        {gallery.map((item, i) => (
+          <Placeholder alt={item.alt} key={item.src ?? i} label={item.label ?? 'screenshot'} ratio={item.ratio ?? '16 / 10'} src={item.src} />
+        ))}
       </div>
 
-      <section aria-label="Gallery" className="project-gallery">
-        {gallery.map((item, i) => (
-          <Reveal delay={i * 60} key={item.src ?? item.label}>
-            <Placeholder alt={item.alt} label={item.label ?? `Screenshot ${i + 1}`} ratio={item.ratio ?? '16 / 10'} src={item.src} />
-          </Reveal>
-        ))}
-      </section>
-
       {next && next.slug !== project.slug && (
-        <Link className="next-project" data-cursor="NEXT" to={`/work/${next.slug}`}>
-          <span className="eyebrow">Next project</span>
-          <span className="next-title">{next.title} →</span>
-        </Link>
+        <p className="next">Next: <Link to={`/work/${next.slug}`}>{next.title}</Link></p>
       )}
     </article>
   )
