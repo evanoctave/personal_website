@@ -1,6 +1,6 @@
 # Evan Octave — creative development portfolio
 
-Professional portfolio workbench for product, data, and brand-forward web work. Local images stay in browser storage; no uploads or GitHub API calls run by default.
+Interactive monochrome portfolio for Evan Octave. Hero and workbench artwork live locally; personal photos stay replaceable placeholders until supplied.
 
 ## Run locally
 
@@ -28,12 +28,14 @@ npm run build
 - On home page, drop local images into workbench, edit alt text, drag, resize, rotate, or remove. Keyboard: arrows move, Shift + arrows resize, Alt + arrows rotate.
 - Clear `orbitfolio-workbench-v1` from browser storage to reset workbench layout.
 - `react-moveable` powers direct manipulation. Keyboard controls remain available.
+- Replace `public/assets/hero-orb-server-v1.png` or `public/assets/server-room-terrarium-v1.png` only with new decorative, text-free landscape art.
+- Replace portrait and server-rack placeholders in `src/components/PersonalMediaPanel.jsx` with real images and meaningful alt text when ready.
 
 ## Replace template content
 
 Edit these files:
 
-- `src/data/projects.js`: project names, case-study copy, tags, colours, links, and optional gallery images.
+- `src/data/projects.js`: project names, case-study copy, tags, links, and optional gallery images.
 - `src/pages/AboutPage.jsx`: biography copy.
 - `src/pages/ContactPage.jsx`: email and social links.
 - `src/components/SiteShell.jsx`: site name, navigation, and footer text.

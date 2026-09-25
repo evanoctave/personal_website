@@ -40,6 +40,7 @@ describe('ProjectDetailPage', () => {
   it('renders not-found recovery for an unknown project slug', () => {
     renderDetail('/projects/not-a-world')
     expect(screen.getByRole('heading', { name: 'You found empty space' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Return home' })).toHaveAttribute('href', '/')
   })
 
   it('does not render missing demo or source links', () => {

@@ -29,6 +29,13 @@ describe('application routes', () => {
     expect(screen.getByRole('heading', { name: 'Built in public, kept personal.' })).toBeInTheDocument()
   })
 
+  it('keeps contact route direct and non-placeholder', () => {
+    renderAt('/contact')
+
+    expect(screen.getByRole('heading', { name: 'Let’s make something with a pulse.' })).toBeInTheDocument()
+    expect(screen.queryByText(/Replace this email/)).not.toBeInTheDocument()
+  })
+
   it('renders original recovery page for unknown routes', () => {
     renderAt('/drifted-away')
     expect(screen.getByRole('heading', { name: 'You found empty space' })).toBeInTheDocument()
