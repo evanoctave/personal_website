@@ -18,18 +18,18 @@ describe('ProjectWorkbench', () => {
     render(<MemoryRouter><ProjectWorkbench /></MemoryRouter>)
 
     expect(screen.getByRole('region', { name: 'Project workbench' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Select Nebula Notes tile' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Select Signal Garden tile' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Select Digital Package Tracker tile' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Select AI Sentiment Analysis System tile' })).toBeInTheDocument()
   })
 
   it('selects a tile and exposes keyboard movement controls', async () => {
     const user = userEvent.setup()
     render(<MemoryRouter><ProjectWorkbench /></MemoryRouter>)
 
-    await user.click(screen.getByRole('button', { name: 'Select Nebula Notes tile' }))
+    await user.click(screen.getByRole('button', { name: 'Select Digital Package Tracker tile' }))
 
-    expect(screen.getByRole('group', { name: 'Nebula Notes tile controls' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Move Nebula Notes left' })).toBeInTheDocument()
+    expect(screen.getByRole('group', { name: 'Digital Package Tracker tile controls' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Move Digital Package Tracker left' })).toBeInTheDocument()
   })
 
   it('adds dropped images and exposes editable fallback content', () => {
@@ -46,7 +46,7 @@ describe('ProjectWorkbench', () => {
 
   it('moves focused tile with arrow keys', () => {
     render(<MemoryRouter><ProjectWorkbench /></MemoryRouter>)
-    const tile = screen.getByRole('article', { name: 'Nebula Notes workbench tile' })
+    const tile = screen.getByRole('article', { name: 'Digital Package Tracker workbench tile' })
 
     tile.focus()
     fireEvent.keyDown(tile, { key: 'ArrowRight' })

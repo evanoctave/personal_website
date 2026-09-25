@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import { cleanup, render, screen } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import ProjectDetail from '../components/ProjectDetail'
 import { projects } from '../data/projects'
 import ProjectDetailPage from './ProjectDetailPage'
@@ -15,12 +15,26 @@ const renderDetail = (path) => render(
   </MemoryRouter>,
 )
 
+afterEach(cleanup)
+
 describe('ProjectDetailPage', () => {
-  it('renders data-backed project fields and adjacent world navigation', () => {
-    renderDetail('/projects/nebula-notes')
-    expect(screen.getByRole('heading', { name: 'Nebula Notes' })).toBeInTheDocument()
-    expect(screen.getByText('Product design + frontend')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Next: Signal Garden' })).toHaveAttribute('href', '/projects/signal-garden')
+  it('renders package tracker case study without template copy', () => {
+    renderDetail('/projects/digital-package-tracker')
+    expect(screen.getByRole('heading', { name: 'Digital Package Tracker' })).toBeInTheDocument()
+    expect(screen.getByText('Full-stack developer')).toBeInTheDocument()
+    expect(screen.getByText(/CSUF IT and Building Engineering/)).toBeInTheDocument()
+    expect(screen.queryByText(/Template content/)).not.toBeInTheDocument()
+  })
+
+  it('shows one next-case link when only two case studies exist', () => {
+    renderDetail('/projects/digital-package-tracker')
+    expect(screen.getByRole('link', { name: 'Next: AI Sentiment Analysis System' })).toHaveAttribute('href', '/projects/ai-sentiment-analysis')
+    expect(screen.queryByRole('link', { name: 'Previous: AI Sentiment Analysis System' })).not.toBeInTheDocument()
+  })
+
+  it('links the AI case study to its public GitHub repository', () => {
+    renderDetail('/projects/ai-sentiment-analysis')
+    expect(screen.getByRole('link', { name: 'View on GitHub' })).toHaveAttribute('href', 'https://github.com/evanoctave/AI-project')
   })
 
   it('renders not-found recovery for an unknown project slug', () => {
@@ -29,7 +43,7 @@ describe('ProjectDetailPage', () => {
   })
 
   it('does not render missing demo or source links', () => {
-    renderDetail('/projects/nebula-notes')
+    renderDetail('/projects/digital-package-tracker')
     expect(screen.queryByRole('link', { name: 'Visit live site' })).not.toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'View source code' })).not.toBeInTheDocument()
   })

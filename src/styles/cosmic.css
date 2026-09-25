@@ -252,9 +252,6 @@
 .detail-story section + section { margin-top: clamp(3rem, 8vw, 6rem); }
 .detail-story h2 { margin-top: 0.45rem; font-size: clamp(2rem, 4vw, 3.5rem); }
 .detail-story section > p:last-child { max-width: 60ch; margin-top: 0.85rem; color: var(--lunar-muted); font-size: 1.05rem; }
-.template-notice { margin-top: 4rem; padding: 1rem 1.1rem; border: 1px solid oklch(0.81 0.13 164 / 0.36); border-radius: 1rem; background: oklch(0.81 0.13 164 / 0.1); color: var(--lunar-muted); font-size: 0.9rem; }
-.template-notice strong { color: var(--mint); }
-.template-notice code { color: var(--lunar); }
 .detail-links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 3rem; }
 .detail-links a, .project-pagination a { display: inline-flex; align-items: center; min-height: 44px; color: var(--yellow); font-weight: 850; text-underline-offset: 0.24em; }
 .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr)); gap: 0.75rem; margin-top: 1rem; }

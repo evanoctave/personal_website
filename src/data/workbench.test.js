@@ -8,8 +8,8 @@ import {
 describe('workbench data contract', () => {
   it('seeds only featured projects as deterministic tiles', () => {
     expect(createSeedWorkbench()).toEqual([
-      expect.objectContaining({ id: 'project-nebula-notes', type: 'project', projectSlug: 'nebula-notes' }),
-      expect.objectContaining({ id: 'project-signal-garden', type: 'project', projectSlug: 'signal-garden' }),
+      expect.objectContaining({ id: 'project-digital-package-tracker', type: 'project', projectSlug: 'digital-package-tracker' }),
+      expect.objectContaining({ id: 'project-ai-sentiment-analysis', type: 'project', projectSlug: 'ai-sentiment-analysis' }),
     ])
   })
 
@@ -22,7 +22,7 @@ describe('workbench data contract', () => {
   })
 
   it('accepts valid versioned storage payloads', () => {
-    const items = [{ id: 'project-nebula-notes', type: 'project', x: 12, y: 4 }]
+    const items = [{ id: 'project-digital-package-tracker', type: 'project', x: 12, y: 4 }]
     const storage = { getItem: (key) => key === WORKBENCH_STORAGE_KEY
       ? JSON.stringify({ version: 1, items })
       : null }

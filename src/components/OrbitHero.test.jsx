@@ -4,11 +4,10 @@ import { describe, expect, it } from 'vitest'
 import OrbitHero from './OrbitHero'
 
 describe('OrbitHero', () => {
-  it('gives every template project a labeled detail-page link', () => {
+  it('gives every published case study a labeled detail-page link', () => {
     render(<MemoryRouter><OrbitHero /></MemoryRouter>)
 
-    expect(screen.getByRole('link', { name: 'Open Nebula Notes project' })).toHaveAttribute('href', '/projects/nebula-notes')
-    expect(screen.getByRole('link', { name: 'Open Signal Garden project' })).toHaveAttribute('href', '/projects/signal-garden')
-    expect(screen.getByRole('link', { name: 'Open Comet Care project' })).toHaveAttribute('href', '/projects/comet-care')
+    expect(screen.getByRole('link', { name: 'Open Digital Package Tracker project' })).toHaveAttribute('href', '/projects/digital-package-tracker')
+    expect(screen.getByRole('link', { name: 'Open AI Sentiment Analysis System project' })).toHaveAttribute('href', '/projects/ai-sentiment-analysis')
   })
 })

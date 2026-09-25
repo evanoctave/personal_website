@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
-import TemplateNotice from './TemplateNotice.jsx'
 
 export default function ProjectDetail({ project, previous, next }) {
   const gallery = project.gallery ?? []
   const media = project.media ?? []
+  const showPrevious = previous && previous.slug !== next?.slug
 
   return (
     <article className="project-detail">
@@ -75,13 +75,12 @@ export default function ProjectDetail({ project, previous, next }) {
             </section>
           )}
 
-          <TemplateNotice />
         </div>
       </div>
 
       <nav className="project-pagination" aria-label="Project navigation">
-        <Link to={`/projects/${previous.slug}`}>Previous: {previous.title}</Link>
-        <Link to={`/projects/${next.slug}`}>Next: {next.title}</Link>
+        {showPrevious && <Link to={`/projects/${previous.slug}`}>Previous: {previous.title}</Link>}
+        {next && <Link to={`/projects/${next.slug}`}>Next: {next.title}</Link>}
       </nav>
     </article>
   )

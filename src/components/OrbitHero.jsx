@@ -12,7 +12,7 @@ export default function OrbitHero() {
       </div>
 
       <div className="orbit-stage" aria-label="Project orbit">
-        <div className="hero-card"><span className="hero-card__number">{String(projects.length).padStart(2, '0')}</span><h2>Selected projects. Built in public.</h2><p>Product systems, data experiences, and brand-forward web work.</p></div>
+        <div className="hero-card"><span className="hero-card__number">{String(projects.length).padStart(2, '0')}</span><h2>Selected projects. Built for use.</h2><p>Product systems and machine-learning prototypes.</p></div>
         <div className="sr-only">{projects.map((project) => <Link key={project.slug} to={`/projects/${project.slug}`}>Open {project.title} project</Link>)}</div>
         <p className="hero-stamp">Design / Build / Refine</p>
       </div>

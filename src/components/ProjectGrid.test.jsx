@@ -11,14 +11,14 @@ describe('ProjectGrid', () => {
     const user = userEvent.setup()
     render(<MemoryRouter><ProjectGrid /></MemoryRouter>)
 
-    expect(screen.getAllByRole('article')).toHaveLength(3)
+    expect(screen.getAllByRole('article')).toHaveLength(2)
 
-    await user.click(screen.getByRole('button', { name: 'Brand' }))
+    await user.click(screen.getByRole('button', { name: 'AI' }))
     expect(screen.getAllByRole('article')).toHaveLength(1)
-    expect(screen.getByRole('heading', { name: 'Comet Care' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'AI Sentiment Analysis System' })).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'All' }))
-    expect(screen.getAllByRole('article')).toHaveLength(3)
+    expect(screen.getAllByRole('article')).toHaveLength(2)
   })
 
   it('gives each case-study link a 44px touch target', () => {

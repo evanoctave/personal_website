@@ -7,10 +7,12 @@ import {
 } from './projects'
 
 describe('project templates', () => {
-  it('finds a project by its stable URL slug', () => {
-    expect(getProjectBySlug('nebula-notes')).toMatchObject({
-      title: 'Nebula Notes',
-      slug: 'nebula-notes',
+  it('finds the flagship package tracker by its stable URL slug', () => {
+    expect(getProjectBySlug('digital-package-tracker')).toMatchObject({
+      title: 'Digital Package Tracker',
+      slug: 'digital-package-tracker',
+      role: 'Full-stack developer',
+      stack: ['Node.js', 'Express', 'SQLite', 'PWA'],
     })
   })
 
@@ -19,13 +21,13 @@ describe('project templates', () => {
   })
 
   it('returns unique filter tags', () => {
-    expect(getProjectTags()).toEqual(['All', 'Brand', 'Product', 'Web'])
+    expect(getProjectTags()).toEqual(['All', 'AI', 'Backend', 'Data', 'Product', 'Web'])
   })
 
   it('wraps adjacent project navigation', () => {
-    expect(getAdjacentProjects('nebula-notes')).toMatchObject({
-      previous: { slug: 'comet-care' },
-      next: { slug: 'signal-garden' },
+    expect(getAdjacentProjects('digital-package-tracker')).toMatchObject({
+      previous: { slug: 'ai-sentiment-analysis' },
+      next: { slug: 'ai-sentiment-analysis' },
     })
   })
 
