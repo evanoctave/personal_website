@@ -5,6 +5,7 @@ import { describe, expect, it } from 'vitest'
 import ProjectGrid from './ProjectGrid'
 import '../styles/base.css'
 import '../styles/cosmic.css'
+import '../styles/studio.css'
 
 describe('ProjectGrid', () => {
   it('filters cards by selected tag and restores all cards', async () => {
