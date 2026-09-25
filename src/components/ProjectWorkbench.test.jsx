@@ -18,6 +18,7 @@ describe('ProjectWorkbench', () => {
     const { container } = render(<MemoryRouter><ProjectWorkbench /></MemoryRouter>)
 
     expect(screen.getByRole('region', { name: 'Project workbench' })).toBeInTheDocument()
+    expect(screen.getByText(/Keyboard: arrows move, Shift \+ arrows resize, Alt \+ arrows rotate\./)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Select Digital Package Tracker tile' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Select AI Sentiment Analysis System tile' })).toBeInTheDocument()
     expect(container.querySelector('.workbench-backdrop img')).toHaveAttribute('src', '/assets/server-room-terrarium-v1.png')

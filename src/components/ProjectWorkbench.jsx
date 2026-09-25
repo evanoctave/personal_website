@@ -77,7 +77,7 @@ export default function ProjectWorkbench() {
     <section aria-label="Project workbench" className="project-workbench" ref={workbenchRef}>
       <div className="project-workbench__header">
         <p className="eyebrow">Work in progress</p>
-        <p>Select a tile to move, resize, or rotate it.</p>
+        <p>Select a tile to move, resize, or rotate it. Keyboard: arrows move, Shift + arrows resize, Alt + arrows rotate.</p>
       </div>
       <div
         className="project-workbench__dropzone"
