@@ -29,15 +29,15 @@ export default function ConstructionPage() {
 
         <section aria-label="Recent signs of life" className="construction-gallery">
           <figure className="construction-photo construction-photo--wide">
-            <img alt="A glowing server orb resting in a dark room" src="/assets/hero-orb-server-v1.png" />
+            <img alt="Evan with arms out wide in an empty parking lot at night" src="/photos/PICT0025.jpg" />
             <figcaption>Evidence of activity, maybe.</figcaption>
           </figure>
           <figure className="construction-photo construction-photo--tall">
-            <img alt="A small server-room terrarium lit from inside" src="/assets/server-room-terrarium-v1.png" />
+            <img alt="Whiteboard with thin film interference equations" src="/photos/PICT0016.jpg" />
             <figcaption>Habitat under repair.</figcaption>
           </figure>
           <figure className="construction-photo construction-photo--close">
-            <img alt="Close view of a glowing server orb" src="/assets/hero-orb-server-v1.png" />
+            <img alt="Hand splayed over packs of stew meat" src="/photos/PICT0010.jpg" />
             <figcaption>Do not feed after midnight.</figcaption>
           </figure>
         </section>

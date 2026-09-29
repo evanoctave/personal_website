@@ -5,7 +5,7 @@ import Terminal from './Terminal.jsx'
 const SHORTCUTS = [
   ['?', 'This panel'],
   ['/', 'Open terminal'],
-  ['1 – 4', 'Home, work, about, contact'],
+  ['1 – 5', 'Home, work, about, life, contact'],
   ['I', 'Invert everything'],
   ['T', 'Cursor trail'],
   ['G', 'Blueprint grid'],

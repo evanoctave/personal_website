@@ -5,6 +5,7 @@ import AboutPage from './pages/AboutPage.jsx'
 import ContactPage from './pages/ContactPage.jsx'
 import ConstructionPage from './pages/ConstructionPage.jsx'
 import HomePage from './pages/HomePage.jsx'
+import LifePage from './pages/LifePage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
 import ProjectPage from './pages/ProjectPage.jsx'
 import WorkPage from './pages/WorkPage.jsx'
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="projects" element={<Navigate replace to="/work" />} />
           <Route path="projects/:slug" element={<LegacyProjectRedirect />} />
           <Route path="about" element={<AboutPage />} />
+          <Route path="life" element={<LifePage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

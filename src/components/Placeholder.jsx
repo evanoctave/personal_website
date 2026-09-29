@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 // Image slot. Give it a src to show a real image, otherwise it's a grey box
 // that tells you what goes there and how big it currently renders.
-export default function Placeholder({ alt = '', className = '', label = 'image', ratio = '4 / 3', src }) {
+export default function Placeholder({ alt = '', className = '', label = 'image', position, ratio = '4 / 3', src }) {
   const ref = useRef(null)
   const [size, setSize] = useState('')
 
@@ -17,7 +17,7 @@ export default function Placeholder({ alt = '', className = '', label = 'image',
   }, [src])
 
   if (src) {
-    return <img alt={alt} className={`photo ${className}`} loading="lazy" src={src} style={{ aspectRatio: ratio }} />
+    return <img alt={alt} className={`photo ${className}`} loading="lazy" src={src} style={{ aspectRatio: ratio, objectPosition: position }} />
   }
 
   return (

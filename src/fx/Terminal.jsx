@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { projects } from '../data/projects.js'
 import { EGGS, useFx } from './FxProvider.jsx'
 
-const PAGES = { home: '/', work: '/work', about: '/about', contact: '/contact' }
+const PAGES = { home: '/home', work: '/work', about: '/about', life: '/life', contact: '/contact' }
 const GREETING = [
   'eo-shell v2.6 — type `help` to see commands.',
 ]

@@ -14,15 +14,20 @@ npm run build      # production build
 Every image slot is a `<Placeholder>` (`src/components/Placeholder.jsx`). It shows its label, aspect ratio, and live pixel size. To use a real photo, drop the file in `public/images/` and pass `src`:
 
 ```jsx
-<Placeholder src="/images/me.jpg" alt="Evan at his desk" ratio="4 / 5" />
+<Placeholder src="/photos/me.jpg" alt="Evan at his desk" ratio="4 / 5" position="30% 50%" />
 ```
 
-`ratio` is any CSS aspect-ratio. Change it to match your photo.
+`ratio` is any CSS aspect-ratio. `position` is an optional `object-position` for when the crop needs nudging.
+
+Photos from the digicam are in `public/photos/` (kept under their camera names so the date stamp
+matches the file). Short clips are in `public/clips/` as mp4 + jpg poster, trimmed to under 10s and
+encoded at 720×540.
 
 | Where | File |
 | --- | --- |
-| Hero, portrait, snapshots | `src/pages/HomePage.jsx` (`SNAPSHOTS` array) |
-| About portrait + workbench strip | `src/pages/AboutPage.jsx` |
+| Hero, portrait, snapshots | `src/pages/HomePage.jsx` (`snapshots` array) |
+| Life page (dated roll of photos + clips) | `src/data/life.js` |
+| About portrait + desk strip | `src/pages/AboutPage.jsx` |
 | Project covers | `cover: { src, alt }` in `src/data/projects.js` |
 | Project galleries | `gallery: [{ src, alt, ratio }]` in `src/data/projects.js` |
 
@@ -30,6 +35,8 @@ Every image slot is a `<Placeholder>` (`src/components/Placeholder.jsx`). It sho
 
 - `src/data/projects.js`: projects (a new object gets a route at `/work/<slug>`).
 - `src/pages/AboutPage.jsx`: bio + facts.
+- `src/data/life.js`: the life page. One object per day; `kind: 'photo' | 'clip'`.
+- `src/components/Clip.jsx`: muted looping video with a sound toggle; falls back to controls under reduced motion.
 - `src/pages/ContactPage.jsx`: email + social links.
 - `src/components/SiteShell.jsx`: header, footer, location.
 

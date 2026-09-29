@@ -28,12 +28,29 @@ describe('site', () => {
     expect(screen.getByRole('link', { name: 'Enter unfinished site anyway' })).toHaveAttribute('href', '/home')
   })
 
-  it('renders home with skip link, nav, and image placeholders', () => {
+  it('renders home with skip link, nav, and real photos', () => {
     renderAt('/home')
     expect(screen.getByRole('link', { name: 'Skip to content' })).toHaveAttribute('href', '#main-content')
     expect(screen.getByRole('navigation', { name: 'Primary' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 1, name: "What's up" })).toBeInTheDocument()
-    expect(screen.getByRole('img', { name: 'Image placeholder: big photo' })).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: /Cal State Fullerton rooftops/ })).toHaveAttribute('src', '/photos/PICT0020.jpg')
+    expect(screen.queryByRole('img', { name: /Image placeholder/ })).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'the whole roll' })).toHaveAttribute('href', '/life')
+  })
+
+  it('shows the life page as a dated roll of photos and muted clips', async () => {
+    const user = userEvent.setup()
+    renderAt('/life')
+    expect(screen.getByRole('heading', { level: 1, name: 'life' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 2, name: '08 20 2026' })).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: /arms out wide/ })).toHaveAttribute('src', '/photos/PICT0025.jpg')
+    const clip = document.querySelector('video[src="/clips/MOVI0007.mp4"]')
+    expect(clip).toHaveAttribute('poster', '/clips/MOVI0007.jpg')
+    expect(clip.muted).toBe(true)
+    const [sound] = screen.getAllByRole('button', { name: 'sound' })
+    await user.click(sound)
+    expect(sound).toHaveTextContent('mute')
+    expect(document.title).toBe('Life | Evan Octave')
   })
 
   it('lists every project on the work page and filters by tag', async () => {
@@ -76,6 +93,8 @@ describe('site', () => {
     expect(screen.queryByRole('dialog', { name: 'Controls' })).not.toBeInTheDocument()
 
     fireEvent.keyDown(window, { key: '4' })
+    expect(screen.getByRole('heading', { level: 1, name: 'life' })).toBeInTheDocument()
+    fireEvent.keyDown(window, { key: '5' })
     expect(screen.getByRole('heading', { level: 1, name: 'Contact' })).toBeInTheDocument()
   })
 

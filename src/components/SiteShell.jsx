@@ -12,6 +12,7 @@ const getPageTitle = (pathname) => {
   if (pathname === '/home') return SITE
   if (pathname === '/work') return 'Work'
   if (pathname === '/about') return 'About'
+  if (pathname === '/life') return 'Life'
   if (pathname === '/contact') return 'Contact'
   if (pathname.startsWith('/work/')) return getProjectBySlug(pathname.slice('/work/'.length))?.title ?? 'Lost'
   return 'Lost'
@@ -63,6 +64,7 @@ export default function SiteShell() {
         <nav aria-label="Primary">
           <NavLink to="/work">Work</NavLink>
           <NavLink to="/about">About</NavLink>
+          <NavLink to="/life">Life</NavLink>
           <NavLink to="/contact">Contact</NavLink>
           <button className="help" onClick={() => setPanelOpen(true)} type="button">
             <span className="sr-only">Show controls and easter eggs</span>

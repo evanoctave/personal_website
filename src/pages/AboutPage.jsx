@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import Placeholder from '../components/Placeholder.jsx'
 
 export default function AboutPage() {
@@ -5,7 +6,7 @@ export default function AboutPage() {
     <section className="page">
       <h1>me</h1>
       <h2>you can call me ev</h2>
-      <Placeholder className="about-photo" label="me" ratio="4 / 5" />
+      <Placeholder alt="Selfie with a friend in a parking garage" className="about-photo" position="0% 50%" ratio="4 / 5" src="/photos/PICT0026.jpg" />
       <p className="lede">
         hardware builder, software creator, bug multiplier.
       </p>
@@ -31,12 +32,13 @@ export default function AboutPage() {
       <h2>School</h2>
       <p>(B.S. Computer Engineering, California State University, Fullerton, 2029)</p>
 
-      <h2>Desk + rack</h2>
+      <h2>Desk + whiteboard</h2>
       <div className="gallery gallery--three">
-        <Placeholder label="rack" ratio="2 / 3" />
-        <Placeholder label="desk" ratio="2 / 3" />
-        <Placeholder label="close-up" ratio="2 / 3" />
+        <Placeholder alt="Whiteboard with thin film interference equations" position="40% 50%" ratio="2 / 3" src="/photos/PICT0016.jpg" />
+        <Placeholder alt="Spiral notebook with function and inverse problems" position="60% 50%" ratio="2 / 3" src="/photos/PICT0040.jpg" />
+        <Placeholder alt="Laptop and open textbook on a study table" position="40% 50%" ratio="2 / 3" src="/photos/PICT0043.jpg" />
       </div>
+      <p className="muted">Rack photos coming once I clean the cables. More of the non-nerd stuff on the <Link to="/life">life page</Link>.</p>
     </section>
   )
 }

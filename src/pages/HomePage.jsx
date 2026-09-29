@@ -5,12 +5,12 @@ import Scramble from '../components/Scramble.jsx'
 import WorkList from '../components/WorkList.jsx'
 import { projects } from '../data/projects.js'
 
-// photos go here eventually. src: '/images/whatever.jpg'
+// a few from the digicam. the full roll is on /life
 const snapshots = [
-  { label: 'photo', ratio: '3 / 4' },
-  { label: 'photo', ratio: '1' },
-  { label: 'photo', ratio: '4 / 5' },
-  { label: 'photo', ratio: '3 / 2' },
+  { src: '/photos/PICT0004.jpg', alt: 'Hand holding a Ghost cherry limeade energy can', ratio: '3 / 4', position: '60% 50%' },
+  { src: '/photos/PICT0037.jpg', alt: 'Close portrait of a friend looking at the camera', ratio: '1', position: '20% 50%' },
+  { src: '/photos/PICT0027.jpg', alt: 'Two hands holding Chi sparkling water cans', ratio: '4 / 5' },
+  { src: '/photos/PICT0042.jpg', alt: 'Study table with laptops, textbooks, and friends', ratio: '3 / 2' },
 ]
 
 export default function HomePage() {
@@ -30,7 +30,7 @@ export default function HomePage() {
         </p>
       </section>
 
-      <Placeholder className="intro-photo" label="big photo" ratio="3 / 2" />
+      <Placeholder alt="View over Cal State Fullerton rooftops and trees on a bright day" className="intro-photo" ratio="3 / 2" src="/photos/PICT0020.jpg" />
 
       <section className="block" aria-labelledby="work-title">
         <div className="block-head">
@@ -51,14 +51,17 @@ export default function HomePage() {
           </p>
           <p><Link to="/about">More about me</Link></p>
         </Reveal>
-        <Placeholder label="me" ratio="4 / 5" />
+        <Placeholder alt="Evan with arms out wide in an empty parking lot at night" ratio="4 / 5" src="/photos/PICT0025.jpg" />
       </section>
 
       <section className="block" aria-labelledby="photos-title">
-        <h2 id="photos-title">Photos</h2>
+        <div className="block-head">
+          <h2 id="photos-title">Photos</h2>
+          <Link to="/life">the whole roll</Link>
+        </div>
         <div className="photos">
-          {snapshots.map((snap, i) => (
-            <Placeholder key={i} label={snap.label} ratio={snap.ratio} src={snap.src} />
+          {snapshots.map((snap) => (
+            <Placeholder alt={snap.alt} key={snap.src} position={snap.position} ratio={snap.ratio} src={snap.src} />
           ))}
         </div>
       </section>
