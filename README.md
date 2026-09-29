@@ -19,8 +19,8 @@ Every image slot is a `<Placeholder>` (`src/components/Placeholder.jsx`). It sho
 
 `ratio` is any CSS aspect-ratio. `position` is an optional `object-position` for when the crop needs nudging.
 
-Photos from the digicam are in `public/photos/` (kept under their camera names so the date stamp
-matches the file). Short clips are in `public/clips/` as mp4 + jpg poster, trimmed to under 10s and
+Photos are in `public/photos/`. Digicam shots keep their camera names (`PICT####.jpg`) so the burned-in
+date stamp matches the file; phone shots are named by slug (`pitch.jpg`), 1200px max, JPEG q72. Short clips are in `public/clips/` as mp4 + jpg poster, trimmed to under 10s and
 encoded at 720×540.
 
 | Where | File |
@@ -35,7 +35,7 @@ encoded at 720×540.
 
 - `src/data/projects.js`: projects (a new object gets a route at `/work/<slug>`).
 - `src/pages/AboutPage.jsx`: bio + facts.
-- `src/data/life.js`: the life page. One object per day; `kind: 'photo' | 'clip'`.
+- `src/data/life.js`: the life page. `days` is the digicam roll (one object per camera date), `chapters` is the phone roll (newest first). Items are `kind: 'photo' | 'clip'`; `wide: true` makes a landscape photo span two columns.
 - `src/components/Clip.jsx`: muted looping video with a sound toggle; falls back to controls under reduced motion.
 - `src/pages/ContactPage.jsx`: email + social links.
 - `src/components/SiteShell.jsx`: header, footer, location.

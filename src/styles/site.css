@@ -305,18 +305,24 @@ main { min-height: 60vh; padding-bottom: 60px; }
 
 .four-oh-four { font-size: 7rem; line-height: 1; margin: 20px 0; color: var(--muted); }
 
-/* life: digicam roll */
+/* life: rolls */
 
 .life .lede { margin-bottom: .4rem; }
-.day { margin-top: 56px; }
+.page .life-cam { float: right; width: 150px; margin: 6px 0 16px 24px; }
+.chapter { clear: both; margin-top: 72px; }
+.chapter-head { margin-bottom: 18px; }
+.chapter-head h2 { margin: 0 0 4px; }
+.chapter-head p { margin: 0; font-size: .95rem; }
+.day { margin-top: 40px; }
 .day-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin-bottom: 14px; }
-.day-head h2 { margin: 0; font: 15px var(--mono); letter-spacing: .04em; color: #ff8a3d; }
+.day-head h3 { margin: 0; font: 15px var(--mono); letter-spacing: .04em; color: #ff8a3d; }
 .day-head p { margin: 0; font-size: .95rem; }
 .roll { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); grid-auto-flow: dense; gap: 12px 10px; align-items: start; }
 .shot { margin: 0; }
 .shot figure { margin: 0; }
 .shot figcaption { margin-top: 5px; font: 12px var(--mono); color: var(--muted); }
-.shot--clip { grid-column: span 2; }
+.shot--clip, .shot--wide { grid-column: span 2; }
+.shot .when { color: var(--muted); opacity: .7; }
 
 .clip { position: relative; }
 .clip video { width: 100%; object-fit: cover; background: var(--ph); }
@@ -507,6 +513,7 @@ main { min-height: 60vh; padding-bottom: 60px; }
   .page .about-photo { float: none; width: 60%; margin: 0 0 20px; }
   .gallery--three { grid-template-columns: 1fr 1fr; }
   .roll { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .page .life-cam { width: 110px; margin-left: 16px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

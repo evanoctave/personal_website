@@ -8,7 +8,7 @@ import { projects } from '../data/projects.js'
 // a few from the digicam. the full roll is on /life
 const snapshots = [
   { src: '/photos/PICT0004.jpg', alt: 'Hand holding a Ghost cherry limeade energy can', ratio: '3 / 4', position: '60% 50%' },
-  { src: '/photos/PICT0037.jpg', alt: 'Close portrait of a friend looking at the camera', ratio: '1', position: '20% 50%' },
+  { src: '/photos/tuffy.jpg', alt: 'Evan walking with Tuffy the elephant, the Cal State Fullerton mascot', ratio: '1', position: '40% 50%' },
   { src: '/photos/PICT0027.jpg', alt: 'Two hands holding Chi sparkling water cans', ratio: '4 / 5' },
   { src: '/photos/PICT0042.jpg', alt: 'Study table with laptops, textbooks, and friends', ratio: '3 / 2' },
 ]
