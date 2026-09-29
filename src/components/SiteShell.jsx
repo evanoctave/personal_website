@@ -9,7 +9,7 @@ import Overlays from '../fx/Overlays.jsx'
 const SITE = 'Evan Octave'
 
 const getPageTitle = (pathname) => {
-  if (pathname === '/') return SITE
+  if (pathname === '/home') return SITE
   if (pathname === '/work') return 'Work'
   if (pathname === '/about') return 'About'
   if (pathname === '/contact') return 'Contact'
@@ -59,7 +59,7 @@ export default function SiteShell() {
       <a className="skip-link" href="#main-content">Skip to content</a>
       <DotField />
       <header className="site-header">
-        <NavLink aria-label="Evan Octave home" className="home-link" end onClick={onLogo} to="/">Evan Octave</NavLink>
+        <NavLink aria-label="Evan Octave home" className="home-link" end onClick={onLogo} to="/home">Evan Octave</NavLink>
         <nav aria-label="Primary">
           <NavLink to="/work">Work</NavLink>
           <NavLink to="/about">About</NavLink>

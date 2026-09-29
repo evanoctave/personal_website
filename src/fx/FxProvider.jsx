@@ -13,7 +13,7 @@ export const EGGS = {
 
 const EGG_KEY = 'eo-eggs'
 const KONAMI = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a']
-export const ROUTES = { 1: '/', 2: '/work', 3: '/about', 4: '/contact' }
+export const ROUTES = { 1: '/home', 2: '/work', 3: '/about', 4: '/contact' }
 
 const FxContext = createContext(null)
 

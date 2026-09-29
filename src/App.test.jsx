@@ -18,8 +18,18 @@ describe('site', () => {
     vi.useRealTimers()
   })
 
-  it('renders home with skip link, nav, and image placeholders', () => {
+  it('shows construction gate at root with date, photos, and unfinished-site link', () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-09-27T12:00:00'))
     renderAt('/')
+    expect(screen.getByRole('heading', { level: 1, name: 'UNDER CONSTRUCTION' })).toBeInTheDocument()
+    expect(screen.getByText('As of Sunday, September 27, 2026')).toBeInTheDocument()
+    expect(screen.getAllByRole('img')).toHaveLength(3)
+    expect(screen.getByRole('link', { name: 'Enter unfinished site anyway' })).toHaveAttribute('href', '/home')
+  })
+
+  it('renders home with skip link, nav, and image placeholders', () => {
+    renderAt('/home')
     expect(screen.getByRole('link', { name: 'Skip to content' })).toHaveAttribute('href', '#main-content')
     expect(screen.getByRole('navigation', { name: 'Primary' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 1, name: "What's up" })).toBeInTheDocument()
@@ -50,7 +60,7 @@ describe('site', () => {
 
   it('moves focus and updates the title after navigation', async () => {
     const user = userEvent.setup()
-    renderAt('/')
+    renderAt('/home')
     const main = screen.getByRole('main')
     await user.click(screen.getByRole('link', { name: 'About' }))
     expect(screen.getByRole('heading', { level: 1, name: 'me' })).toBeInTheDocument()
@@ -59,7 +69,7 @@ describe('site', () => {
   })
 
   it('opens the controls panel with ? and navigates with number keys', () => {
-    renderAt('/')
+    renderAt('/home')
     fireEvent.keyDown(window, { key: '?' })
     expect(screen.getByRole('dialog', { name: 'Controls' })).toBeInTheDocument()
     fireEvent.keyDown(window, { key: 'Escape' })
@@ -71,7 +81,7 @@ describe('site', () => {
 
   it('inverts the theme with I and respects the shortcut switch', async () => {
     const user = userEvent.setup()
-    renderAt('/')
+    renderAt('/home')
     fireEvent.keyDown(window, { key: 'i' })
     expect(document.documentElement.dataset.fxInverted).toBe('true')
 
@@ -84,7 +94,7 @@ describe('site', () => {
 
   it('runs terminal commands', async () => {
     const user = userEvent.setup()
-    renderAt('/')
+    renderAt('/home')
     fireEvent.keyDown(window, { key: '/' })
     const input = screen.getByRole('textbox')
     await user.type(input, 'sudo{Enter}')
@@ -96,7 +106,7 @@ describe('site', () => {
 
   it('triggers god mode with the konami code', () => {
     vi.useFakeTimers()
-    renderAt('/')
+    renderAt('/home')
     ;['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a']
       .forEach((key) => fireEvent.keyDown(window, { key }))
     expect(screen.getByText('god mode')).toBeInTheDocument()
