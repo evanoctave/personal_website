@@ -32,17 +32,17 @@ export default function AboutPage() {
       <div className="gallery gallery--three">
         <Placeholder alt="Evan mid-pitch on the mound in a pinstripe uniform" position="50% 50%" ratio="3 / 4" src="/photos/pitch.jpg" />
         <Placeholder alt="Evan walking with Tuffy the elephant, the Cal State Fullerton mascot" position="40% 50%" ratio="3 / 4" src="/photos/tuffy.jpg" />
-        <Placeholder alt="Evan at the IT desk with two monitors and a headset" position="50% 50%" ratio="3 / 4" src="/photos/it-desk.jpg" />
+        <Placeholder alt="A workbench with a power supply, cables, and a small PCB" position="50% 50%" ratio="3 / 4" src="/photos/workbench.jpg" />
       </div>
 
       <h2>School</h2>
       <p>(B.S. Computer Engineering, California State University, Fullerton, 2029)</p>
 
-      <h2>Desk + whiteboard</h2>
+      <h2>Desk + bench</h2>
       <div className="gallery gallery--three">
-        <Placeholder alt="Whiteboard with thin film interference equations" position="40% 50%" ratio="2 / 3" src="/photos/PICT0016.jpg" />
-        <Placeholder alt="Spiral notebook with function and inverse problems" position="60% 50%" ratio="2 / 3" src="/photos/PICT0040.jpg" />
-        <Placeholder alt="Laptop and open textbook on a study table" position="40% 50%" ratio="2 / 3" src="/photos/PICT0043.jpg" />
+        <Placeholder alt="A small wheeled robot on carpet" position="50% 50%" ratio="2 / 3" src="/photos/robot-car.jpg" />
+        <Placeholder alt="Two monitors and a laptop with code on a home desk" position="50% 50%" ratio="2 / 3" src="/photos/desk-setup.jpg" />
+        <Placeholder alt="A disassembled laptop with the board exposed" position="50% 50%" ratio="2 / 3" src="/photos/laptop-guts.jpg" />
       </div>
       <p className="muted">Rack photos coming once I clean the cables. More of the non-nerd stuff on the <Link to="/life">life page</Link>.</p>
     </section>

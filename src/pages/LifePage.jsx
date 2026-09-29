@@ -37,9 +37,9 @@ export default function LifePage() {
     <section className="page life">
       <h1>life</h1>
       <Placeholder alt="A small silver digicam sitting on a desk next to a keyboard" className="life-cam" ratio="4 / 5" src="/photos/digicam.jpg" />
-      <p className="lede">Friends, campus, baseball, dogs, snacks.</p>
+      <p className="lede">Places, friends, campus, baseball, dogs, snacks.</p>
       <p className="muted">
-        {digicamCount} shots from a $30 digicam, then {phoneCount} from my phone going back to senior year.
+        {digicamCount} shots from a $30 digicam, then {phoneCount} from my phone going back to senior year. Mostly where I was, sometimes who I was with.
         Clips are muted until you say otherwise. The nerd stuff is on the <Link to="/about">about page</Link>.
       </p>
 
