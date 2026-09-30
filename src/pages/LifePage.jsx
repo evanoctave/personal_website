@@ -3,12 +3,6 @@ import Clip from '../components/Clip.jsx'
 import Placeholder from '../components/Placeholder.jsx'
 import { chapters, days, formatDay } from '../data/life.js'
 
-// clips take two columns, so a clip-heavy day tiles better at two columns than three
-const columnsFor = (items) => {
-  const clips = items.filter((item) => item.kind === 'clip').length
-  return clips > items.length - clips || items.length < 3 ? 2 : 3
-}
-
 function Roll({ items }) {
   return (
     <ul className="roll">
@@ -30,7 +24,6 @@ function Roll({ items }) {
 }
 
 export default function LifePage() {
-  const digicamCount = days.reduce((total, day) => total + day.items.length, 0)
   const phoneCount = chapters.reduce((total, chapter) => total + chapter.items.length, 0)
 
   return (
@@ -39,7 +32,7 @@ export default function LifePage() {
       <Placeholder alt="A small silver digicam sitting on a desk next to a keyboard" className="life-cam" ratio="4 / 5" src="/photos/digicam.jpg" />
       <p className="lede">Places, friends, campus, baseball, dogs, snacks.</p>
       <p className="muted">
-        {digicamCount} shots from a $30 digicam, then {phoneCount} from my phone going back to senior year. Mostly where I was, sometimes who I was with.
+        One week on a $30 digicam, then {phoneCount} from my phone going back to senior year.
         Clips are muted until you say otherwise. The nerd stuff is on the <Link to="/about">about page</Link>.
       </p>
 
@@ -49,7 +42,7 @@ export default function LifePage() {
           <p className="muted">One week, dated by the camera.</p>
         </header>
         {days.map((day) => (
-          <section aria-labelledby={`day-${day.date}`} className="day" key={day.date} style={{ '--cols': columnsFor(day.items) }}>
+          <section aria-labelledby={`day-${day.date}`} className="day" key={day.date}>
             <header className="day-head">
               <h3 id={`day-${day.date}`}>
                 <time dateTime={day.date}>{formatDay(day.date)}</time>

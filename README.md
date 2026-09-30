@@ -35,7 +35,7 @@ encoded at 720×540.
 
 - `src/data/projects.js`: projects (a new object gets a route at `/work/<slug>`).
 - `src/pages/AboutPage.jsx`: bio + facts.
-- `src/data/life.js`: the life page. `days` is the digicam roll (one object per camera date), `chapters` is the phone roll (newest first). Items are `kind: 'photo' | 'clip'`; `wide: true` makes a landscape photo span two columns.
+- `src/data/life.js`: the life page. `days` is the digicam roll (one object per camera date), `chapters` is the phone roll (one chapter, newest first). Items are `kind: 'photo' | 'clip'`; `wide: true` makes a landscape photo span two columns.
 - `src/components/Clip.jsx`: muted looping video with a sound toggle; falls back to controls under reduced motion.
 - `src/pages/ContactPage.jsx`: email + social links.
 - `src/components/SiteShell.jsx`: header, footer, location.
