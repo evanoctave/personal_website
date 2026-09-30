@@ -49,5 +49,6 @@ All under `src/fx/`. Press `?` on the site for controls.
 - `FxProvider.jsx`: keyboard shortcuts, typed words, konami code, easter egg tracking.
 - `Terminal.jsx`: `/` opens a fake shell.
 - `Overlays.jsx`: key pops, toasts, controls panel, grid, rain, idle screensaver.
+- `Lightbox.jsx`: click any photo. It develops from a blur, ripples the dot field, and arrow keys walk every photo on the page. Pass `interactive={false}` to `Placeholder` to opt out.
 
 Easter eggs (spoilers): konami code, typing `evan`, clicking the logo 7×, idling 45s, `sudo` in the terminal, shaking the mouse, visiting a 404. Typing `neo` or `hello` also does things.

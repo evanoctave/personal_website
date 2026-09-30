@@ -71,6 +71,21 @@ describe('site', () => {
     expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', 'https://github.com/evanoctave/AI-project')
   })
 
+  it('opens a photo in the lightbox and walks the roll with the keyboard', async () => {
+    const user = userEvent.setup()
+    renderAt('/life')
+    await user.click(screen.getByRole('button', { name: /arms out wide/ }))
+    const dialog = screen.getByRole('dialog', { name: 'Photo viewer' })
+    expect(dialog).toBeInTheDocument()
+    expect(document.body.style.overflow).toBe('hidden')
+    const count = document.querySelector('.lightbox-count').textContent
+    fireEvent.keyDown(window, { key: 'ArrowRight' })
+    expect(document.querySelector('.lightbox-count').textContent).not.toBe(count)
+    fireEvent.keyDown(window, { key: 'Escape' })
+    expect(screen.queryByRole('dialog', { name: 'Photo viewer' })).not.toBeInTheDocument()
+    expect(document.body.style.overflow).toBe('')
+  })
+
   it('shows 404 page and records the lost easter egg', () => {
     renderAt('/drifted-away')
     expect(screen.getByRole('heading', { name: 'Not sure how YOU got here...' })).toBeInTheDocument()

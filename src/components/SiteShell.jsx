@@ -4,6 +4,7 @@ import { getProjectBySlug } from '../data/projects.js'
 import Cursor from '../fx/Cursor.jsx'
 import DotField from '../fx/DotField.jsx'
 import { EGGS, useFx } from '../fx/FxProvider.jsx'
+import Lightbox from '../fx/Lightbox.jsx'
 import Overlays from '../fx/Overlays.jsx'
 
 const SITE = 'Evan Octave'
@@ -82,6 +83,7 @@ export default function SiteShell() {
 
       <Cursor />
       <Overlays />
+      <Lightbox />
     </div>
   )
 }

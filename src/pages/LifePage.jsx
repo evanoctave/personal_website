@@ -17,7 +17,7 @@ function Roll({ items }) {
           <figure>
             {item.kind === 'clip'
               ? <Clip alt={item.alt} poster={item.poster} src={item.src} />
-              : <Placeholder alt={item.alt} position={item.position} ratio={item.ratio ?? (item.wide ? '3 / 2' : '3 / 4')} src={item.src} />}
+              : <Placeholder alt={item.alt} caption={item.when ? `${item.caption} · ${item.when}` : item.caption} position={item.position} ratio={item.ratio ?? (item.wide ? '3 / 2' : '3 / 4')} src={item.src} />}
             <figcaption>
               {item.caption}
               {item.when && <span className="when"> · {item.when}</span>}
