@@ -31,7 +31,7 @@ export default function AboutPage() {
 
       <div className="gallery gallery--three">
         <Placeholder alt="Evan mid-pitch on the mound in a pinstripe uniform" position="50% 50%" ratio="3 / 4" src="/photos/pitch.jpg" />
-        <Placeholder alt="Evan walking with Tuffy the elephant, the Cal State Fullerton mascot" position="40% 50%" ratio="3 / 4" src="/photos/tuffy.jpg" />
+        <Placeholder alt="Evan walking with Tuffy the elephant, the Cal State Fullerton mascot" position="50% 40%" ratio="3 / 4" src="/photos/tuffy.jpg" />
         <Placeholder alt="A workbench with a power supply, cables, and a small PCB" position="50% 50%" ratio="3 / 4" src="/photos/workbench.jpg" />
       </div>
 

@@ -8,7 +8,7 @@ import { projects } from '../data/projects.js'
 // a few from the digicam. the full roll is on /life
 const snapshots = [
   { src: '/photos/mb-pier.jpg', alt: 'Sun setting beside the Manhattan Beach pier', ratio: '3 / 4', position: '70% 50%' },
-  { src: '/photos/tuffy.jpg', alt: 'Evan walking with Tuffy the elephant, the Cal State Fullerton mascot', ratio: '1', position: '40% 50%' },
+  { src: '/photos/tuffy.jpg', alt: 'Evan walking with Tuffy the elephant, the Cal State Fullerton mascot', ratio: '3 / 4', position: '50% 40%' },
   { src: '/photos/lava-cove.jpg', alt: 'Waves crashing on black lava rock in a green cove', ratio: '4 / 5', position: '40% 50%' },
   { src: '/photos/campus-night.jpg', alt: 'Palm trees and lamp posts on campus at night', ratio: '3 / 2' },
 ]
