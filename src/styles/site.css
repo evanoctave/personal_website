@@ -312,6 +312,32 @@ main { min-height: 60vh; padding-bottom: 60px; }
 @keyframes rattle { from { translate: -1px 0; } to { translate: 1px 1px; } }
 @keyframes blink { from { opacity: 1; } to { opacity: .2; } }
 
+/* construction crew: text blocks get assembled in chunks while tiny workers hammer away on top of them.
+   --delay staggers the blocks. the crew hangs around 2.4s after its block starts, then clears off */
+
+.build { position: relative; }
+/* generous inset so the title's sideways nudge isn't clipped */
+.build-content { animation: assemble 2.2s steps(14, end) var(--delay) backwards; }
+@keyframes assemble { from { clip-path: inset(-10% 100% -10% -40%); } to { clip-path: inset(-10% -10% -10% -40%); } }
+
+.build-crew { position: absolute; inset: 0; pointer-events: none; animation: crew-leave .6s ease-in calc(var(--delay) + 2.4s) forwards; }
+@keyframes crew-leave { to { opacity: 0; translate: 40px 0; visibility: hidden; } }
+
+.worker { position: absolute; top: -32px; width: 26px; height: 34px; overflow: visible; }
+.worker-arm { transform-origin: 17px 13px; animation: swing .32s ease-in-out infinite alternate; animation-delay: inherit; }
+@keyframes swing { from { transform: rotate(-55deg); } to { transform: rotate(15deg); } }
+.worker--carry { animation: walk 3.2s ease-in-out infinite alternate; }
+@keyframes walk { from { translate: 0 0; } 25% { translate: 18px -2px; } 50% { translate: 36px 0; } 75% { translate: 54px -2px; } to { translate: 72px 0; } }
+
+.smoke { position: absolute; top: -10px; width: 14px; height: 14px; border-radius: 50%; background: rgb(232 230 225 / .35); filter: blur(4px); animation: puff 1.9s ease-out infinite; }
+@keyframes puff { from { translate: 0 0; scale: .4; opacity: .9; } to { translate: 14px -44px; scale: 2.4; opacity: 0; } }
+.wind { position: absolute; left: -40px; width: 70px; height: 1px; background: linear-gradient(90deg, transparent, rgb(232 230 225 / .55), transparent); animation: gust 2.4s linear infinite; }
+@keyframes gust { from { translate: 0 0; opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } to { translate: 60vw 6px; opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .build-crew { display: none; }
+}
+
 /* home */
 
 .intro { padding-top: 40px; }
