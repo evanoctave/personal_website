@@ -87,6 +87,16 @@ describe('site', () => {
     expect(document.title).toBe('About | Evan Octave')
   })
 
+  it('travels to a page through its orb', () => {
+    vi.useFakeTimers()
+    renderAt('/home')
+    fireEvent.click(screen.getByRole('link', { name: 'Travel to Life' }))
+    expect(screen.getByText('heading to life…')).toBeInTheDocument()
+    act(() => { vi.advanceTimersByTime(1500) })
+    expect(screen.getByRole('heading', { level: 1, name: 'life' })).toBeInTheDocument()
+    expect(document.body).not.toHaveClass('is-traveling')
+  })
+
   it('opens the controls panel with ? and navigates with number keys', () => {
     renderAt('/home')
     fireEvent.keyDown(window, { key: '?' })

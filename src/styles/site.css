@@ -8,6 +8,7 @@
   --serif: "Newsreader", Georgia, "Times New Roman", serif;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --chrome: radial-gradient(circle at 32% 26%, #fff 0, #bdbdb9 5%, #4a4a48 22%, #141414 55%, #060606 74%, #6f6f6c 100%);
 }
 
 :root[data-fx-inverted="true"] {
@@ -565,7 +566,7 @@ main:has(> .life) { max-width: none; }
 
 /* ---- floating stuff ---- */
 
-.fx-orbs { --mx: 0; --my: 0; --sy: 0; --px: 50vw; --py: 30vh; --chrome: radial-gradient(circle at 32% 26%, #fff 0, #bdbdb9 5%, #4a4a48 22%, #141414 55%, #060606 74%, #6f6f6c 100%); position: fixed; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
+.fx-orbs { --mx: 0; --my: 0; --sy: 0; --px: 50vw; --py: 30vh; position: fixed; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
 :root[data-fx-inverted="true"] .fx-orbs { filter: invert(1); }
 .construction { isolation: isolate; }
 .construction .fx-orbs { z-index: -1; }
@@ -643,6 +644,65 @@ main:has(> .life) { max-width: none; }
 .fx-orbs.fx-orbs--atom i:nth-child(6) { --p: .8; --world: url(/assets/worlds/lava.svg); }
 @keyframes orbit { to { transform: rotate(1turn); } }
 
+/* ---- orb travel: a little 3d space on the home page. each orb is a page, clicking one flies the camera into it ---- */
+
+.space { --mx: 0; --my: 0; --k: 1; position: relative; height: clamp(300px, 52vh, 480px); margin-top: 16px; perspective: 900px; }
+/* these orbs are the floating stuff on the home page, so the background ones sit this page out */
+.site:has(.home) .fx-orbs i { display: none; }
+.space.is-traveling { z-index: 5; }
+.space-hint { position: absolute; top: 0; left: 0; margin: 0; font: 12px var(--mono); color: var(--muted); }
+
+/* idle: the world leans with the pointer. traveling: it slides so the chosen orb sits dead centre, right up against the camera */
+.space-world {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(calc(var(--my) * -8deg)) rotateY(calc(var(--mx) * 12deg));
+  transition: transform .9s cubic-bezier(.16, 1, .3, 1);
+}
+.space.is-traveling .space-world { transform: translate3d(var(--tx), var(--ty), var(--tz)); transition: transform 1.5s cubic-bezier(.7, 0, .25, 1); }
+
+.orb {
+  position: absolute;
+  top: calc(50% + var(--y));
+  left: calc(50% + var(--x));
+  width: calc(var(--size) * var(--k));
+  aspect-ratio: 1;
+  margin: calc(var(--size) * var(--k) / -2) 0 0 calc(var(--size) * var(--k) / -2);
+  border-radius: 50%;
+  transform: translateZ(var(--z));
+  text-decoration: none;
+  transition: opacity .4s;
+}
+.orb-ball {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--chrome);
+  box-shadow: 0 30px 60px rgb(0 0 0 / .5);
+  transition: scale .5s cubic-bezier(.16, 1, .3, 1);
+  animation: orb-bob 7s ease-in-out infinite alternate;
+}
+:root[data-fx-inverted="true"] .orb-ball { filter: invert(1); }
+.orb:nth-child(2n) .orb-ball { animation-duration: 9s; animation-delay: -4s; }
+.orb:hover .orb-ball, .orb:focus-visible .orb-ball { scale: 1.1; }
+@keyframes orb-bob { from { translate: 0 6px; } to { translate: 0 -8px; } }
+
+.orb-label { position: absolute; top: calc(100% + 14px); left: 50%; translate: -50%; text-align: center; white-space: nowrap; font-size: 1.1rem; line-height: 1.2; transition: opacity .3s; }
+.orb-label small { display: block; font: 11px var(--mono); color: var(--muted); }
+
+/* arriving: the orb goes to the page colour as it fills the screen, so the next page fades up out of it */
+.orb::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--bg); opacity: 0; transition: opacity .6s .8s; }
+.orb.is-target::after { opacity: 1; }
+.space.is-traveling .orb-ball { animation-play-state: paused; }
+.space.is-traveling .orb:not(.is-target), .space.is-traveling .orb-label, .space.is-traveling .space-hint { opacity: 0; }
+
+/* everything else gets out of the way, and the giant orb can't cause scrollbars */
+.site { overflow: clip; }
+.site-header, .site-footer, .home > * { transition: opacity .5s; }
+.is-traveling .site-header, .is-traveling .site-footer, .is-traveling .home > :not(.space) { opacity: 0; }
+.is-traveling .fx-orbs { opacity: 0; transition: opacity .5s; }
+
 /* photos everywhere get the life-roll drift, turned down */
 .photos .photo, .gallery .photo, .about-bit > .photo, .construction-photo {
   --r: -1deg; --t: 9s;
@@ -666,6 +726,7 @@ main > * { animation: page-in .6s cubic-bezier(.16, 1, .3, 1) backwards; }
 @media (max-width: 600px) {
   body { font-size: 17px; }
   .fx-orbs:not(.fx-orbs--atom) i:nth-child(n+4) { display: none; }
+  .space { --k: .55; }
   .name { font-size: 2.4rem; }
   h1 { font-size: 2rem; }
   .about-bit { grid-template-columns: 1fr; }
@@ -684,7 +745,7 @@ main > * { animation: page-in .6s cubic-bezier(.16, 1, .3, 1) backwards; }
   .page p { max-width: 68ch; }
 
   .home { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 72px; align-items: start; }
-  .home > [aria-labelledby="photos-title"], .home > [aria-labelledby="contact-title"] { grid-column: 1 / -1; }
+  .home > .space, .home > [aria-labelledby="photos-title"], .home > [aria-labelledby="contact-title"] { grid-column: 1 / -1; }
   .home .photos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
   .work { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(0, 2.2fr); column-gap: 72px; align-items: start; }

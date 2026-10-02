@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import OrbSpace from '../components/OrbSpace.jsx'
 import Placeholder from '../components/Placeholder.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Scramble from '../components/Scramble.jsx'
@@ -16,6 +17,8 @@ const snapshots = [
 export default function HomePage() {
   return (
     <div className="home">
+      <OrbSpace />
+
       <section className="intro">
         <h1 className="name">
           <Scramble duration={3} text="What's" />{' '}
