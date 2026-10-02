@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import Build from '../fx/Build.jsx'
 import Loader from '../fx/Loader.jsx'
 import Orbs from '../fx/Orbs.jsx'
 
@@ -31,10 +30,10 @@ export default function ConstructionPage() {
 
       <main id="construction-content">
         <section className="construction-intro" aria-labelledby="construction-title">
-          <Build delay={0.2}><h1 aria-label="UNDER CONSTRUCTION" id="construction-title">UNDER<br />CONSTRUCTION</h1></Build>
-          <Build delay={1.3}><p className="construction-lede">Portfolio currently contains 18% content, 62% loose wires, and 20% suspicious confidence.</p></Build>
-          <Build delay={2.4}><p className="construction-copy">Please return in about one week, when this place has projects, photos, and fewer exposed cables.</p></Build>
-          <Build delay={3.5}><Link className="construction-link" to="/home">Enter unfinished site anyway</Link></Build>
+          <h1 aria-label="UNDER CONSTRUCTION" id="construction-title">UNDER<br />CONSTRUCTION</h1>
+          <p className="construction-lede">Portfolio currently contains 18% content, 62% loose wires, and 20% suspicious confidence.</p>
+          <p className="construction-copy">Please return in about one week, when this place has projects, photos, and fewer exposed cables.</p>
+          <Link className="construction-link" to="/home">Enter unfinished site anyway</Link>
         </section>
 
         <p className="construction-stamp">Status: making things</p>
