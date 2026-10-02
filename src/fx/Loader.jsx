@@ -1,58 +1,76 @@
 import { useEffect, useRef, useState } from 'react'
 import { prefersReducedMotion } from './FxProvider.jsx'
 
-const PRINT_MS = 2600
+const PRINT_MS = 3000
 const FLY_MS = 1000
 
-// Intro cover: a little printer feeds out a sticker of `src`, then the sticker flies to where that
-// photo sits on the page (`target`, a selector) while the cover fades. Click or press a key to skip.
-export default function Loader({ src, target }) {
-  const stickerRef = useRef(null)
-  const [phase, setPhase] = useState(() => (prefersReducedMotion() ? 'done' : 'print'))
-  const [flight, setFlight] = useState(null)
+// Intro cover: a little printer feeds out a sticker for each print ({ src, label, target }), one after
+// the other. Then every sticker flies to where its photo sits on the page (`target` is a selector) while
+// the cover fades. Click or press a key to skip.
+export default function Loader({ prints }) {
+  const stickerRefs = useRef([])
+  // which sticker is printing, then 'fly', then 'done'
+  const [step, setStep] = useState(() => (prefersReducedMotion() ? 'done' : 0))
+  const [flights, setFlights] = useState([])
 
   useEffect(() => {
-    if (phase === 'done') return undefined
+    if (step === 'done') return undefined
 
-    const measure = () => {
-      const from = stickerRef.current?.getBoundingClientRect()
+    const measure = (el, target) => {
+      const from = el?.getBoundingClientRect()
       const to = document.querySelector(target)?.getBoundingClientRect()
-      // nowhere on screen to land (phones, where the photo is below the fold): the css falls back to a zoom
+      // nowhere on screen to land (phones, where the photos are below the fold): the css falls back to a zoom
       if (!from?.width || !to?.width || to.top > window.innerHeight) return null
       return {
         '--dx': `${to.left + to.width / 2 - from.left - from.width / 2}px`,
         '--dy': `${to.top + to.height / 2 - from.top - from.height / 2}px`,
-        '--k': to.width / from.width,
+        '--k': to.width / el.offsetWidth,
       }
     }
 
-    const skip = () => setPhase('done')
-    const timer = window.setTimeout(() => {
-      if (phase === 'fly') return skip()
-      setFlight(measure())
-      setPhase('fly')
-    }, phase === 'print' ? PRINT_MS : FLY_MS)
+    const skip = () => setStep('done')
+    const next = () => {
+      if (step === 'fly') return skip()
+      if (step + 1 < prints.length) return setStep(step + 1)
+      setFlights(prints.map((print, i) => measure(stickerRefs.current[i], print.target)))
+      setStep('fly')
+    }
+    const timer = window.setTimeout(next, step === 'fly' ? FLY_MS : PRINT_MS)
     window.addEventListener('keydown', skip)
     return () => {
       window.clearTimeout(timer)
       window.removeEventListener('keydown', skip)
     }
-  }, [phase, target])
+  }, [prints, step])
 
-  if (phase === 'done') return null
+  if (step === 'done') return null
+  const flying = step === 'fly'
+  const current = flying ? prints[prints.length - 1] : prints[step]
 
   return (
-    <div aria-hidden="true" className={`loader${phase === 'fly' ? ' is-flying' : ''}`} onClick={() => setPhase('done')}>
+    <div aria-hidden="true" className={`loader${flying ? ' is-flying' : ''}`} onClick={() => setStep('done')}>
       <div className="loader-rig">
-        <p className="loader-status">printing evan.jpg</p>
+        <p className="loader-status">printing {current.label}</p>
         <div className="printer">
           <span className="printer-name">EO-PRINT 01</span>
+          <span className="printer-screen">
+            {current.label}
+            <i className="printer-bar" key={step} />
+          </span>
+          <span className="printer-keys"><i /><i /></span>
           <span className="printer-led" />
         </div>
         <div className="printer-feed">
-          <div className="sticker" ref={stickerRef} style={flight || undefined}>
-            <img alt="" src={src} />
-          </div>
+          {prints.map((print, i) => (flying || i <= step) && (
+            <div
+              className={`sticker${i < step ? ' is-out' : ''}`}
+              key={print.src}
+              ref={(el) => { stickerRefs.current[i] = el }}
+              style={{ '--i': i, ...flights[i] }}
+            >
+              <img alt="" src={print.src} style={{ aspectRatio: print.ratio }} />
+            </div>
+          ))}
         </div>
       </div>
     </div>
