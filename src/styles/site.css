@@ -608,9 +608,9 @@ main:has(> .life) { max-width: none; }
 }
 /* construction page: bohr model. the page is the nucleus, each <i> is an orbit carrying one electron.
    two on the inner shell, four on the outer (carbon). --p is where on the orbit an electron starts.
-   the electrons are little mario galaxy worlds and the orbits are the gold world-map path */
+   electrons are points of light dragging a comet tail round the orbit */
 .fx-orbs.fx-orbs--atom i {
-  --b: 5.5rem; --p: 0;
+  --b: .8rem; --p: 0;
   inset: 50% auto auto 50%;
   margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
   background: none;
@@ -620,6 +620,15 @@ main:has(> .life) { max-width: none; }
   rotate: calc(var(--p) * 1turn);
   animation: orbit var(--t) linear infinite;
 }
+/* the tail: a sweep of light that ends at the electron, masked down to the width of the orbit line */
+.fx-orbs.fx-orbs--atom i::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: conic-gradient(transparent 0 82%, rgb(232 230 225 / .85));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+}
 .fx-orbs.fx-orbs--atom i::after {
   content: "";
   position: absolute;
@@ -627,21 +636,33 @@ main:has(> .life) { max-width: none; }
   left: calc(50% - var(--b) / 2);
   width: var(--b);
   aspect-ratio: 1;
-  background: var(--world) center / contain no-repeat;
-  filter: drop-shadow(0 0 14px rgb(140 190 255 / .35));
-  /* spin backwards at the same rate so the world stays upright */
-  rotate: calc(var(--p) * -1turn);
-  animation: orbit var(--t) linear infinite reverse;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px 2px #fff, 0 0 34px 10px rgb(232 230 225 / .4), 0 0 90px 24px rgb(232 230 225 / .12);
 }
-.fx-orbs.fx-orbs--atom i:nth-child(-n+2) { --s: 58vmax; --d: 24; --t: 26s; }
-.fx-orbs.fx-orbs--atom i:nth-child(n+3) { --s: 96vmax; --d: 44; --t: 58s; --b: 7.5rem; }
-.fx-orbs.fx-orbs--atom i:nth-child(1), .fx-orbs.fx-orbs--atom i:nth-child(3) { border: 2px solid rgb(245 197 24 / .4); }
-.fx-orbs.fx-orbs--atom i:nth-child(1) { --p: .1; --world: url(/assets/worlds/sky-station.svg); }
-.fx-orbs.fx-orbs--atom i:nth-child(2) { --p: .6; --world: url(/assets/worlds/yoshi-star.svg); }
-.fx-orbs.fx-orbs--atom i:nth-child(3) { --p: .05; --world: url(/assets/worlds/starshroom.svg); }
-.fx-orbs.fx-orbs--atom i:nth-child(4) { --p: .3; --world: url(/assets/worlds/ocean.svg); }
-.fx-orbs.fx-orbs--atom i:nth-child(5) { --p: .55; --world: url(/assets/worlds/star.svg); }
-.fx-orbs.fx-orbs--atom i:nth-child(6) { --p: .8; --world: url(/assets/worlds/lava.svg); }
+.fx-orbs.fx-orbs--atom i:nth-child(-n+2) { --s: 58vmax; --d: 24; --t: 20s; }
+.fx-orbs.fx-orbs--atom i:nth-child(n+3) { --s: 96vmax; --d: 44; --t: 46s; --b: 1.1rem; }
+.fx-orbs.fx-orbs--atom i:nth-child(1), .fx-orbs.fx-orbs--atom i:nth-child(3) { border: 1px solid rgb(232 230 225 / .12); }
+.fx-orbs.fx-orbs--atom i:nth-child(1) { --p: .1; }
+.fx-orbs.fx-orbs--atom i:nth-child(2) { --p: .6; }
+.fx-orbs.fx-orbs--atom i:nth-child(3) { --p: .05; }
+.fx-orbs.fx-orbs--atom i:nth-child(4) { --p: .3; }
+.fx-orbs.fx-orbs--atom i:nth-child(5) { --p: .55; }
+.fx-orbs.fx-orbs--atom i:nth-child(6) { --p: .8; }
+/* the nucleus breathes behind the status stamp */
+.fx-orbs.fx-orbs--atom::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22rem;
+  aspect-ratio: 1;
+  margin: -11rem 0 0 -11rem;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(232 230 225 / .22), rgb(232 230 225 / .05) 45%, transparent);
+  animation: nucleus 4s ease-in-out infinite alternate;
+}
+@keyframes nucleus { from { scale: .8; opacity: .5; } to { scale: 1.15; opacity: 1; } }
 @keyframes orbit { to { transform: rotate(1turn); } }
 
 /* ---- orb travel: a little 3d space on the home page. each orb is a page, clicking one flies the camera into it ---- */
