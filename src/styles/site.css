@@ -8,6 +8,7 @@
   --serif: "Newsreader", Georgia, "Times New Roman", serif;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --chrome: radial-gradient(circle at 32% 26%, #fff 0, #bdbdb9 5%, #4a4a48 22%, #141414 55%, #060606 74%, #6f6f6c 100%);
 }
 
 :root[data-fx-inverted="true"] {
@@ -150,32 +151,44 @@ main { min-height: 60vh; padding-bottom: 60px; }
 .construction main {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
-  align-items: center;
+  align-items: start;
   gap: clamp(40px, 8vw, 112px);
   max-width: 1280px;
   min-height: calc(100vh - 106px);
   margin: 0 auto;
-  padding: clamp(42px, 8vw, 108px) 0;
+  padding: clamp(24px, 4vw, 48px) 0;
 }
-
+ /* status: making things */
 .construction-intro { max-width: 610px; }
 .construction-stamp {
-  display: inline-block;
-  margin-bottom: clamp(22px, 4vw, 46px);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  margin: 0;
   padding: 6px 9px;
+  background: var(--bg);
   border: 1px solid var(--line);
   font: 12px var(--mono);
   color: var(--muted);
 }
 .construction h1 {
   margin: 0;
-  font-family: var(--sans);
-  font-size: clamp(3.7rem, 9vw, 8.7rem);
-  font-weight: 800;
-  line-height: .82;
-  letter-spacing: -.085em;
+  font-family: var(--serif);
+  width: max-content;
+  font-size: clamp(2.4rem, 6.6vw, 7rem);
+  font-weight: 400;
+  line-height: .9;
+  letter-spacing: -.03em;
+  transform: translate(-15%, -10%);
 }
-.construction-lede { max-width: 31ch; margin: clamp(30px, 5vw, 56px) 0 18px; font-size: clamp(1.25rem, 2.4vw, 1.8rem); line-height: 1.18; }
+.construction-lede { max-width: 31ch;
+  margin: clamp(30px, 5vw, 56px) 0 18px;
+  font-size: clamp(1.25rem, 2.4vw, 1.8rem);
+  line-height: 1.18;
+}
+
 .construction-copy { max-width: 48ch; color: var(--muted); }
 .construction-link {
   display: inline-block;
@@ -187,21 +200,13 @@ main { min-height: 60vh; padding-bottom: 60px; }
 }
 .construction-link:hover { background: var(--fg); color: var(--bg); }
 
-.construction-gallery {
-  display: grid;
-  grid-template-columns: 1.2fr .8fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 12px;
-  min-height: min(66vw, 620px);
-}
-.construction-photo { position: relative; min-height: 0; margin: 0; overflow: hidden; border: 1px solid var(--line); background: var(--ph); }
-.construction-photo--wide { grid-row: span 2; }
-.construction-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.08); transition: transform .7s cubic-bezier(.16, 1, .3, 1); }
-.construction-photo--wide img { object-position: 50% 40%; }
-.construction-photo--tall img { object-position: 30% center; }
-.construction-photo--close img { transform: scale(1.4); object-position: 45% 55%; }
-.construction-photo:hover img { transform: scale(1.05); }
-.construction-photo--close:hover img { transform: scale(1.5); }
+/* every photo keeps its own aspect ratio, so nothing gets cropped */
+.construction-gallery { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; gap: 12px; align-self: stretch; }
+.construction-photo { position: relative; margin: 0; overflow: hidden; border: 1px solid var(--line); background: var(--ph); aspect-ratio: 16 / 10; }
+.construction-photo { width: 62%; }
+.construction-photo--wide { width: 85%; aspect-ratio: 4 / 3; }
+.construction-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.08); transition: filter .7s, opacity .5s; }
+.construction-photo:hover img { filter: none; }
 .construction-photo figcaption { position: absolute; right: 8px; bottom: 7px; left: 8px; margin: 0; color: #f4f3ef; font: 11px var(--sans); text-shadow: 0 1px 10px #0d0d0d; }
 .construction-footer { max-width: 1280px; margin: 0 auto; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); letter-spacing: 0; text-transform: none; }
 
@@ -209,13 +214,103 @@ main { min-height: 60vh; padding-bottom: 60px; }
   .construction { padding: 18px 20px 22px; background-image: radial-gradient(circle at 90% 20%, rgb(232 230 225 / .1), transparent 16rem); }
   .construction-header { align-items: flex-start; }
   .construction-header time { max-width: 14ch; text-align: right; }
-  .construction main { grid-template-columns: 1fr; gap: 48px; min-height: 0; padding: 76px 0 52px; }
-  .construction-gallery { min-height: 480px; }
+  .construction h1 { font-size: 11vw; }
+  .construction main { grid-template-columns: minmax(0, 1fr); gap: 48px; min-height: 0; padding: 76px 0 52px; }
+  .construction-stamp { position: static; justify-self: start; transform: none; }
+  .construction-photo--wide { width: 100%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .construction-photo img { transition: none; }
 }
+
+/* construction intro: a sticker printer parks over each photo's spot and prints it right there.
+   the page's own photos stay blank until their sticker is done, then take over underneath it */
+
+.is-printing .construction-photo { animation: none; }
+.is-printing .construction-photo img { opacity: 0; }
+
+.loader { position: fixed; inset: 0; z-index: 40; pointer-events: none; }
+/* --left/--top/--width are the photo's spot, set by Loader.jsx. the rig slides between spots */
+.loader-rig {
+  position: absolute;
+  left: var(--left);
+  top: var(--top);
+  width: var(--width);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: left .9s cubic-bezier(.7, 0, .25, 1), top .9s cubic-bezier(.7, 0, .25, 1), width .9s cubic-bezier(.7, 0, .25, 1), opacity .6s, translate .7s cubic-bezier(.7, 0, .25, 1);
+  animation: appear .5s cubic-bezier(.16, 1, .3, 1) both;
+}
+.loader.is-leaving .loader-rig { opacity: 0; translate: 0 -40px; }
+@keyframes appear { from { opacity: 0; translate: 0 -24px; } }
+
+.printer {
+  position: absolute;
+  bottom: calc(100% - 3px);
+  left: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  height: 5.4rem;
+  padding: 0 1.2rem;
+  border-radius: 16px 16px 8px 8px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 3px, rgb(0 0 0 / .5) 3px 4px) right 1.2rem top 10px / 3.2rem 10px no-repeat,
+    linear-gradient(#4a4a48, #1c1c1c 28%, #101010);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .35), inset 0 -1px 0 rgb(255 255 255 / .06), 0 24px 50px rgb(0 0 0 / .55);
+  font: 10px var(--mono);
+  letter-spacing: .12em;
+  color: var(--muted);
+  animation: rattle .2s steps(2, jump-none) 12 1.2s;
+}
+/* paper lid on top, cutter slot with teeth along the bottom */
+.printer::before { content: ""; position: absolute; top: -9px; right: 3rem; left: 3rem; height: 12px; border-radius: 6px 6px 0 0; background: linear-gradient(#333, #1a1a1a); box-shadow: inset 0 1px 0 rgb(255 255 255 / .25); }
+.printer::after {
+  content: "";
+  position: absolute;
+  right: 1.4rem;
+  bottom: 0;
+  left: 1.4rem;
+  height: 6px;
+  border-radius: 3px 3px 0 0;
+  background: repeating-linear-gradient(90deg, #000 0 5px, #2a2a2a 5px 6px);
+}
+.printer-name { font-weight: 600; white-space: nowrap; }
+.printer-screen {
+  position: relative;
+  flex: 1;
+  height: 1.9rem;
+  padding: 5px 8px 0;
+  border-radius: 4px;
+  background: #000;
+  box-shadow: inset 0 0 0 1px #2a2a2a, inset 0 2px 6px rgb(0 0 0 / .8);
+  color: #cfcdc7;
+  letter-spacing: .04em;
+  overflow: hidden;
+}
+.printer-bar { position: absolute; left: 8px; right: 8px; bottom: 5px; height: 3px; background: #cfcdc7; transform-origin: left; animation: fill 2.5s linear 1.2s both; }
+.printer-keys { display: flex; gap: 6px; }
+.printer-keys i { width: 10px; height: 10px; border-radius: 50%; background: linear-gradient(#3a3a38, #161616); box-shadow: inset 0 1px 0 rgb(255 255 255 / .2), 0 1px 2px #000; }
+.printer-led { width: 7px; height: 7px; border-radius: 50%; background: #fff; box-shadow: 0 0 8px 2px rgb(255 255 255 / .7); animation: blink .4s steps(2, jump-none) infinite; }
+
+/* the feed hides whatever is still inside the printer */
+.printer-feed { position: relative; clip-path: inset(0 -100vw -100vh -100vw); }
+.sticker {
+  position: relative;
+  border-radius: 6px;
+  box-shadow: 0 0 0 6px #f7f7f4, 0 20px 45px rgb(0 0 0 / .45);
+  animation: feed 2.5s steps(16, end) 1.2s backwards;
+}
+.sticker img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 6px; filter: grayscale(1) contrast(1.08); }
+/* printed: pinned to its spot, fading as the real photo comes up under it */
+.sticker.is-set { position: fixed; left: var(--left); top: var(--top); width: var(--width); opacity: 0; transition: opacity .6s; animation: none; }
+@keyframes feed { from { translate: 0 -100%; } }
+@keyframes fill { from { transform: scaleX(0); } }
+@keyframes rattle { from { translate: -1px 0; } to { translate: 1px 1px; } }
+@keyframes blink { from { opacity: 1; } to { opacity: .2; } }
 
 /* home */
 
@@ -305,24 +400,77 @@ main { min-height: 60vh; padding-bottom: 60px; }
 
 .four-oh-four { font-size: 7rem; line-height: 1; margin: 20px 0; color: var(--muted); }
 
-/* life: rolls */
+/* life: full width, photos drifting in space */
 
+main:has(> .life) { max-width: none; }
+.life-intro, .chapter-head, .day-head { max-width: 680px; margin-inline: auto; }
+.life-intro { display: flow-root; }
 .life .lede { margin-bottom: .4rem; }
 .page .life-cam { float: right; width: 150px; margin: 6px 0 16px 24px; }
-.chapter { clear: both; margin-top: 72px; }
+
+.life-nav {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 22px;
+  margin-top: 48px;
+  padding: 10px 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  font: 13px var(--mono);
+}
+.life-nav a { color: var(--muted); text-decoration: none; }
+.life-nav a:hover { color: var(--fg); text-decoration: underline; }
+
+.chapter { margin-top: 110px; scroll-margin-top: 60px; }
 .chapter-head { margin-bottom: 18px; }
 .chapter-head h2 { margin: 0 0 4px; }
 .chapter-head p { margin: 0; font-size: .95rem; }
-.day { margin-top: 40px; }
+.day { margin-top: 56px; }
 .day-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin-bottom: 14px; }
 .day-head h3 { margin: 0; font: 15px var(--mono); letter-spacing: .04em; color: #ff8a3d; }
 .day-head p { margin: 0; font-size: .95rem; }
-.roll { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); grid-auto-flow: dense; gap: 12px 10px; align-items: start; }
-.shot { margin: 0; }
-.shot figure { margin: 0; }
-.shot figcaption { margin-top: 5px; font: 12px var(--mono); color: var(--muted); }
-.shot--clip, .shot--wide { grid-column: span 2; }
+
+.roll {
+  list-style: none;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 24px 0 48px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(32px, 4vw, 64px) clamp(20px, 3.5vw, 56px);
+}
+/* size, offset, tilt and drift speed each cycle on a different prime so the field never looks like a grid */
+.shot { --s: 14rem; --y: 0px; --r: 0deg; --t: 9s; position: relative; width: min(var(--s), 100%); margin: var(--y) 0 0; animation: drift var(--t) ease-in-out calc(var(--t) * -.6) infinite alternate; }
+.shot--clip, .shot--wide { width: min(var(--s) * 1.55, 100%); }
+.shot:nth-child(5n+2) { --s: 17rem; }
+.shot:nth-child(5n+3) { --s: 11rem; opacity: .8; }
+.shot:nth-child(5n+4) { --s: 15.5rem; }
+.shot:nth-child(5n) { --s: 12.5rem; opacity: .9; }
+.shot:nth-child(3n+2) { --y: 64px; }
+.shot:nth-child(3n) { --y: 26px; }
+.shot:nth-child(7n+1) { --r: -1.6deg; }
+.shot:nth-child(7n+3) { --r: 1.2deg; }
+.shot:nth-child(7n+4) { --r: -.6deg; }
+.shot:nth-child(7n+6) { --r: 2deg; }
+.shot:nth-child(4n+2) { --t: 11s; }
+.shot:nth-child(4n+3) { --t: 7.5s; }
+.shot:nth-child(4n) { --t: 13s; }
+.shot:hover, .shot:focus-within { z-index: 2; opacity: 1; animation-play-state: paused; }
+.shot figure { margin: 0; transition: transform .5s cubic-bezier(.16, 1, .3, 1); }
+.shot:hover figure { transform: scale(1.06); }
+.shot .photo { box-shadow: 0 20px 45px rgb(0 0 0 / .45); }
+.shot figcaption { margin-top: 8px; font: 12px var(--mono); color: var(--muted); }
 .shot .when { color: var(--muted); opacity: .7; }
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0) rotate(var(--r)); }
+  to { transform: translate3d(6px, -16px, 0) rotate(calc(var(--r) * -.5)); }
+}
 
 .clip { position: relative; }
 .clip video { width: 100%; object-fit: cover; background: var(--ph); }
@@ -360,8 +508,8 @@ main { min-height: 60vh; padding-bottom: 60px; }
 }
 .photo { width: 100%; object-fit: cover; }
 
-.reveal { opacity: 0; transform: translateY(10px); transition: opacity .6s, transform .6s; transition-delay: var(--delay); }
-.reveal.is-in { opacity: 1; transform: none; }
+.reveal { opacity: 0; transform: translateY(18px); filter: blur(6px); transition: opacity .7s, transform .7s cubic-bezier(.16, 1, .3, 1), filter .7s; transition-delay: var(--delay); }
+.reveal.is-in { opacity: 1; transform: none; filter: none; }
 
 /* ---- fx ---- */
 
@@ -504,19 +652,245 @@ main { min-height: 60vh; padding-bottom: 60px; }
   75% { transform: translateX(-3px); }
 }
 
+/* ---- floating stuff ---- */
+
+.fx-orbs { --mx: 0; --my: 0; --sy: 0; --px: 50vw; --py: 30vh; position: fixed; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
+:root[data-fx-inverted="true"] .fx-orbs { filter: invert(1); }
+.construction { isolation: isolate; }
+.construction .fx-orbs { z-index: -1; }
+
+/* the light that follows the cursor */
+.fx-orbs::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 46rem;
+  aspect-ratio: 1;
+  translate: calc(var(--px) - 50%) calc(var(--py) - 50%);
+  background: radial-gradient(closest-side, rgb(232 230 225 / .08), transparent);
+}
+
+/* --d is depth: nearer orbs lean further from the pointer. translate does the parallax so transform is free to bob */
+.fx-orbs i {
+  --s: 5rem; --d: 30; --t: 14s;
+  position: absolute;
+  width: var(--s);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--chrome);
+  box-shadow: 0 30px 60px rgb(0 0 0 / .5);
+  translate: calc(var(--mx) * var(--d) * -1px) calc((var(--my) * -1 + var(--sy)) * var(--d) * 1px);
+  transition: translate .9s cubic-bezier(.16, 1, .3, 1);
+  animation: bob var(--t) ease-in-out calc(var(--t) * -.4) infinite alternate;
+}
+.fx-orbs i:nth-child(1) { --s: 15rem; --d: 70; --t: 19s; top: 16%; left: -5rem; }
+.fx-orbs i:nth-child(2) { --d: 30; top: 11%; right: 9%; }
+.fx-orbs i:nth-child(3) { --s: 9rem; --d: 50; --t: 16s; top: 58%; right: -2.5rem; }
+.fx-orbs i:nth-child(4) { --s: 3rem; --d: 20; --t: 11s; top: 74%; left: 11%; }
+.fx-orbs i:nth-child(5) { --s: 22rem; --d: 90; --t: 23s; right: 16%; bottom: -13rem; filter: blur(6px); opacity: .7; }
+.fx-orbs i:nth-child(6) { --s: 1.6rem; --d: 14; --t: 9s; top: 31%; left: 47%; }
+@keyframes bob {
+  from { transform: translate3d(0, 0, 0) rotate(0); }
+  to { transform: translate3d(14px, -34px, 0) rotate(24deg); }
+}
+/* construction page: bohr model. the page is the nucleus, each <i> is an orbit carrying one electron.
+   two on the inner shell, four on the outer (carbon). --p is where on the orbit an electron starts.
+   electrons are points of light dragging a comet tail round the orbit */
+.fx-orbs.fx-orbs--atom i {
+  --b: .8rem; --p: 0;
+  inset: 50% auto auto 50%;
+  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
+  background: none;
+  box-shadow: none;
+  filter: none;
+  opacity: 1;
+  rotate: calc(var(--p) * 1turn);
+  animation: orbit var(--t) linear infinite;
+}
+/* the tail: a sweep of light that ends at the electron, masked down to the width of the orbit line */
+.fx-orbs.fx-orbs--atom i::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  background: conic-gradient(transparent 0 82%, rgb(232 230 225 / .85));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+}
+.fx-orbs.fx-orbs--atom i::after {
+  content: "";
+  position: absolute;
+  top: calc(var(--b) / -2);
+  left: calc(50% - var(--b) / 2);
+  width: var(--b);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px 2px #fff, 0 0 34px 10px rgb(232 230 225 / .4), 0 0 90px 24px rgb(232 230 225 / .12);
+}
+.fx-orbs.fx-orbs--atom i:nth-child(-n+2) { --s: 58vmax; --d: 24; --t: 20s; }
+.fx-orbs.fx-orbs--atom i:nth-child(n+3) { --s: 96vmax; --d: 44; --t: 46s; --b: 1.1rem; }
+.fx-orbs.fx-orbs--atom i:nth-child(1), .fx-orbs.fx-orbs--atom i:nth-child(3) { border: 1px solid rgb(232 230 225 / .12); }
+.fx-orbs.fx-orbs--atom i:nth-child(1) { --p: .1; }
+.fx-orbs.fx-orbs--atom i:nth-child(2) { --p: .6; }
+.fx-orbs.fx-orbs--atom i:nth-child(3) { --p: .05; }
+.fx-orbs.fx-orbs--atom i:nth-child(4) { --p: .3; }
+.fx-orbs.fx-orbs--atom i:nth-child(5) { --p: .55; }
+.fx-orbs.fx-orbs--atom i:nth-child(6) { --p: .8; }
+/* the nucleus breathes behind the status stamp */
+.fx-orbs.fx-orbs--atom::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 22rem;
+  aspect-ratio: 1;
+  margin: -11rem 0 0 -11rem;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(232 230 225 / .22), rgb(232 230 225 / .05) 45%, transparent);
+  animation: nucleus 4s ease-in-out infinite alternate;
+}
+@keyframes nucleus { from { scale: .8; opacity: .5; } to { scale: 1.15; opacity: 1; } }
+@keyframes orbit { to { transform: rotate(1turn); } }
+
+/* ---- orb travel: a little 3d space on the home page. each orb is a page, clicking one flies the camera into it ---- */
+
+.space { --mx: 0; --my: 0; --k: 1; position: relative; height: clamp(300px, 52vh, 480px); margin-top: 16px; perspective: 900px; }
+/* these orbs are the floating stuff on the home page, so the background ones sit this page out */
+.site:has(.home) .fx-orbs i { display: none; }
+.space.is-traveling { z-index: 5; }
+.space-hint { position: absolute; top: 0; left: 0; margin: 0; font: 12px var(--mono); color: var(--muted); }
+
+/* idle: the world leans with the pointer. traveling: it slides so the chosen orb sits dead centre, right up against the camera */
+.space-world {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(calc(var(--my) * -8deg)) rotateY(calc(var(--mx) * 12deg));
+  transition: transform .9s cubic-bezier(.16, 1, .3, 1);
+}
+.space.is-traveling .space-world { transform: translate3d(var(--tx), var(--ty), var(--tz)); transition: transform 1.5s cubic-bezier(.7, 0, .25, 1); }
+
+.orb {
+  position: absolute;
+  top: calc(50% + var(--y));
+  left: calc(50% + var(--x));
+  width: calc(var(--size) * var(--k));
+  aspect-ratio: 1;
+  margin: calc(var(--size) * var(--k) / -2) 0 0 calc(var(--size) * var(--k) / -2);
+  border-radius: 50%;
+  transform: translateZ(var(--z));
+  text-decoration: none;
+  transition: opacity .4s;
+}
+.orb-ball {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--chrome);
+  box-shadow: 0 30px 60px rgb(0 0 0 / .5);
+  transition: scale .5s cubic-bezier(.16, 1, .3, 1);
+  animation: orb-bob 7s ease-in-out infinite alternate;
+}
+:root[data-fx-inverted="true"] .orb-ball { filter: invert(1); }
+.orb:nth-child(2n) .orb-ball { animation-duration: 9s; animation-delay: -4s; }
+.orb:hover .orb-ball, .orb:focus-visible .orb-ball { scale: 1.1; }
+@keyframes orb-bob { from { translate: 0 6px; } to { translate: 0 -8px; } }
+
+.orb-label { position: absolute; top: calc(100% + 14px); left: 50%; translate: -50%; text-align: center; white-space: nowrap; font-size: 1.1rem; line-height: 1.2; transition: opacity .3s; }
+.orb-label small { display: block; font: 11px var(--mono); color: var(--muted); }
+
+/* arriving: the orb goes to the page colour as it fills the screen, so the next page fades up out of it */
+.orb::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--bg); opacity: 0; transition: opacity .6s .8s; }
+.orb.is-target::after { opacity: 1; }
+.space.is-traveling .orb-ball { animation-play-state: paused; }
+.space.is-traveling .orb:not(.is-target), .space.is-traveling .orb-label, .space.is-traveling .space-hint { opacity: 0; }
+
+/* everything else gets out of the way, and the giant orb can't cause scrollbars */
+.site { overflow: clip; }
+.site-header, .site-footer, .home > * { transition: opacity .5s; }
+.is-traveling .site-header, .is-traveling .site-footer, .is-traveling .home > :not(.space) { opacity: 0; }
+.is-traveling .fx-orbs { opacity: 0; transition: opacity .5s; }
+
+/* photos everywhere get the life-roll drift, turned down */
+.photos .photo, .gallery .photo, .about-bit > .photo, .construction-photo {
+  --r: -1deg; --t: 9s;
+  box-shadow: 0 20px 45px rgb(0 0 0 / .45);
+  transition: scale .5s cubic-bezier(.16, 1, .3, 1);
+  animation: drift var(--t) ease-in-out calc(var(--t) * -.6) infinite alternate;
+}
+.photos .photo:nth-child(2n), .gallery .photo:nth-child(2n), .construction-photo:nth-child(2n) { --r: 1.2deg; --t: 11s; }
+.photos .photo:nth-child(3n), .gallery .photo:nth-child(3n) { --r: -.5deg; --t: 7.5s; }
+.photos .photo:hover, .gallery .photo:hover, .about-bit > .photo:hover, .construction-photo:hover { scale: 1.04; animation-play-state: paused; }
+.construction-gallery .construction-photo { --r: 0deg; animation-delay: 0s; }
+
+/* pages float up on arrival. translate (not transform) and no forwards fill, so fixed/sticky children are untouched after */
+main > * { animation: page-in .6s cubic-bezier(.16, 1, .3, 1) backwards; }
+@keyframes page-in { from { opacity: 0; translate: 0 16px; } }
+
+.work-list a { transition: padding-left .35s cubic-bezier(.16, 1, .3, 1); }
+.work-list a:hover, .work-list a:focus-visible { padding-left: 12px; }
+.site-header nav a { display: inline-block; transition: translate .25s, color .25s; }
+.site-header nav a:hover { translate: 0 -2px; }
+
 @media (max-width: 600px) {
   body { font-size: 17px; }
+  .fx-orbs:not(.fx-orbs--atom) i:nth-child(n+4) { display: none; }
+  .space { --k: .55; }
   .name { font-size: 2.4rem; }
   h1 { font-size: 2rem; }
   .about-bit { grid-template-columns: 1fr; }
   .about-bit .ph { max-width: 240px; }
   .page .about-photo { float: none; width: 60%; margin: 0 0 20px; }
   .gallery--three { grid-template-columns: 1fr 1fr; }
-  .roll { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .roll { gap: 28px 14px; }
+  .shot { width: calc(50% - 7px); margin-top: 0; }
+  .shot--clip, .shot--wide { width: 100%; }
   .page .life-cam { width: 110px; margin-left: 16px; }
+}
+
+/* desktop: pages spread out sideways. under 900px everything stays the single column above */
+@media (min-width: 900px) {
+  .site-header, main, .site-footer, .fx-grid { max-width: 1240px; padding-left: 40px; padding-right: 40px; }
+  .page p { max-width: 68ch; }
+
+  .home { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 72px; align-items: start; }
+  .home > .space, .home > [aria-labelledby="photos-title"], .home > [aria-labelledby="contact-title"] { grid-column: 1 / -1; }
+  .home .photos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+  .work { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(0, 2.2fr); column-gap: 72px; align-items: start; }
+  .work-head { position: sticky; top: 24px; }
+  .work .work-list ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; }
+
+  /* bio spans three rows; the 1fr row soaks up its extra height so "right now" and "school" stay stacked tight */
+  .about {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr auto auto;
+    grid-template-areas: "bio now" "bio school" "bio ." "field desk" "foot foot";
+    column-gap: 72px;
+  }
+  .about-bio { grid-area: bio; }
+  .about-now { grid-area: now; }
+  .about-now h2 { margin-top: .5rem; }
+  .about-school { grid-area: school; }
+  .about-field { grid-area: field; align-self: end; margin-top: 56px; }
+  .about-desk { grid-area: desk; align-self: end; margin-top: 56px; }
+  .about-desk h2 { margin-top: 0; }
+  .about-foot { grid-area: foot; margin-top: 24px; }
+
+  .contact { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); column-gap: 72px; align-items: start; }
+  .contact h1 { grid-column: 1 / -1; }
+  .contact-elsewhere h2 { margin-top: 0; }
+
+  .life-intro, .chapter-head, .day-head { max-width: 1160px; }
+  .chapter-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 20px; }
+
+  .project { max-width: 900px; }
+  .project .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
-  .reveal { opacity: 1; transform: none; }
+  .reveal { opacity: 1; transform: none; filter: none; }
 }

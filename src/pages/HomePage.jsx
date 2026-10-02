@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import OrbSpace from '../components/OrbSpace.jsx'
 import Placeholder from '../components/Placeholder.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Scramble from '../components/Scramble.jsx'
@@ -16,6 +17,8 @@ const snapshots = [
 export default function HomePage() {
   return (
     <div className="home">
+      <OrbSpace />
+
       <section className="intro">
         <h1 className="name">
           <Scramble duration={3} text="What's" />{' '}
@@ -51,7 +54,7 @@ export default function HomePage() {
           </p>
           <p><Link to="/about">More about me</Link></p>
         </Reveal>
-        <Placeholder alt="Evan with arms out wide in an empty parking lot at night" ratio="4 / 5" src="/photos/PICT0025.jpg" />
+        <Placeholder alt="Evan with arms out wide in an empty parking lot at night" ratio="4 / 5" src="/photos/PICT0025-smooth.jpg" />
       </section>
 
       <section className="block" aria-labelledby="photos-title">
