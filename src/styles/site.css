@@ -224,6 +224,60 @@ main { min-height: 60vh; padding-bottom: 60px; }
   .construction-photo img { transition: none; }
 }
 
+/* construction intro: a sticker printer. the sticker feeds out in thermal-printer steps, then flies to its photo on the page */
+
+.loader { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; cursor: pointer; }
+.loader::before { content: ""; position: absolute; inset: 0; background: var(--bg); transition: opacity .8s .15s; }
+.loader-rig { position: relative; display: grid; justify-items: center; }
+.loader-status { margin: 0 0 14px; font: 12px var(--mono); color: var(--muted); transition: opacity .3s; }
+.loader-status::after { content: "…"; animation: blink 1s steps(2, jump-none) infinite; }
+
+.printer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 17rem;
+  height: 4.2rem;
+  padding: 0 1.1rem;
+  border-radius: 14px 14px 6px 6px;
+  background: linear-gradient(#4a4a48, #1c1c1c 30%, #101010);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .35), 0 20px 45px rgb(0 0 0 / .5);
+  font: 10px var(--mono);
+  letter-spacing: .12em;
+  color: var(--muted);
+  transition: opacity .4s, translate .6s cubic-bezier(.7, 0, .25, 1);
+  animation: rattle .2s steps(2, jump-none) 9 .4s;
+}
+/* the slot the sticker comes out of */
+.printer::after { content: ""; position: absolute; right: 1.2rem; bottom: 0; left: 1.2rem; height: 5px; border-radius: 3px 3px 0 0; background: #000; }
+.printer-led { width: 7px; height: 7px; border-radius: 50%; background: #fff; box-shadow: 0 0 8px 2px rgb(255 255 255 / .7); animation: blink .4s steps(2, jump-none) infinite; }
+
+.printer-feed { width: 14rem; margin-top: -4px; overflow: hidden; }
+.sticker {
+  padding: 7px;
+  border-radius: 12px;
+  background: #f7f7f4;
+  box-shadow: 0 20px 45px rgb(0 0 0 / .45);
+  animation: feed 1.8s steps(9, end) .4s backwards;
+}
+.sticker img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 6px; filter: grayscale(1) contrast(1.08); }
+@keyframes feed { from { translate: 0 -100%; } }
+@keyframes rattle { from { translate: -1px 0; } to { translate: 1px 1px; } }
+@keyframes blink { from { opacity: 1; } to { opacity: .2; } }
+
+.loader.is-flying { pointer-events: none; }
+.loader.is-flying::before, .loader.is-flying .loader-status { opacity: 0; }
+.loader.is-flying .printer { opacity: 0; translate: 0 -30px; }
+.loader.is-flying .printer-feed { overflow: visible; }
+/* --dx/--dy/--k come from Loader.jsx. without them (no landing spot) the sticker just zooms at the viewer */
+.loader.is-flying .sticker {
+  transform: translate(var(--dx, 0px), var(--dy, 0px)) scale(var(--k, 2.4));
+  opacity: 0;
+  transition: transform .85s cubic-bezier(.7, 0, .2, 1), opacity .25s .75s;
+}
+
 /* home */
 
 .intro { padding-top: 40px; }

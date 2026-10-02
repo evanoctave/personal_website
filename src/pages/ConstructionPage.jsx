@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import Loader from '../fx/Loader.jsx'
 import Orbs from '../fx/Orbs.jsx'
 
 export default function ConstructionPage() {
@@ -14,6 +15,7 @@ export default function ConstructionPage() {
   return (
     <div className="construction">
       <Orbs atom />
+      <Loader src="/photos/PICT0025-smooth.jpg" target=".construction-photo--wide img" />
       <a className="skip-link" href="#construction-content">Skip to content</a>
       <header className="construction-header">
         <span>Evan Octave</span>

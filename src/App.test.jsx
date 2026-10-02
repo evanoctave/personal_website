@@ -28,6 +28,16 @@ describe('site', () => {
     expect(screen.getByRole('link', { name: 'Enter unfinished site anyway' })).toHaveAttribute('href', '/home')
   })
 
+  it('covers the construction page with the sticker printer, then gets out of the way', () => {
+    vi.useFakeTimers()
+    renderAt('/')
+    expect(document.querySelector('.loader')).toBeInTheDocument()
+    act(() => { vi.advanceTimersByTime(2600) })
+    expect(document.querySelector('.loader')).toHaveClass('is-flying')
+    act(() => { vi.advanceTimersByTime(1000) })
+    expect(document.querySelector('.loader')).not.toBeInTheDocument()
+  })
+
   it('renders home with skip link, nav, and real photos', () => {
     renderAt('/home')
     expect(screen.getByRole('link', { name: 'Skip to content' })).toHaveAttribute('href', '#main-content')
