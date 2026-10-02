@@ -24,7 +24,7 @@ describe('site', () => {
     renderAt('/')
     expect(screen.getByRole('heading', { level: 1, name: 'UNDER CONSTRUCTION' })).toBeInTheDocument()
     expect(screen.getByText('As of Sunday, September 27, 2026')).toBeInTheDocument()
-    expect(screen.getAllByRole('img')).toHaveLength(3)
+    expect(screen.getAllByRole('img')).toHaveLength(2)
     expect(screen.getByRole('link', { name: 'Enter unfinished site anyway' })).toHaveAttribute('href', '/home')
   })
 
@@ -45,7 +45,7 @@ describe('site', () => {
     expect(screen.getByRole('heading', { level: 3, name: '08 20 2026' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 2, name: 'spring 2025' })).toBeInTheDocument()
     expect(screen.getByRole('img', { name: /mid-pitch on the mound/ })).toHaveAttribute('src', '/photos/pitch.jpg')
-    expect(screen.getByRole('img', { name: /arms out wide/ })).toHaveAttribute('src', '/photos/PICT0025.jpg')
+    expect(screen.getByRole('img', { name: /arms out wide/ })).toHaveAttribute('src', '/photos/PICT0025-smooth.jpg')
     const clip = document.querySelector('video[src="/clips/MOVI0007.mp4"]')
     expect(clip).toHaveAttribute('poster', '/clips/MOVI0007.jpg')
     expect(clip.muted).toBe(true)

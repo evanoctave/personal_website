@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="s" cx=".34" cy=".28" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#001" stop-opacity=".5"/></radialGradient><clipPath id="c"><circle cx="50" cy="56" r="36"/></clipPath></defs>
+<path d="M50 24q-2-12 4-18" stroke="#8b5a2b" stroke-width="3" fill="none"/>
+<path d="M54 6q-10-6-16 2 8-2 16-2zm0 0q10-5 15 4-8-3-15-4zm0 0q-3 8-12 9 8-3 12-9zm0 0q5 7 12 8-8-2-12-8z" fill="#3fae4a"/>
+<circle cx="50" cy="56" r="36" fill="#2d8fe0"/>
+<g clip-path="url(#c)"><ellipse cx="50" cy="22" rx="16" ry="8" fill="#f1d58a"/>
+<path d="M10 50q10-6 20 0t20 0 20 0 20 0M6 66q10-6 20 0t20 0 20 0 20 0M14 80q10-6 20 0t20 0 20 0" stroke="#8fd0ff" stroke-width="2.5" fill="none" opacity=".8"/></g>
+<circle cx="50" cy="56" r="36" fill="url(#s)"/></svg>

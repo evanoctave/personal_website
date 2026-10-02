@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="s" cx=".34" cy=".28" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#001" stop-opacity=".5"/></radialGradient><clipPath id="c"><circle cx="50" cy="50" r="40"/></clipPath></defs>
+<circle cx="50" cy="50" r="40" fill="#4a2a22"/>
+<g clip-path="url(#c)"><path d="M8 40q14 4 20-6t20 2 16-10 28 6M12 70q12-10 24-2t22-6 30 4M44 36q-4 16 6 28" stroke="#ff7a1a" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M8 40q14 4 20-6t20 2 16-10 28 6M12 70q12-10 24-2t22-6 30 4M44 36q-4 16 6 28" stroke="#ffe066" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+<circle cx="68" cy="50" r="7" fill="#2e1915"/><circle cx="28" cy="54" r="5" fill="#2e1915"/></g>
+<circle cx="50" cy="50" r="40" fill="url(#s)"/></svg>

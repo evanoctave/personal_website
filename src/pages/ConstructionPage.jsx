@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import Orbs from '../fx/Orbs.jsx'
 
 export default function ConstructionPage() {
   const date = new Date()
@@ -7,11 +8,12 @@ export default function ConstructionPage() {
   const dateValue = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 
   useEffect(() => {
-    document.title = 'Under Construction | Evan Octave'
+    document.title = 'Under Construction'
   }, [])
 
   return (
     <div className="construction">
+      <Orbs atom />
       <a className="skip-link" href="#construction-content">Skip to content</a>
       <header className="construction-header">
         <span>Evan Octave</span>
@@ -20,25 +22,22 @@ export default function ConstructionPage() {
 
       <main id="construction-content">
         <section className="construction-intro" aria-labelledby="construction-title">
-          <p className="construction-stamp">Status: making things</p>
           <h1 aria-label="UNDER CONSTRUCTION" id="construction-title">UNDER<br />CONSTRUCTION</h1>
           <p className="construction-lede">Portfolio currently contains 18% content, 62% loose wires, and 20% suspicious confidence.</p>
           <p className="construction-copy">Please return in about one week, when this place has projects, photos, and fewer exposed cables.</p>
           <Link className="construction-link" to="/home">Enter unfinished site anyway</Link>
         </section>
 
+        <p className="construction-stamp">Status: making things</p>
+
         <section aria-label="Recent signs of life" className="construction-gallery">
           <figure className="construction-photo construction-photo--wide">
-            <img alt="Evan with arms out wide in an empty parking lot at night" src="/photos/PICT0025.jpg" />
+            <img alt="Evan with arms out wide in an empty parking lot at night" src="/photos/PICT0025-smooth.jpg" />
             <figcaption>Evidence of activity, maybe.</figcaption>
           </figure>
-          <figure className="construction-photo construction-photo--tall">
-            <img alt="Whiteboard with thin film interference equations" src="/photos/PICT0016.jpg" />
-            <figcaption>Habitat under repair.</figcaption>
-          </figure>
-          <figure className="construction-photo construction-photo--close">
-            <img alt="Hand splayed over packs of stew meat" src="/photos/PICT0010.jpg" />
-            <figcaption>Do not feed after midnight.</figcaption>
+          <figure className="construction-photo">
+            <img alt="Mario flying through space past a yellow Luma and tiny planets" src="/assets/marioio.jpg" />
+            <figcaption>Gravity optional.</figcaption>
           </figure>
         </section>
       </main>

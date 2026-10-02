@@ -51,7 +51,7 @@ export default function HomePage() {
           </p>
           <p><Link to="/about">More about me</Link></p>
         </Reveal>
-        <Placeholder alt="Evan with arms out wide in an empty parking lot at night" ratio="4 / 5" src="/photos/PICT0025.jpg" />
+        <Placeholder alt="Evan with arms out wide in an empty parking lot at night" ratio="4 / 5" src="/photos/PICT0025-smooth.jpg" />
       </section>
 
       <section className="block" aria-labelledby="photos-title">

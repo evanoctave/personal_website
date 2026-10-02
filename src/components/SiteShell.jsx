@@ -4,6 +4,7 @@ import { getProjectBySlug } from '../data/projects.js'
 import Cursor from '../fx/Cursor.jsx'
 import DotField from '../fx/DotField.jsx'
 import { EGGS, useFx } from '../fx/FxProvider.jsx'
+import Orbs from '../fx/Orbs.jsx'
 import Overlays from '../fx/Overlays.jsx'
 
 const SITE = 'Evan Octave'
@@ -59,6 +60,7 @@ export default function SiteShell() {
     <div className="site">
       <a className="skip-link" href="#main-content">Skip to content</a>
       <DotField />
+      <Orbs />
       <header className="site-header">
         <NavLink aria-label="Evan Octave home" className="home-link" end onClick={onLogo} to="/home">Evan Octave</NavLink>
         <nav aria-label="Primary">

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="s" cx=".34" cy=".28" r=".85"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset=".3" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#001" stop-opacity=".5"/></radialGradient><clipPath id="c"><path d="M8 54a42 40 0 0 1 84 0q0 8-10 8H18q-10 0-10-8z"/></clipPath></defs>
+<path d="M34 58h32l-3 26q-13 8-26 0z" fill="#f3e2c0"/><circle cx="43" cy="72" r="2.5" fill="#333"/><circle cx="57" cy="72" r="2.5" fill="#333"/>
+<path d="M8 54a42 40 0 0 1 84 0q0 8-10 8H18q-10 0-10-8z" fill="#e5383b"/>
+<g clip-path="url(#c)" fill="#fff"><circle cx="50" cy="30" r="12"/><circle cx="18" cy="50" r="9"/><circle cx="82" cy="50" r="9"/></g>
+<path d="M8 54a42 40 0 0 1 84 0q0 8-10 8H18q-10 0-10-8z" fill="url(#s)"/></svg>
