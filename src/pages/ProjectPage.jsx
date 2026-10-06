@@ -16,11 +16,21 @@ export default function ProjectPage() {
 
   const { next } = getAdjacentProjects(slug)
   const gallery = project.gallery?.length ? project.gallery : emptyGallery
+  // phone apps lead with a row of screenshots instead of a cropped 16:9 cover
+  const phone = project.layout === 'phone'
   const links = [
     project.liveUrl && ['Live site', project.liveUrl],
     project.codeUrl && ['Source', project.codeUrl],
     project.githubUrl && ['GitHub', project.githubUrl],
+    project.devpostUrl && ['Devpost', project.devpostUrl],
   ].filter(Boolean)
+  const shots = (
+    <div className={`gallery${phone ? ' gallery--phones' : gallery.length === 2 ? ' gallery--two' : ''}`}>
+      {gallery.map((item, i) => (
+        <Placeholder alt={item.alt} caption={item.caption} key={item.src ?? i} label={item.label ?? 'screenshot'} position={item.position} ratio={item.ratio ?? '16 / 10'} src={item.src} />
+      ))}
+    </div>
+  )
 
   return (
     <article className="page project">
@@ -29,7 +39,7 @@ export default function ProjectPage() {
       <p className="muted">{project.eyebrow}, {project.year}. {project.role}.</p>
       <p className="lede">{project.summary}</p>
 
-      <Placeholder alt={project.cover?.alt} label="cover" ratio="16 / 9" src={project.cover?.src} />
+      {phone ? shots : <Placeholder alt={project.cover?.alt} label="cover" position={project.cover?.position} ratio="16 / 9" src={project.cover?.src} />}
 
       <dl className="facts">
         <dt>Built with</dt>
@@ -53,11 +63,7 @@ export default function ProjectPage() {
       <h2>How it went</h2>
       <p>{project.outcome}</p>
 
-      <div className="gallery">
-        {gallery.map((item, i) => (
-          <Placeholder alt={item.alt} key={item.src ?? i} label={item.label ?? 'screenshot'} ratio={item.ratio ?? '16 / 10'} src={item.src} />
-        ))}
-      </div>
+      {!phone && shots}
 
       {next && next.slug !== project.slug && (
         <p className="next">Next: <Link to={`/work/${next.slug}`}>{next.title}</Link></p>

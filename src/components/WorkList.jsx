@@ -50,7 +50,7 @@ export default function WorkList({ projects }) {
         ))}
       </ul>
       <div aria-hidden="true" className={`work-preview${current ? ' is-on' : ''}`} ref={previewRef}>
-        {current && <Placeholder interactive={false} label={current.title} ratio="4 / 3" src={current.cover?.src} />}
+        {current && <Placeholder interactive={false} label={current.title} position={current.cover?.position} ratio="4 / 3" src={current.cover?.src} />}
       </div>
     </div>
   )
