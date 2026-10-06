@@ -1,8 +1,11 @@
+import { useLayoutEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Placeholder from '../components/Placeholder.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Scramble from '../components/Scramble.jsx'
 import WorkList from '../components/WorkList.jsx'
+import { prefersReducedMotion } from '../fx/FxProvider.jsx'
+import PrinterIntro, { willPrint } from '../fx/PrinterIntro.jsx'
 import { projects } from '../data/projects.js'
 
 // a few from the digicam. the full roll is on /life
@@ -14,8 +17,32 @@ const snapshots = [
 ]
 
 export default function HomePage() {
+  // printer intro choreography: 'waiting' (page hidden) -> 'enter' (page assembles,
+  // title still in flight) -> 'landed'. On <html> so the header and footer join in.
+  const [entry, setEntry] = useState(() => (willPrint() ? 'waiting' : 'static'))
+  const [run, setRun] = useState(0)
+
+  useLayoutEffect(() => {
+    const root = document.documentElement
+    if (entry === 'static') delete root.dataset.pi
+    else root.dataset.pi = entry
+    return () => { delete root.dataset.pi }
+  }, [entry])
+
+  const replay = () => {
+    window.scrollTo({ behavior: 'auto', top: 0 })
+    setEntry('waiting')
+    setRun((count) => count + 1)
+  }
+
   return (
     <div className="home">
+      <PrinterIntro
+        force={run > 0}
+        key={run}
+        onEnter={() => setEntry('enter')}
+        onLand={() => setEntry('landed')}
+      />
       <section className="intro">
         <h1 className="name">
           <Scramble duration={3} text="What's" />{' '}
@@ -28,6 +55,11 @@ export default function HomePage() {
           This site is used to keep track of my work and projects.
           Press <kbd>?</kbd> for...idk figure it out.
         </p>
+        {!prefersReducedMotion() && (
+          <button className="replay" onClick={replay} type="button">
+            <span aria-hidden="true">↺</span> replay intro
+          </button>
+        )}
       </section>
 
       <Placeholder alt="View over Cal State Fullerton rooftops and trees on a bright day" className="intro-photo" ratio="3 / 2" src="/photos/PICT0020.jpg" />
@@ -37,7 +69,7 @@ export default function HomePage() {
           <h2 id="work-title">Work</h2>
           <Link to="/work">see all</Link>
         </div>
-        <WorkList projects={projects} />
+        <WorkList projects={projects.filter((project) => project.featured)} />
       </section>
 
       <section className="block about-bit" aria-labelledby="about-title">
