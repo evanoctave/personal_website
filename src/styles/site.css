@@ -249,19 +249,6 @@ main { min-height: 60vh; padding-bottom: 60px; }
 .work-summary { color: var(--muted); font-size: .95rem; }
 .work-list a:hover .work-title { text-decoration: underline; text-underline-offset: 4px; }
 
-.work-preview {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 15;
-  width: 240px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity .15s;
-}
-.work-preview.is-on { opacity: 1; }
-.work-preview .ph { background: var(--ph); }
-@media (hover: none) { .work-preview { display: none; } }
 
 /* inner pages */
 
