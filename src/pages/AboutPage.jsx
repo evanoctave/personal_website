@@ -19,20 +19,10 @@ export default function AboutPage() {
         
       </p>
 
-      <h2>Right now</h2>
-      <ul>
-        <li>creating internal tools for the Department of Information Technology @ CSUF</li>
-        <li>building EvoEat, a free macro and meal planning app with subscription-free photo scanning and analysis</li>
-        <li>playing baseball (ask me!)</li>
-        <li>maintaining my home server</li>
-        <li>discovering another instance of the golden ratio in nature</li>
-        <li>asking too many questions</li>
-      </ul>
-
       <div className="gallery gallery--three">
-        <Placeholder alt="Evan mid-pitch on the mound in a pinstripe uniform" position="50% 50%" ratio="3 / 4" src="/photos/pitch.jpg" />
-        <Placeholder alt="Evan walking with Tuffy the elephant, the Cal State Fullerton mascot" position="50% 40%" ratio="3 / 4" src="/photos/tuffy.jpg" />
-        <Placeholder alt="A workbench with a power supply, cables, and a small PCB" position="50% 50%" ratio="3 / 4" src="/photos/workbench.jpg" />
+        <Placeholder alt="dealin'" position="50% 50%" ratio="3 / 4" src="/photos/pitch.jpg" />
+        <Placeholder alt="BIG TUFFY" position="50% 40%" ratio="3 / 4" src="/photos/tuffy.jpg" />
+        <Placeholder alt="physics project" position="50% 50%" ratio="3 / 4" src="/photos/workbench.jpg" />
       </div>
 
       <h2>School</h2>
