@@ -22,7 +22,7 @@ export default function AboutPage() {
       <div className="gallery gallery--three">
         <Placeholder alt="dealin'" position="50% 50%" ratio="3 / 4" src="/photos/pitch.jpg" />
         <Placeholder alt="BIG TUFFY" position="50% 40%" ratio="3 / 4" src="/photos/tuffy.jpg" />
-        <Placeholder alt="physics project" position="50% 50%" ratio="3 / 4" src="/photos/workbench.jpg" />
+        <Placeholder alt="physics project" position="42% 50%" ratio="3 / 4" src="/photos/workbench.jpg" />
       </div>
 
       <h2>School</h2>
@@ -30,7 +30,7 @@ export default function AboutPage() {
 
       <h2>Desk + bench</h2>
       <div className="gallery gallery--three">
-        <Placeholder alt="A small wheeled robot on carpet" position="50% 50%" ratio="2 / 3" src="/photos/robot-car.jpg" />
+        <Placeholder alt="A small wheeled robot on carpet" position="55% 50%" ratio="2 / 3" src="/photos/robot-car.jpg" />
         <Placeholder alt="Two monitors and a laptop with code on a home desk" position="50% 50%" ratio="2 / 3" src="/photos/desk-setup.jpg" />
         <Placeholder alt="A disassembled laptop with the board exposed" position="50% 50%" ratio="2 / 3" src="/photos/laptop-guts.jpg" />
       </div>
