@@ -1,3 +1,5 @@
+// The ~10s print-job intro on /home (rendered by HomePage.jsx; App.jsx asks willPrint()).
+// Styles + the CSS timeline live in site.css under /* printer intro */; details just below the imports.
 import { useEffect, useRef, useState } from 'react'
 import { prefersReducedMotion } from './FxProvider.jsx'
 
@@ -11,7 +13,10 @@ import { prefersReducedMotion } from './FxProvider.jsx'
 //   8.5  handoff: the title flies off the page onto the real <h1>
 // Motion is CSS (see .pi in site.css); this file runs the readouts and the
 // handoff. Purely decorative. Any click or key skips, reduced motion never sees it.
+// KNOB: sessionStorage key for "already saw it" — renaming it replays the intro once for everyone;
+// delete it in devtools (Application → Session Storage) to see the intro again
 const SEEN_KEY = 'eo-printed'
+// KNOB: frames per second in the top-right timecode
 const FPS = 24
 
 const hasSeen = () => {
@@ -32,6 +37,7 @@ const timecode = (s) => {
   return `00:00:${pad(Math.floor(frames / FPS))}:${pad(frames % FPS)}`
 }
 
+// KNOB: bottom-left status text and when (seconds) each appears — keep times in step with site.css
 const STATUS = [
   [0, 'calibrating'],
   [1.2, 'assembling'],
@@ -41,8 +47,11 @@ const STATUS = [
   [8.5, 'handing off'],
 ]
 
+// KNOB: how many "lines" the print counter counts up to
 const LINES = 1100
 
+// KNOB: readout text per phase; cutoffs 1.2 / 3 / 3.6 / 7 s match STATUS and the CSS timeline.
+// 7 = printer parts (the pi-part groups below); media size text should match the .pi-dims label
 const readout = (t) => {
   if (t < 1.2) return `cal ${pad(Math.round(clamp(t / 1.1) * 100), 3)}%`
   if (t < 3) return `parts ${Math.min(7, Math.floor((t - 1.2) / .16) + 1)}/7 locked`
@@ -54,10 +63,12 @@ const readout = (t) => {
   return `${LINES}/${LINES} · ok`
 }
 
+// KNOB: how long each title word takes to fly onto the real h1 (ms)
 const FLIGHT_MS = 1100
 
 const centre = (rect) => ({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 })
 
+// KNOB: callout labels on the printer drawing
 // [x, y] in printer viewBox units, which side the leader runs, number, label
 const CALLOUTS = [
   [130, 12, 'left', '01', 'media tray'],
@@ -131,6 +142,7 @@ export default function PrinterIntro({ force = false, onEnter, onLand }) {
       root.appendChild(clone)
       source.style.visibility = 'hidden'
 
+      // KNOB: flight easing curves, arc height (28px + 14px per word), and 70ms stagger between words
       return clone.animate([
         { transform: 'translate(0px, 0px) scale(1)', color: fromStyle.color, easing: 'cubic-bezier(.7, 0, .3, 1)' },
         { offset: .55, transform: `translate(${dx * .5}px, ${dy * .5 - 28 - i * 14}px) scale(${1 + (scale - 1) * .55})`, color: toStyle.color, easing: 'cubic-bezier(.2, 0, .1, 1)' },
@@ -142,6 +154,7 @@ export default function PrinterIntro({ force = false, onEnter, onLand }) {
     fire('onEnter')
     Promise.all(flights).then(() => {
       fire('onLand')
+      // KNOB: pause after the title lands before the overlay goes away (ms)
       window.setTimeout(finish, 300)
     }, finish)
   }
@@ -156,6 +169,7 @@ export default function PrinterIntro({ force = false, onEnter, onLand }) {
   useEffect(() => {
     if (phase === 'off') return undefined
     // safety net: if animation events never fire (backgrounded tab, odd browser), don't strand the overlay
+    // KNOB: safety timeouts per phase (ms) — play must stay longer than the ~10s CSS timeline
     const fallback = window.setTimeout(finish, { play: 13000, handoff: 3000, skip: 800 }[phase])
     if (phase !== 'play') return () => window.clearTimeout(fallback)
 
@@ -188,6 +202,7 @@ export default function PrinterIntro({ force = false, onEnter, onLand }) {
     if (event.target === event.currentTarget) fire('onEnter')
   }
   const onEnd = (event) => {
+    // KNOB: the handoff starts when CSS animation 'pi-hold' ends (on .pi-dims in site.css) — rename both together
     if (event.animationName === 'pi-hold' && phase === 'play') handoff()
     else if (event.target === event.currentTarget && phase === 'skip') finish()
   }
@@ -213,6 +228,7 @@ export default function PrinterIntro({ force = false, onEnter, onLand }) {
       </div>
 
       <div className="pi-hud">
+        {/* KNOB: HUD text — top-left name/rev, starting timecode/status/readout, bottom-right skip hint */}
         <p className="pi-hud-tl"><span>eo-1 print system</span><span>rev 2026.10</span></p>
         <p className="pi-hud-tr" ref={tcRef}>00:00:00:00</p>
         <div className="pi-hud-bl">
@@ -226,6 +242,7 @@ export default function PrinterIntro({ force = false, onEnter, onLand }) {
       <div className="pi-camera">
         <div className="pi-stage">
           <div className="pi-machine">
+            {/* KNOB: each pi-part's --at = when it flies in, --from = where it flies in from (assemble starts at 1.2s) */}
             <svg className="pi-printer" viewBox="0 0 360 180">
               <g className="pi-part" style={{ '--at': '1.2s', '--from': 'translate(0px, -46px)' }}>
                 <path className="pi-fill" d="M104 44 L116 8 H244 L256 44 Z" />
@@ -285,6 +302,8 @@ export default function PrinterIntro({ force = false, onEnter, onLand }) {
             <span className="pi-crop pi-crop--br" />
             <div className="pi-feed">
               <div className="pi-paper">
+                {/* KNOB: what's printed on the sheet. the pi-word count must equal the words in */}
+                {/* the real home h1 (.home .name .scramble) or the title flight is skipped */}
                 <p className="pi-paper-meta"><span>EVAN OCTAVE</span><span>JOB 001</span></p>
                 <p className="pi-paper-title"><span className="pi-word">What's</span><br /><span className="pi-word">up</span></p>
                 <div className="pi-paper-photo"><img alt="" src="/photos/csuf-rooftops.jpg" /></div>

@@ -1,13 +1,19 @@
 <!doctype html>
 <html lang="en" data-fx-inverted="false">
   <head>
+    <!-- The one real HTML page. Vite serves it, then src/main.jsx fills #root with the React app.
+         what is here shows before the app loads: tab title, link-preview blurb, fonts. -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- KNOB: browser / phone toolbar color (keep it close to the background in src/styles/site.css) -->
     <meta name="theme-color" content="#0d0d0d" />
+    <!-- KNOB: the blurb search engines and link previews show -->
     <meta name="description" content="Evan Octave. Developer. Stuff I've made." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- KNOB: the Google Font (Newsreader). swap this url to change fonts; site.css must name the new font -->
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet" />
+    <!-- KNOB: fallback tab title. SiteShell.jsx / ConstructionPage.jsx overwrite it per page -->
     <title>Evan Octave</title>
   </head>
   <body>

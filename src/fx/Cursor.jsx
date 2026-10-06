@@ -1,6 +1,12 @@
+// Custom cursor: a dot glued to the pointer plus a ring that trails behind it.
+// Only on mouse/trackpad (pointer: fine); touch keeps the normal cursor. Mounted by SiteShell.jsx.
+// Also home of the "shook the mouse" easter egg. Styles in site.css under .fx-cursor.
+// The x/y coords readout only shows while the G grid is on.
 import { useEffect, useRef, useState } from 'react'
 import { useFx } from './FxProvider.jsx'
 
+// KNOB: what counts as clickable — hovering any of these grows the ring. a data-cursor="text" attribute
+// also sets the ring's label, but .fx-cursor-ring span is display:none in site.css, so it's hidden for now
 const INTERACTIVE = 'a, button, [data-cursor], input, textarea, label'
 
 export default function Cursor() {
@@ -37,6 +43,7 @@ export default function Cursor() {
       setHovering(Boolean(hit))
       setLabel(hit?.dataset?.cursor ?? '')
 
+      // KNOB: shake egg — 26 = min px per move to count as a swing, 700 = time window (ms), 7 = flips needed
       const dx = event.clientX - shake.lastX
       shake.lastX = event.clientX
       if (Math.abs(dx) > 26) {
@@ -47,6 +54,7 @@ export default function Cursor() {
           shake.dir = dir
           if (shake.flips.length >= 7) {
             shake.flips = []
+            // KNOB: shake payoff — 'whoa' popup text, 700 = ms the wobble class stays on (CSS .fx-wobble runs .5s)
             findEgg('shake')
             pop('whoa')
             pulse('fx-wobble', 700)
@@ -58,10 +66,12 @@ export default function Cursor() {
     const onUp = () => setPressed(false)
 
     const tick = () => {
+      // KNOB: ring follow speed, 0–1 — higher = ring catches up faster (1 = no lag at all)
       ring.x += (target.x - ring.x) * 0.18
       ring.y += (target.y - ring.y) * 0.18
       if (dotRef.current) dotRef.current.style.transform = `translate3d(${target.x}px, ${target.y}px, 0)`
       if (ringRef.current) ringRef.current.style.transform = `translate3d(${ring.x}px, ${ring.y}px, 0)`
+      // KNOB: coords readout sits 18px right/below the pointer; the text format is the template below
       if (coordsRef.current) {
         coordsRef.current.style.transform = `translate3d(${target.x + 18}px, ${target.y + 18}px, 0)`
         coordsRef.current.textContent = `x ${Math.round(target.x)} / y ${Math.round(target.y)}`

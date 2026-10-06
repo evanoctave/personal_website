@@ -1,3 +1,5 @@
+// Life page (/life): the photo + clip roll. the digicam week day by day, then the phone chapters.
+// all the content is in src/data/life.js; components/Clip.jsx plays videos, Placeholder.jsx shows photos.
 import { Link } from 'react-router-dom'
 import Clip from '../components/Clip.jsx'
 import Placeholder from '../components/Placeholder.jsx'
@@ -9,6 +11,7 @@ function Roll({ items }) {
       {items.map((item) => (
         <li className={`shot shot--${item.kind}${item.wide ? ' shot--wide' : ''}`} key={item.src}>
           <figure>
+            {/* KNOB: photo shape when an item has no ratio: '3 / 2' if wide, else '3 / 4' */}
             {item.kind === 'clip'
               ? <Clip alt={item.alt} poster={item.poster} src={item.src} />
               : <Placeholder alt={item.alt} caption={item.when ? `${item.caption} · ${item.when}` : item.caption} position={item.position} ratio={item.ratio ?? (item.wide ? '3 / 2' : '3 / 4')} src={item.src} />}
@@ -28,7 +31,9 @@ export default function LifePage() {
 
   return (
     <section className="page life">
+      {/* KNOB: heading, lede, and intro note (App.test.jsx expects the h1 'life'). phoneCount counts itself */}
       <h1>life</h1>
+      {/* KNOB: the digicam photo up top */}
       <Placeholder alt="A small silver digicam sitting on a desk next to a keyboard" className="life-cam" ratio="4 / 5" src="/photos/digicam.jpg" />
       <p className="lede">Places, friends, campus, baseball, dogs, snacks.</p>
       <p className="muted">
@@ -37,6 +42,7 @@ export default function LifePage() {
       </p>
 
       <section aria-labelledby="chapter-digicam" className="chapter">
+        {/* KNOB: digicam chapter heading + note. the days themselves are `days` in src/data/life.js */}
         <header className="chapter-head">
           <h2 id="chapter-digicam">aug 2026 · the digicam</h2>
           <p className="muted">One week, dated by the camera.</p>

@@ -1,6 +1,11 @@
+// The shared "fx" brain: one React context holding every toggle (invert, trail, grid, rain), popups,
+// toasts, easter-egg progress and all the single-key shortcuts. Wraps the app in App.jsx; any component
+// reads it with useFx(). Overlays.jsx draws what this state describes.
 import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+// KNOB: easter eggs — id: text shown once found. add an entry here to add a secret; the footer counter,
+// ? panel, terminal `eggs` and the receipt pick it up. something still has to call findEgg('id')
 export const EGGS = {
   konami: 'Entered the old code',
   evan: 'Said my name',
@@ -12,8 +17,11 @@ export const EGGS = {
   print: 'Tried to print the page',
 }
 
+// KNOB: localStorage key for found eggs — renaming it resets everyone's progress
 const EGG_KEY = 'eo-eggs'
+// KNOB: the konami sequence (lowercased key names) that triggers god mode
 const KONAMI = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a']
+// KNOB: number keys → pages for the 1–5 shortcuts (the ? panel text lives in Overlays.jsx SHORTCUTS)
 export const ROUTES = { 1: '/home', 2: '/work', 3: '/about', 4: '/life', 5: '/contact' }
 
 const FxContext = createContext(null)
@@ -53,6 +61,7 @@ export function FxProvider({ children }) {
 
   const toast = useCallback((message) => {
     const id = ++uid
+    // KNOB: toasts — at most 4 on screen; each removed after 3400ms (CSS .fx-toast fades 3s + .3s, keep in sync)
     setToasts((list) => [...list.slice(-3), { id, message }])
     window.setTimeout(() => setToasts((list) => list.filter((item) => item.id !== id)), 3400)
   }, [])
@@ -62,11 +71,13 @@ export function FxProvider({ children }) {
     const item = {
       id,
       text,
+      // KNOB: popups — text of 2 chars or less shows huge; random spot x 12–88%, y 16–80%, tilt ±15°
       big: text.length <= 2,
       x: options.x ?? 12 + Math.random() * 76,
       y: options.y ?? 16 + Math.random() * 64,
       rot: (Math.random() - 0.5) * 30,
     }
+    // KNOB: at most 9 popups at once; each removed after 1100ms (CSS pop animation is .9s, keep this longer)
     setPops((list) => [...list.slice(-8), item])
     window.setTimeout(() => setPops((list) => list.filter((entry) => entry.id !== id)), 1100)
   }, [])
@@ -86,12 +97,14 @@ export function FxProvider({ children }) {
     toast(`Easter egg ${next.size}/${Object.keys(EGGS).length} — ${EGGS[id]}`)
   }, [toast])
 
+  // KNOB: default ms a pulse class stays on <body>
   const pulse = useCallback((className, ms = 1200) => {
     document.body.classList.add(className)
     window.setTimeout(() => document.body.classList.remove(className), ms)
   }, [])
 
   const godMode = useCallback(() => {
+    // KNOB: god mode — popup text, barrel roll ms (CSS .fx-barrel-roll is 1.2s), 6 blasts 140ms apart, power 1.6
     findEgg('konami')
     pop('god mode', { x: 50, y: 50 })
     if (!prefersReducedMotion()) pulse('fx-barrel-roll', 1400)
@@ -102,6 +115,7 @@ export function FxProvider({ children }) {
 
   const startRain = useCallback(() => {
     setRain(true)
+    // KNOB: how long the matrix rain runs (ms)
     window.setTimeout(() => setRain(false), 7000)
   }, [])
 
@@ -110,6 +124,7 @@ export function FxProvider({ children }) {
     trail: () => setTrail((value) => !value),
     grid: () => setGrid((value) => !value),
     rain: startRain,
+    // KNOB: X-key shockwave strength (2.2; a normal click ripple is 1)
     blast: () => blast(undefined, undefined, 2.2),
     godMode,
   }), [godMode, startRain])
@@ -117,6 +132,7 @@ export function FxProvider({ children }) {
   // layout effect so children (DotField) read the new --fg in their effects
   useLayoutEffect(() => {
     document.documentElement.dataset.fxInverted = inverted ? 'true' : 'false'
+    // KNOB: browser toolbar color, inverted vs normal — the dark one should match theme-color in index.html
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', inverted ? '#f4f3ef' : '#0d0d0d')
   }, [inverted])
 
@@ -138,6 +154,7 @@ export function FxProvider({ children }) {
         return
       }
 
+      // KNOB: key that opens the controls panel (also listed in SHORTCUTS in Overlays.jsx)
       if (event.key === '?') {
         event.preventDefault()
         setPanelOpen((value) => !value)
@@ -145,6 +162,8 @@ export function FxProvider({ children }) {
       }
       if (!keysEnabled || event.repeat) return
 
+      // KNOB: typed words — 'evan', 'neo', 'hello' and their popups. buffer keeps the last 12 letters,
+      // so a new secret word must be 12 letters or shorter
       if (key.length === 1 && /[a-z]/.test(key)) {
         buffer.current = (buffer.current + key).slice(-12)
         if (buffer.current.endsWith('evan')) {
@@ -163,6 +182,7 @@ export function FxProvider({ children }) {
         }
       }
 
+      // KNOB: single-key shortcuts and their popup text — keep SHORTCUTS in Overlays.jsx in sync
       switch (key) {
         case '/':
         case '`':
@@ -196,6 +216,7 @@ export function FxProvider({ children }) {
         return
       }
 
+      // KNOB: any other key pops itself on screen, uppercased
       if (event.key.length === 1 && event.key !== ' ') pop(event.key.toUpperCase())
     }
 

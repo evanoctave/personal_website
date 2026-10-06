@@ -1,3 +1,4 @@
+// Mounted by SiteShell.jsx; styles in site.css under /* receipt easter egg */.
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { EGGS, prefersReducedMotion, useFx } from './FxProvider.jsx'
@@ -19,6 +20,7 @@ function Row({ label, value }) {
 export default function Receipt() {
   const { pathname } = useLocation()
   const { eggs, findEgg } = useFx()
+  // KNOB: receipt number is a random 4-digit 1000–9999
   const visit = useRef({ start: Date.now(), pages: [], keys: 0, number: Math.floor(1000 + Math.random() * 9000) })
   const [receipt, setReceipt] = useState(null)
   const [tearing, setTearing] = useState(false)
@@ -41,6 +43,7 @@ export default function Receipt() {
 
   useEffect(() => {
     const onKey = (event) => {
+      // KNOB: the shortcut — ⌘P / Ctrl+P (swap 'p' for another key)
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'p') {
         event.preventDefault()
         print()
@@ -69,6 +72,7 @@ export default function Receipt() {
     <aside aria-label="Receipt of your visit" className={`rc${tearing ? ' rc--tear' : ''}`} key={receipt.id}>
       <span aria-hidden="true" className="rc-slot" />
       <div className="rc-feed">
+        {/* KNOB: 'rc-tear' must match the @keyframes name in site.css; its .55s there is how long tearing takes */}
         <button
           className="rc-paper"
           onAnimationEnd={(event) => { if (event.animationName === 'rc-tear') setReceipt(null) }}
@@ -77,6 +81,7 @@ export default function Receipt() {
         >
           <span className="sr-only">Tear off the receipt</span>
           <span aria-hidden="true" className="rc-body">
+            {/* KNOB: every receipt line below is plain text — header, stat rows, joke prices, footer */}
             <p className="rc-title">EVAN OCTAVE</p>
             <p className="rc-center">EO-1 RECEIPT PRINTER</p>
             <p className="rc-center">{stamp(receipt.at)} · #{receipt.number}</p>

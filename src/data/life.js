@@ -2,13 +2,19 @@
 // kind: 'photo' | 'clip'. A clip needs src (mp4) and poster (jpg).
 // `days` is the digicam roll (one object per camera date).
 // `chapters` is the phone roll, newest first. `wide: true` = landscape, takes two columns.
+// feeds the /life page (src/pages/LifePage.jsx). App.test.jsx checks a few of these srcs
+// (pitch.jpg, dodgers-night.jpg, MOVI0002.mp4 + .jpg) and the first date, so keep those in sync.
 
+// KNOB: the digicam days, in order. date (YYYY-MM-DD, becomes the heading "08 20 2026"),
+// title + note (the line under the date), items (that day's clips / photos, in order)
 export const days = [
   {
     date: '2026-08-20',
     title: 'Thursday',
     note: 'Walmart run with the boys. Ghost cherry limeade for the road.',
     items: [
+      // KNOB: item fields: src, poster (clips only, the still before it plays), alt (screen readers + lightbox),
+      // caption (text under it)
       { kind: 'clip', src: '/clips/MOVI0002.mp4', poster: '/clips/MOVI0002.jpg', alt: 'Walking through a parking lot holding a Ghost energy can, friends ahead', caption: 'the walk in' },
     ],
   },
@@ -23,6 +29,8 @@ export const days = [
   },
 ]
 
+// KNOB: phone chapters. id (used in the html id), title (heading; App.test.jsx expects 'before the digicam'),
+// note (line under it), items (photos, newest first)
 export const chapters = [
   // phone roll. a handful, newest first.
   {
@@ -30,6 +38,8 @@ export const chapters = [
     title: "before the digicam",
     note: "Senior year through sophomore year, from my phone.",
     items: [
+      // KNOB: photo fields: when (date tag after the caption), wide: true (landscape, two columns),
+      // position (crop focus, '35% 50%' shifts left), ratio (optional, overrides the default shape)
       { kind: 'photo', src: "/photos/hike.jpg", alt: "Five friends on a hilltop with the valley behind them", caption: "hike", when: "jan 26", wide: true },
       { kind: 'photo', src: "/photos/grad-boys.jpg", alt: "Four graduates in gowns and leis", caption: "the boys", when: "jun 25" },
       { kind: 'photo', src: "/photos/pitch.jpg", alt: "Evan mid-pitch on the mound in a pinstripe uniform", caption: "the pitch", when: "mar 25" },
@@ -41,6 +51,7 @@ export const chapters = [
   },
 ]
 
+// KNOB: how day dates are written (month day year). App.test.jsx expects '08 20 2026'
 export const formatDay = (iso) => {
   const [y, m, d] = iso.split('-')
   return `${m} ${d} ${y}`

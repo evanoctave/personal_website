@@ -1,10 +1,15 @@
+// The pretend shell that opens with / or `. Every command is a case in the big switch in run().
+// Rendered inside Overlays.jsx; toggles fx state from FxProvider.jsx; `print` calls Receipt.jsx.
+// Styles in site.css under .fx-terminal.
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { projects } from '../data/projects.js'
 import { EGGS, useFx } from './FxProvider.jsx'
 import { printReceipt } from './Receipt.jsx'
 
+// KNOB: pages `ls` lists and `cd <page>` can jump to (life isn't here — add life: '/life' to reach it)
 const PAGES = { home: '/', work: '/work', about: '/about', contact: '/contact' }
+// KNOB: line(s) shown when the terminal first opens
 const GREETING = [
   'eo-shell v2.6 — type `help` to see commands.',
 ]
@@ -38,10 +43,12 @@ export default function Terminal() {
   const run = (raw) => {
     const [command = '', ...args] = raw.trim().split(/\s+/)
     const arg = args.join(' ')
+    // KNOB: every command and its reply — each case returns an array of output lines; add a case to add a command
     switch (command.toLowerCase()) {
       case '':
         return []
       case 'help':
+        // KNOB: the help list — update it when you add or rename commands
         return [
           'help            this list',
           'ls              list pages',
@@ -74,10 +81,12 @@ export default function Terminal() {
         return []
       }
       case 'whoami':
+        // KNOB: whoami reply
         return ['guest. but the site belongs to Evan   — developer, designer, tinkerer.']
       case 'date':
         return [new Date().toString()]
       case 'echo':
+        // KNOB: echo popup — first 14 chars, uppercased
         if (arg) pop(arg.slice(0, 14).toUpperCase(), { x: 50, y: 50 })
         return [arg]
       case 'invert':
@@ -118,6 +127,7 @@ export default function Terminal() {
         close()
         return []
       default:
+        // KNOB: reply for unknown commands
         return [`command not found: ${command}. try \`help\``]
     }
   }
@@ -126,6 +136,7 @@ export default function Terminal() {
     event.preventDefault()
     const output = run(value)
     if (output !== null) setLines((current) => [...current, `> ${value}`, ...output])
+    // KNOB: how many past commands ↑/↓ remembers (30)
     if (value.trim()) setHistory((current) => [value, ...current].slice(0, 30))
     setValue('')
     setCursor(-1)
@@ -160,6 +171,7 @@ export default function Terminal() {
         role="dialog"
       >
         <header className="fx-terminal-bar">
+          {/* KNOB: title bar prompt text */}
           <span>guest@evanoctave: ~</span>
           <button onClick={close} type="button">Esc</button>
         </header>
@@ -167,6 +179,7 @@ export default function Terminal() {
           {lines.map((line, i) => <pre key={`${i}-${line}`}>{line}</pre>)}
         </div>
         <form className="fx-terminal-input" onSubmit={onSubmit}>
+          {/* KNOB: input prompt symbol */}
           <label htmlFor="fx-terminal-field">&gt;</label>
           <input
             autoCapitalize="off"

@@ -1,3 +1,4 @@
+// Mounted by App.jsx on every route change; styles + keyframes in site.css under /* page warp */.
 import { useEffect, useRef } from 'react'
 import { getProjectBySlug } from '../data/projects.js'
 
@@ -5,14 +6,18 @@ import { getProjectBySlug } from '../data/projects.js'
 // with a bright scan-line edge sweeps over the old page, holds on the
 // destination's name, then sweeps off onto the new one. Forwards through the
 // nav it travels down, backwards it travels up.
+// KNOB: warp timings (ms) — CLOSE = sweep on, HOLD = covered, showing the name, OPEN = sweep off.
+// the keyframe % in site.css assume this 760 / 600 / 920 split; change them together
 export const CLOSE = 760
 export const HOLD = 600
 export const OPEN = 920
 
+// KNOB: nav order — sets the sweep direction (down when going forward) and the "02 / 05" number
 const ORDER = ['/home', '/work', '/about', '/life', '/contact']
 
 const destination = (pathname) => {
   const index = ORDER.indexOf(pathname)
+  // KNOB: label text — "NN / 05" for main pages (update 05 if you add pages), 'work / case study', 'lost' / '404'
   if (index >= 0) return { name: pathname.slice(1), index, number: `${String(index + 1).padStart(2, '0')} / 05` }
   if (pathname.startsWith('/work/')) {
     const project = getProjectBySlug(pathname.slice('/work/'.length))

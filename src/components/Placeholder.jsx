@@ -1,8 +1,12 @@
+// Placeholder: every photo slot on the site. with a src it is a photo button that opens the lightbox
+// (src/fx/Lightbox.jsx); without one it's a grey box showing its label and size. used by most pages.
 import { useEffect, useRef, useState } from 'react'
 import { openPhoto } from '../fx/Lightbox.jsx'
 
 // Image slot. Give it a src to show a real image, otherwise it's a grey box
 // that tells you what goes there and how big it currently renders.
+// KNOB: defaults when a page leaves them out: ratio '4 / 3' (shape), label 'image' (grey box text).
+// position = crop focus like '50% 20%'; interactive={false} = plain image, no lightbox; caption = lightbox text
 export default function Placeholder({ alt = '', caption, className = '', interactive = true, label = 'image', position, ratio = '4 / 3', src }) {
   const ref = useRef(null)
   const [size, setSize] = useState('')

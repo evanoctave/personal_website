@@ -1,26 +1,45 @@
+// Every project on the site. /work lists them, /work/<slug> is each case study,
+// and /home shows the ones with featured: true. the /work filter buttons come from the tags.
+// to add one: copy an entry, give it a new slug, and put its images in public/work/<folder>/
+// (any folder name, the src paths just have to match). projects.test.js and App.test.jsx check some values.
+// KNOB: order of this array = order on /work and /home, and the 'Next:' chain on project pages
+// (projects.test.js expects ai-sentiment-analysis before and rumie after the package tracker)
 export const projects = [
   {
+    // KNOB: slug = the URL (/work/digital-package-tracker). changing it breaks old links; tests use this one
     slug: 'digital-package-tracker',
+    // KNOB: title (heading, list row, tab title), eyebrow (small line under the title), year, role
     title: 'Digital Package Tracker',
     eyebrow: 'CSUF internal operations tool',
     year: '2026',
     role: 'Full-stack developer',
+    // KNOB: stack = the "Built with" line. tags = /work filter buttons (projects.test.js lists every tag,
+    // and checks this entry's title / role / stack)
     stack: ['Node.js', 'Express', 'SQLite', 'PWA'],
     tags: ['Product', 'Web', 'Backend'],
+    // KNOB: summary = list row + lede. challenge / solution / outcome = the "The problem",
+    // "What I built", and "How it went" sections
     summary: 'Barcode-to-signature package intake for campus teams that need a durable delivery record.',
     challenge: 'Campus teams need one reliable package workflow that keeps each tracking number, recipient, department, and delivery record connected.',
     solution: 'Built an authenticated Express and SQLite application with carrier detection, camera barcode scanning, grouped intake, shared signature capture, and searchable package records.',
     outcome: 'Used by CSUF IT and Building Engineering for structured receiving, search, and delivery confirmation.',
+    // orbit isn't read anywhere right now (leftover), safe to ignore
     orbit: { color: 'coral', size: 'large', angle: 12 },
+    // KNOB: cover = the big 16:9 image (src under public/, alt, optional position for the crop)
     cover: { src: '/work/package-tracker/search.jpg', alt: 'Package search page listing unsigned and logged packages with tracking numbers, departments, and carriers (demo data)' },
+    // KNOB: gallery = screenshots under the text: src, alt, caption, ratio (the image width / height).
+    // leave it out and the page shows grey placeholder boxes
     gallery: [
       { src: '/work/package-tracker/log.jpg', alt: 'Package logging form filled in with a UPS tracking number, receiver, type, and department (demo data)', caption: 'Logging a package', ratio: '1148 / 700' },
       { src: '/work/package-tracker/sign.jpg', alt: 'Recipient signature page with a drawn signature and printed name (demo data)', caption: 'Signing for it', ratio: '1148 / 700' },
     ],
+    // KNOB: links on the case study page; null hides one. devpostUrl works too (see Rumie)
     liveUrl: null,
     codeUrl: null,
     githubUrl: null,
+    // KNOB: featured: true puts this project in the home page Work list
     featured: true,
+    // media isn't read anywhere right now
     media: [],
   },
   {
@@ -36,6 +55,7 @@ export const projects = [
     solution: 'Built in 24 hours with Flutter and a MongoDB Atlas backend: profiles built around budget, habits, interests, and pets, a swipe deck for people and housing listings, matching, chat between matches, landlord listings, and email sign-in with a Face ID or passcode fallback.',
     outcome: 'Won [MLH] Best Use of MongoDB Atlas at DesignVerse 2026. After the event I finished the app: every screen now runs on the live API instead of sample data, token refresh and error handling are hardened, and 109 tests cover it.',
     cover: { src: '/work/rumie/discover.jpg', alt: 'Rumie discover screen showing a roommate profile card', position: '50% 30%' },
+    // KNOB: layout: 'phone' swaps the cover for a row of phone screenshots (the gallery) up top
     layout: 'phone',
     gallery: [
       { src: '/work/rumie/discover.jpg', alt: 'Rumie discover screen showing a roommate profile card', caption: 'Discover', ratio: '737 / 1600' },
@@ -145,6 +165,7 @@ export const projects = [
     media: [],
   },
   {
+    // KNOB: App.test.jsx expects this exact title and GitHub url for this project
     slug: 'ai-sentiment-analysis',
     title: 'AI Sentiment Analysis System',
     eyebrow: 'Applied machine learning',
@@ -171,11 +192,13 @@ export const projects = [
 
 export const getProjectBySlug = (slug) => projects.find((project) => project.slug === slug)
 
+// filter tags = 'All' + every tag used above, alphabetical (projects.test.js asserts the full list)
 export const getProjectTags = () => [
   'All',
   ...Array.from(new Set(projects.flatMap((project) => project.tags))).sort(),
 ]
 
+// previous / next project, wrapping around the ends (the 'Next:' link on project pages)
 export const getAdjacentProjects = (slug) => {
   const index = projects.findIndex((project) => project.slug === slug)
 
