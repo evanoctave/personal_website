@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { projects } from '../data/projects.js'
 import { EGGS, useFx } from './FxProvider.jsx'
+import { printReceipt } from './Receipt.jsx'
 
 const PAGES = { home: '/', work: '/work', about: '/about', contact: '/contact' }
 const GREETING = [
@@ -103,6 +104,10 @@ export default function Terminal() {
       case 'vim':
       case 'emacs':
         return ['let’s not start that here.']
+      case 'print':
+      case 'receipt':
+        printReceipt()
+        return ['sending job to EO-1…']
       case 'coffee':
         return ['      ( (', '       ) )', '    ........', '    |      |]', '    \\      /', '     `----\'']
       case 'clear':

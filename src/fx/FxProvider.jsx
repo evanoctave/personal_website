@@ -9,6 +9,7 @@ export const EGGS = {
   sudo: 'Asked for root',
   shake: 'Shook the mouse',
   lost: 'Got lost on purpose',
+  print: 'Tried to print the page',
 }
 
 const EGG_KEY = 'eo-eggs'

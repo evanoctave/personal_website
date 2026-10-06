@@ -946,3 +946,70 @@ main { min-height: 60vh; padding-bottom: 60px; }
   0%, 30% { transform: scaleX(0); animation-timing-function: cubic-bezier(.16, 1, .3, 1); }
   55%, 100% { transform: scaleX(1); }
 }
+
+/* receipt easter egg (Receipt.jsx): ⌘P prints a thermal receipt of the visit out of a slot
+   at the top of the screen. stepped feed like the intro's printer; click or Esc tears it off */
+.rc { position: fixed; top: 0; right: clamp(16px, 6vw, 72px); z-index: 87; width: min(300px, calc(100vw - 32px)); pointer-events: none; }
+.rc-slot {
+  position: absolute; top: 0; left: -10px; right: -10px; z-index: 2; height: 12px;
+  background: #0a0a0a; border: 1px solid #3a3a38; border-top: 0; border-radius: 0 0 6px 6px;
+  box-shadow: 0 6px 18px rgb(0 0 0 / .45);
+  animation: rc-slot .35s cubic-bezier(.16, 1, .3, 1) both;
+}
+.rc-feed { overflow: hidden; padding: 6px 4px 40px; margin-top: 6px; }
+.rc-paper {
+  display: block; width: 100%; padding: 0; border: 0; background: none; color: inherit; text-align: left;
+  cursor: pointer; pointer-events: auto;
+  transform: translateY(-101%);
+  animation: rc-feed 1.9s linear .3s forwards;
+  filter: drop-shadow(0 10px 22px rgb(0 0 0 / .35));
+}
+.rc-body {
+  display: block; padding: 18px 18px 26px;
+  background: #f4f3ef; color: #151515;
+  font: 11px / 1.55 var(--mono); letter-spacing: .02em;
+  /* torn zig-zag bottom edge */
+  --tooth: 8px;
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(var(--tooth) * 2) 100%;
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(var(--tooth) * 2) 100%;
+}
+.rc-body p { margin: 0; }
+.rc-body hr { margin: 8px 0; border: 0; border-top: 1px dashed #151515; }
+.rc-title { text-align: center; font-size: 15px; font-weight: 700; letter-spacing: .18em; }
+.rc-center { text-align: center; }
+.rc-small { margin-top: 4px !important; font-size: 9px; letter-spacing: .14em; color: #555; }
+.rc-head { margin-bottom: 2px !important; }
+.rc-page::before { content: "· "; }
+.rc-row { display: flex; gap: 6px; align-items: baseline; }
+.rc-dots { flex: 1; border-bottom: 1px dotted #9a9893; transform: translateY(-3px); }
+.rc-total { display: flex; justify-content: space-between; margin-top: 6px !important; font-size: 14px; font-weight: 700; }
+.rc-code { display: block; height: 34px; margin: 10px 0 6px; background: repeating-linear-gradient(90deg, #151515 0 1px, transparent 1px 3px, #151515 3px 5px, transparent 5px 6px, #151515 6px 7px, transparent 7px 10px, #151515 10px 13px, transparent 13px 15px); }
+.rc-paper:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
+.rc--tear .rc-paper { animation: rc-tear .55s cubic-bezier(.5, 0, .75, 0) forwards; transform: none; }
+.rc--tear .rc-slot { animation: rc-slot-out .3s ease .35s forwards; }
+
+@keyframes rc-slot { from { transform: translateY(-100%); } }
+@keyframes rc-slot-out { to { transform: translateY(-100%); } }
+/* thermal printers feed in quick jerks */
+@keyframes rc-feed {
+  0%   { transform: translateY(-101%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  12%  { transform: translateY(-84%); }
+  18%  { transform: translateY(-84%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  30%  { transform: translateY(-66%); }
+  36%  { transform: translateY(-66%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  48%  { transform: translateY(-48%); }
+  54%  { transform: translateY(-48%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  66%  { transform: translateY(-30%); }
+  72%  { transform: translateY(-30%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  84%  { transform: translateY(-12%); }
+  90%  { transform: translateY(-12%); animation-timing-function: cubic-bezier(.3, .7, .3, 1); }
+  100% { transform: translateY(0); }
+}
+@keyframes rc-tear {
+  0% { transform: none; }
+  15% { transform: rotate(-2deg) translateY(4px); }
+  100% { transform: rotate(9deg) translate(30px, 110vh); opacity: .6; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rc-paper { transform: none; }
+}

@@ -6,6 +6,7 @@ import DotField from '../fx/DotField.jsx'
 import { EGGS, useFx } from '../fx/FxProvider.jsx'
 import Lightbox from '../fx/Lightbox.jsx'
 import Overlays from '../fx/Overlays.jsx'
+import Receipt from '../fx/Receipt.jsx'
 
 const SITE = 'Evan Octave'
 
@@ -39,7 +40,7 @@ export default function SiteShell() {
   }, [pathname])
 
   useEffect(() => {
-    console.log('hey. press ? on the page, or / for a terminal. there are 7 easter eggs.')
+    console.log(`hey. press ? on the page, or / for a terminal. there are ${Object.keys(EGGS).length} easter eggs.`)
   }, [])
 
   // click the name 7 times fast
@@ -84,6 +85,7 @@ export default function SiteShell() {
       <Cursor />
       <Overlays />
       <Lightbox />
+      <Receipt />
     </div>
   )
 }

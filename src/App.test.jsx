@@ -141,6 +141,17 @@ describe('site', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'Work' })).toBeInTheDocument()
   })
 
+  it('prints a receipt instead of the print dialog and counts it as an egg', async () => {
+    renderAt('/home')
+    const event = new KeyboardEvent('keydown', { key: 'p', metaKey: true, cancelable: true, bubbles: true })
+    act(() => { window.dispatchEvent(event) })
+    expect(event.defaultPrevented).toBe(true)
+    const receipt = screen.getByRole('complementary', { name: 'Receipt of your visit' })
+    expect(receipt).toHaveTextContent('/home')
+    expect(receipt).toHaveTextContent('SECRETS FOUND')
+    expect(JSON.parse(window.localStorage.getItem('eo-eggs'))).toContain('print')
+  })
+
   it('triggers god mode with the konami code', () => {
     vi.useFakeTimers()
     renderAt('/home')

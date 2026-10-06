@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom'
 import SiteShell from './components/SiteShell.jsx'
 import { FxProvider, prefersReducedMotion } from './fx/FxProvider.jsx'
@@ -25,22 +25,23 @@ const canWarp = () => typeof window.matchMedia === 'function' && !prefersReduced
 // router's real location through once the screen is covered.
 function WarpRoutes({ children }) {
   const location = useLocation()
-  const previous = useRef(location)
+  const [previous, setPrevious] = useState(location)
   const [frozen, setFrozen] = useState(null)
   const [warp, setWarp] = useState(null)
 
-  useLayoutEffect(() => {
-    const from = previous.current
-    previous.current = location
-    if (from.pathname === location.pathname) return
-    // mid-warp: still closing keeps the old page frozen until covered, which then shows the newest location
-    if (warp) return
-    if (!canWarp()) return
-    // first visit to home: the printer intro is the transition
-    if (location.pathname === '/home' && willPrint()) return
-    setFrozen(from)
-    setWarp({ id: location.key, from: from.pathname, to: location.pathname })
-  }, [location, warp])
+  // Decided during render, not in an effect: an effect would commit the new page for
+  // one render before freezing the old one, so the new route would mount, run its
+  // effects (title, scroll, focus), then get swapped back out.
+  if (location !== previous) {
+    setPrevious(location)
+    const moved = previous.pathname !== location.pathname
+    // mid-warp: the old page stays frozen until covered, which then shows the newest location.
+    // first visit to home: the printer intro is the transition.
+    if (moved && !warp && canWarp() && !(location.pathname === '/home' && willPrint())) {
+      setFrozen(previous)
+      setWarp({ id: location.key, from: previous.pathname, to: location.pathname })
+    }
+  }
 
   return (
     <>
