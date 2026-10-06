@@ -19,6 +19,8 @@ export default function AboutPage() {
         
         My very first software project was a tribute page to one of my favorite baseball players, Trevor Bauer (BEFORE the controversy.)
         I'll leave a link to it right here. {/* leave a link to it in the word here */}
+
+        Not too sure what else to say, <Link to="/contact">HMU</Link> and let's chat about...yeah!
       </p>
 
       <div className="gallery gallery--three">
