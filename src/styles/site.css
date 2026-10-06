@@ -231,6 +231,11 @@ main { min-height: 60vh; padding-bottom: 60px; }
 .about-bit { display: grid; grid-template-columns: 1fr 200px; gap: 32px; align-items: start; }
 
 .photos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; align-items: start; }
+/* the tall photo spans two rows; the fill photo takes the leftover height with no intrinsic size of its own */
+.photos:has(.photos-fill) { grid-template-rows: auto auto 1fr; }
+.photos .photos-tall { grid-row: span 2; }
+.photos .photos-fill { position: relative; align-self: stretch; min-height: 0; overflow: hidden; }
+.photos .photos-fill img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
 /* work list */
 

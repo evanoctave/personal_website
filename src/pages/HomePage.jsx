@@ -12,8 +12,10 @@ import { projects } from '../data/projects.js'
 const snapshots = [
   { src: '/photos/mb-pier.jpg', alt: 'Sun setting beside the Manhattan Beach pier', ratio: '3 / 4', position: '70% 50%' },
   { src: '/photos/tuffy.jpg', alt: 'Evan walking with Tuffy the elephant, the Cal State Fullerton mascot', ratio: '3 / 4', position: '50% 40%' },
-  { src: '/photos/lava-cove.jpg', alt: 'Waves crashing on black lava rock in a green cove', ratio: '4 / 5', position: '40% 50%' },
+  { src: '/photos/lava-cove.jpg', alt: 'Waves crashing on black lava rock in a green cove', ratio: '4 / 5', position: '40% 50%', className: 'photos-tall' },
   { src: '/photos/campus-night.jpg', alt: 'Palm trees and lamp posts on campus at night', ratio: '3 / 2' },
+  // fills whatever height is left beside the tall lava photo, so both columns end flush
+  { src: '/photos/dodgers-night.jpg', alt: 'Dodger Stadium under the lights at night', ratio: 'auto', position: '50% 55%', className: 'photos-fill' },
 ]
 
 export default function HomePage() {
@@ -62,7 +64,7 @@ export default function HomePage() {
         )}
       </section>
 
-      <Placeholder alt="View over Cal State Fullerton rooftops and trees on a bright day" className="intro-photo" ratio="3 / 2" src="/photos/PICT0020.jpg" />
+      <Placeholder alt="View over Cal State Fullerton rooftops under a wide, streaky sky" className="intro-photo" position="50% 60%" ratio="3 / 2" src="/photos/csuf-rooftops.jpg" />
 
       <section className="block" aria-labelledby="work-title">
         <div className="block-head">
@@ -93,7 +95,7 @@ export default function HomePage() {
         </div>
         <div className="photos">
           {snapshots.map((snap) => (
-            <Placeholder alt={snap.alt} key={snap.src} position={snap.position} ratio={snap.ratio} src={snap.src} />
+            <Placeholder alt={snap.alt} className={snap.className} key={snap.src} position={snap.position} ratio={snap.ratio} src={snap.src} />
           ))}
         </div>
       </section>

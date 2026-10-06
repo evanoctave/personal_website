@@ -287,7 +287,7 @@ export default function PrinterIntro({ force = false, onEnter, onLand }) {
               <div className="pi-paper">
                 <p className="pi-paper-meta"><span>EVAN OCTAVE</span><span>JOB 001</span></p>
                 <p className="pi-paper-title"><span className="pi-word">What's</span><br /><span className="pi-word">up</span></p>
-                <div className="pi-paper-photo"><img alt="" src="/photos/PICT0020.jpg" /></div>
+                <div className="pi-paper-photo"><img alt="" src="/photos/csuf-rooftops.jpg" /></div>
                 <p className="pi-paper-line">SWE (larper) / IT Assistant</p>
                 <p className="pi-paper-line">Cal State Fullerton</p>
                 <p className="pi-paper-foot"><span className="pi-paper-code" /><span className="pi-paper-reg" /></p>
