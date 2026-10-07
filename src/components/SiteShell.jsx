@@ -66,7 +66,7 @@ export default function SiteShell() {
   }
 
   return (
-    <div className="site">
+    <div className={`site${pathname === '/home' ? ' site--wide' : ''}`}>
       <a className="skip-link" href="#main-content">Skip to content</a>
       <DotField />
       <header className="site-header">

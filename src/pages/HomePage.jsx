@@ -3,19 +3,21 @@
 // and src/data/projects.js (only projects with featured: true show here).
 import { useLayoutEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import IntroClip from '../components/IntroClip.jsx'
 import Placeholder from '../components/Placeholder.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Scramble from '../components/Scramble.jsx'
 import WorkList from '../components/WorkList.jsx'
 import { prefersReducedMotion } from '../fx/FxProvider.jsx'
 import PrinterIntro, { willPrint } from '../fx/PrinterIntro.jsx'
+import { EMAIL } from '../data/contact.js'
 import { projects } from '../data/projects.js'
 
 // a few from the digicam. the full roll is on /life
 // KNOB: the photos in the home page grid: order, src (public/photos/), alt, crop (position), shape (ratio).
 // className 'photos-tall' / 'photos-fill' are special grid slots in src/styles/site.css
 const snapshots = [
-  { src: '/photos/mb-pier.jpg', alt: 'Sun setting beside the Manhattan Beach pier', ratio: '3 / 4', position: '70% 50%' },
+  { src: '/photos/grad-boys.jpg', alt: 'Evan and three friends in graduation gowns and leis', ratio: '3 / 4', position: '50% 35%' },
   { src: '/photos/tuffy.jpg', alt: 'Evan walking with Tuffy the elephant, the Cal State Fullerton mascot', ratio: '3 / 4', position: '50% 40%' },
   { src: '/photos/lava-cove.jpg', alt: 'Waves crashing on black lava rock in a green cove', ratio: '4 / 5', position: '40% 50%', className: 'photos-tall' },
   { src: '/photos/campus-night.jpg', alt: 'Palm trees and lamp posts on campus at night', ratio: '3 / 2' },
@@ -74,12 +76,11 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* KNOB: the wide photo under the intro. App.test.jsx checks its alt */}
-      {/* and that src is /photos/csuf-rooftops.jpg */}
-      <Placeholder alt="View over Cal State Fullerton rooftops under a wide, streaky sky" className="intro-photo" position="50% 60%" ratio="3 / 2" src="/photos/csuf-rooftops.jpg" />
+      {/* KNOB: the clip under the intro (fade in + wave). file and still: src/components/IntroClip.jsx */}
+      <IntroClip replay={run} />
 
       {/* KNOB: featured work. a project shows here when it has featured: true in src/data/projects.js */}
-      <section className="block" aria-labelledby="work-title">
+      <section className="block home-work" aria-labelledby="work-title">
         <div className="block-head">
           <h2 id="work-title">Work</h2>
           <Link to="/work">see all</Link>
@@ -87,7 +88,7 @@ export default function HomePage() {
         <WorkList projects={projects.filter((project) => project.featured)} />
       </section>
 
-      <section className="block about-bit" aria-labelledby="about-title">
+      <section className="block about-bit home-about" aria-labelledby="about-title">
         <Reveal>
           {/* KNOB: the about blurb + its link text */}
           <h2 id="about-title">About</h2>
@@ -103,7 +104,7 @@ export default function HomePage() {
         <Placeholder alt="Evan with arms out wide in an empty parking lot at night" ratio="4 / 5" src="/photos/PICT0025.jpg" />
       </section>
 
-      <section className="block" aria-labelledby="photos-title">
+      <section className="block home-photos" aria-labelledby="photos-title">
         {/* KNOB: section heading + link text (App.test.jsx expects 'the whole roll' linking to /life) */}
         <div className="block-head">
           <h2 id="photos-title">Photos</h2>
@@ -116,11 +117,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="block" aria-labelledby="contact-title">
-        {/* KNOB: say-hi text. this email is typed out separately from ContactPage.jsx's EMAIL */}
+      <section className="block home-contact" aria-labelledby="contact-title">
+        {/* KNOB: say-hi text. the address itself lives in src/data/contact.js */}
         <h2 id="contact-title">Say hi</h2>
         <p>
-          Best way to reach me is email: <a href="mailto:evanoctav3@gmail.com">evanoctav3@gmail.com</a>.
+          Best way to reach me is email: <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.
           Or go to the <Link to="/contact">contact page</Link>.
         </p>
       </section>

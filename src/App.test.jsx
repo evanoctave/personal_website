@@ -33,7 +33,7 @@ describe('site', () => {
     expect(screen.getByRole('link', { name: 'Skip to content' })).toHaveAttribute('href', '#main-content')
     expect(screen.getByRole('navigation', { name: 'Primary' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 1, name: "What's up" })).toBeInTheDocument()
-    expect(screen.getByRole('img', { name: /Cal State Fullerton rooftops/ })).toHaveAttribute('src', '/photos/csuf-rooftops.jpg')
+    expect(screen.getByLabelText(/sits down in front of the camera and waves/)).toHaveAttribute('src', '/clips/wave.mp4')
     expect(screen.queryByRole('img', { name: /Image placeholder/ })).not.toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'the whole roll' })).toHaveAttribute('href', '/life')
   })

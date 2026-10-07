@@ -1,6 +1,7 @@
 // The ~10s print-job intro on /home (rendered by HomePage.jsx; App.jsx asks willPrint()).
 // Styles + the CSS timeline live in site.css under /* printer intro */; details just below the imports.
 import { useEffect, useRef, useState } from 'react'
+import { STILL } from '../components/IntroClip.jsx'
 import { prefersReducedMotion } from './FxProvider.jsx'
 
 // First /home visit per session (or the replay button): a ~10s black-and-white
@@ -306,7 +307,7 @@ export default function PrinterIntro({ force = false, onEnter, onLand }) {
                 {/* the real home h1 (.home .name .scramble) or the title flight is skipped */}
                 <p className="pi-paper-meta"><span>EVAN OCTAVE</span><span>JOB 001</span></p>
                 <p className="pi-paper-title"><span className="pi-word">What's</span><br /><span className="pi-word">up</span></p>
-                <div className="pi-paper-photo"><img alt="" src="/photos/csuf-rooftops.jpg" /></div>
+                <div className="pi-paper-photo"><img alt="" src={STILL} /></div>
                 <p className="pi-paper-line">SWE (larper) / IT Assistant</p>
                 <p className="pi-paper-line">Cal State Fullerton</p>
                 <p className="pi-paper-foot"><span className="pi-paper-code" /><span className="pi-paper-reg" /></p>
