@@ -18,14 +18,14 @@ describe('site', () => {
     vi.useRealTimers()
   })
 
-  it('shows construction gate at root with date, photos, and unfinished-site link', () => {
+  it('shows construction gate at root with date and the link into the site', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-09-27T12:00:00'))
     renderAt('/')
     expect(screen.getByRole('heading', { level: 1, name: 'UNDER CONSTRUCTION' })).toBeInTheDocument()
     expect(screen.getByText('As of Sunday, September 27, 2026')).toBeInTheDocument()
-    expect(screen.getAllByRole('img')).toHaveLength(3)
-    expect(screen.getByRole('link', { name: 'Enter unfinished site anyway' })).toHaveAttribute('href', '/home')
+    expect(screen.queryAllByRole('img')).toHaveLength(0)
+    expect(screen.getByRole('link', { name: 'npx ts-node portfolio.ts' })).toHaveAttribute('href', '/home')
   })
 
   it('renders home with skip link, nav, and real photos', () => {
