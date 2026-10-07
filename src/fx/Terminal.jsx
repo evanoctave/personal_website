@@ -54,6 +54,24 @@ export default function Terminal({ inline = false }) {
     logRef.current?.scrollTo?.({ top: logRef.current.scrollHeight })
   }, [lines])
 
+  // the keyboard stays up until ▾ or a tap somewhere that's neither the keyboard nor this terminal.
+  // (not tied to the input's focus: on iPhone every tap on a key would blur the input and close it)
+  const sectionRef = useRef(null)
+  const hideKeyboard = () => {
+    setKeyboard(false)
+    inputRef.current?.blur()
+  }
+  useEffect(() => {
+    if (!keyboard) return undefined
+    const onDown = (event) => {
+      if (event.target.closest?.('.tkb') || sectionRef.current?.contains(event.target)) return
+      setKeyboard(false)
+      inputRef.current?.blur()
+    }
+    document.addEventListener('pointerdown', onDown)
+    return () => document.removeEventListener('pointerdown', onDown)
+  }, [keyboard])
+
   // with the keyboard up, make sure the input sits just above it rather than behind it
   useEffect(() => {
     if (!keyboard) return undefined
@@ -229,7 +247,6 @@ export default function Terminal({ inline = false }) {
           id={fieldId}
           // touch screens get the site's keyboard instead of the phone's
           inputMode={touch ? 'none' : undefined}
-          onBlur={() => setKeyboard(false)}
           onChange={(event) => setValue(event.target.value)}
           onFocus={() => touch && setKeyboard(true)}
           onKeyDown={onKeyDown}
@@ -238,13 +255,13 @@ export default function Terminal({ inline = false }) {
           value={value}
         />
       </form>
-      {keyboard && <TouchKeyboard onHide={() => inputRef.current?.blur()} onKey={onTouchKey} target={inputRef.current} />}
+      {keyboard && <TouchKeyboard onHide={hideKeyboard} onKey={onTouchKey} target={inputRef.current} />}
     </>
   )
 
   if (inline) {
     return (
-      <section aria-label="Terminal" className="fx-terminal fx-terminal--inline" onClick={() => inputRef.current?.focus()}>
+      <section aria-label="Terminal" className="fx-terminal fx-terminal--inline" onClick={() => inputRef.current?.focus()} ref={sectionRef}>
         <header className="fx-terminal-bar">
           <span>guest@evanoctave: ~</span>
           {/* KNOB: hint on the right of the inline terminal's title bar */}
@@ -265,6 +282,7 @@ export default function Terminal({ inline = false }) {
           event.stopPropagation()
           inputRef.current?.focus()
         }}
+        ref={sectionRef}
         role="dialog"
       >
         <header className="fx-terminal-bar">

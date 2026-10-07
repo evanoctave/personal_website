@@ -203,7 +203,11 @@ describe('site', () => {
     press('6')
     press('7')
     expect(document.querySelector('.six7')).toHaveAttribute('aria-hidden', 'false')
-    fireEvent.click(screen.getByRole('button', { name: 'Hide keyboard' }))
+    // a blur (what every tap does on iPhone) must not close it; only ▾ or a tap elsewhere does
+    fireEvent.blur(input)
+    expect(screen.getByRole('group', { name: 'Keyboard' })).toBeInTheDocument()
+    press('Hide keyboard')
+    expect(screen.queryByRole('group', { name: 'Keyboard' })).not.toBeInTheDocument()
   })
 
   it('triggers god mode with the konami code', () => {
