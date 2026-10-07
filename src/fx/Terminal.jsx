@@ -1,7 +1,9 @@
 // The pretend shell that opens with / or `. Every command is a case in the big switch in run().
+// Two ways to show it: the pop-up (rendered inside Overlays.jsx) and `inline`, a window that sits in the
+// home page once the intro clip has gone (HomePage.jsx). Both share every command below.
 // Rendered inside Overlays.jsx; toggles fx state from FxProvider.jsx; `print` calls Receipt.jsx.
 // Styles in site.css under .fx-terminal.
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { projects } from '../data/projects.js'
 import { EGGS, useFx } from './FxProvider.jsx'
@@ -13,11 +15,17 @@ const PAGES = { home: '/home', work: '/work', about: '/about', life: '/life', co
 const GREETING = [
   'eo-shell v2.6 — type `help` to see commands.',
 ]
+// KNOB: what the inline (home page) terminal starts with
+const INLINE_GREETING = [
+  'eo-shell v2.6 — this one is real. click and type.',
+  'try: ls · whoami · work · open 2 · print · coffee',
+]
 
-export default function Terminal() {
+export default function Terminal({ inline = false }) {
   const navigate = useNavigate()
   const { actions, eggs, findEgg, pop, pulse, setTerminalOpen, terminalOpen } = useFx()
-  const [lines, setLines] = useState(GREETING)
+  const [lines, setLines] = useState(inline ? INLINE_GREETING : GREETING)
+  const fieldId = useId()
   const [value, setValue] = useState('')
   const [history, setHistory] = useState([])
   const [cursor, setCursor] = useState(-1)
@@ -25,16 +33,18 @@ export default function Terminal() {
   const logRef = useRef(null)
 
   useEffect(() => {
-    if (terminalOpen) inputRef.current?.focus()
-  }, [terminalOpen])
+    // the pop-up grabs focus when it opens; the inline one waits to be clicked
+    if (terminalOpen && !inline) inputRef.current?.focus()
+  }, [terminalOpen, inline])
 
   useEffect(() => {
     logRef.current?.scrollTo?.({ top: logRef.current.scrollHeight })
   }, [lines])
 
-  if (!terminalOpen) return null
+  if (!inline && !terminalOpen) return null
 
-  const close = () => setTerminalOpen(false)
+  // the inline one can't close, so Esc / exit just leave the input
+  const close = () => (inline ? inputRef.current?.blur() : setTerminalOpen(false))
   const go = (path) => {
     navigate(path)
     close()
@@ -158,6 +168,41 @@ export default function Terminal() {
     }
   }
 
+  const screen = (
+    <>
+      <div className="fx-terminal-log" ref={logRef}>
+        {lines.map((line, i) => <pre key={`${i}-${line}`}>{line}</pre>)}
+      </div>
+      <form className="fx-terminal-input" onSubmit={onSubmit}>
+        {/* KNOB: input prompt symbol */}
+        <label htmlFor={fieldId}>&gt;</label>
+        <input
+          autoCapitalize="off"
+          autoComplete="off"
+          id={fieldId}
+          onChange={(event) => setValue(event.target.value)}
+          onKeyDown={onKeyDown}
+          ref={inputRef}
+          spellCheck="false"
+          value={value}
+        />
+      </form>
+    </>
+  )
+
+  if (inline) {
+    return (
+      <section aria-label="Terminal" className="fx-terminal fx-terminal--inline" onClick={() => inputRef.current?.focus()}>
+        <header className="fx-terminal-bar">
+          <span>guest@evanoctave: ~</span>
+          {/* KNOB: hint on the right of the inline terminal's title bar */}
+          <span className="fx-terminal-hint">help</span>
+        </header>
+        {screen}
+      </section>
+    )
+  }
+
   return (
     <div className="fx-backdrop" onClick={close}>
       <section
@@ -175,23 +220,7 @@ export default function Terminal() {
           <span>guest@evanoctave: ~</span>
           <button onClick={close} type="button">Esc</button>
         </header>
-        <div className="fx-terminal-log" ref={logRef}>
-          {lines.map((line, i) => <pre key={`${i}-${line}`}>{line}</pre>)}
-        </div>
-        <form className="fx-terminal-input" onSubmit={onSubmit}>
-          {/* KNOB: input prompt symbol */}
-          <label htmlFor="fx-terminal-field">&gt;</label>
-          <input
-            autoCapitalize="off"
-            autoComplete="off"
-            id="fx-terminal-field"
-            onChange={(event) => setValue(event.target.value)}
-            onKeyDown={onKeyDown}
-            ref={inputRef}
-            spellCheck="false"
-            value={value}
-          />
-        </form>
+        {screen}
       </section>
     </div>
   )

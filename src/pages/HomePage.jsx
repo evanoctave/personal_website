@@ -1,7 +1,7 @@
 // Home page (/home): printer intro, the heading + intro lines, featured work, about blurb, photos, say hi.
 // uses PrinterIntro (src/fx/PrinterIntro.jsx), Scramble / Reveal / Placeholder / WorkList from components/,
 // and src/data/projects.js (only projects with featured: true show here).
-import { useLayoutEffect, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import IntroClip from '../components/IntroClip.jsx'
 import Placeholder from '../components/Placeholder.jsx'
@@ -10,6 +10,7 @@ import Scramble from '../components/Scramble.jsx'
 import WorkList from '../components/WorkList.jsx'
 import { prefersReducedMotion } from '../fx/FxProvider.jsx'
 import PrinterIntro, { willPrint } from '../fx/PrinterIntro.jsx'
+import Terminal from '../fx/Terminal.jsx'
 import { EMAIL } from '../data/contact.js'
 import { projects } from '../data/projects.js'
 
@@ -17,7 +18,7 @@ import { projects } from '../data/projects.js'
 // KNOB: the photos in the home page grid: order, src (public/photos/), alt, crop (position), shape (ratio).
 // className 'photos-tall' / 'photos-fill' are special grid slots in src/styles/site.css
 const snapshots = [
-  { src: '/photos/grad-boys.jpg', alt: 'Evan and three friends in graduation gowns and leis', ratio: '3 / 4', position: '50% 35%' },
+  { src: '/photos/mb-pier.jpg', alt: 'Sun setting beside the Manhattan Beach pier', ratio: '3 / 4', position: '70% 50%' },
   { src: '/photos/tuffy.jpg', alt: 'Evan walking with Tuffy the elephant, the Cal State Fullerton mascot', ratio: '3 / 4', position: '50% 40%' },
   { src: '/photos/lava-cove.jpg', alt: 'Waves crashing on black lava rock in a green cove', ratio: '4 / 5', position: '40% 50%', className: 'photos-tall' },
   { src: '/photos/campus-night.jpg', alt: 'Palm trees and lamp posts on campus at night', ratio: '3 / 2' },
@@ -30,6 +31,31 @@ export default function HomePage() {
   // title still in flight) -> 'landed'. On <html> so the header and footer join in.
   const [entry, setEntry] = useState(() => (willPrint() ? 'waiting' : 'static'))
   const [run, setRun] = useState(0)
+  // the intro clip removes itself after it plays; reduced motion never shows it
+  const [clipGone, setClipGone] = useState(() => prefersReducedMotion())
+  const homeRef = useRef(null)
+  const flip = useRef(null)
+
+  // FLIP: note where every section is, let the layout change, then animate each one from its old spot
+  // to its new one, so the page glides into the clip's space (or out of its way on replay)
+  const remember = () => {
+    const sections = homeRef.current ? [...homeRef.current.children].filter((el) => !el.classList.contains('pi')) : []
+    flip.current = new Map(sections.map((el) => [el, el.getBoundingClientRect()]))
+  }
+  useLayoutEffect(() => {
+    const before = flip.current
+    flip.current = null
+    if (!before) return
+    for (const [el, was] of before) {
+      if (!el.isConnected) continue
+      const now = el.getBoundingClientRect()
+      const dx = was.left - now.left
+      const dy = was.top - now.top
+      if (!dx && !dy) continue
+      // KNOB: the glide's length and curve when the page closes the clip's gap
+      el.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }], { duration: 900, easing: 'cubic-bezier(.65, 0, .35, 1)' })
+    }
+  }, [clipGone])
 
   useLayoutEffect(() => {
     const root = document.documentElement
@@ -42,10 +68,14 @@ export default function HomePage() {
     window.scrollTo({ behavior: 'auto', top: 0 })
     setEntry('waiting')
     setRun((count) => count + 1)
+    if (clipGone && !prefersReducedMotion()) {
+      remember()
+      setClipGone(false)
+    }
   }
 
   return (
-    <div className="home">
+    <div className={`home${clipGone ? ' home--noclip' : ''}`} ref={homeRef}>
       <PrinterIntro
         force={run > 0}
         key={run}
@@ -76,8 +106,11 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* KNOB: the clip under the intro (fade in + wave). file and still: src/components/IntroClip.jsx */}
-      <IntroClip replay={run} />
+      {/* KNOB: the clip under the intro (fade in + wave, then it fades out and the page fills its space).
+          file and timing: src/components/IntroClip.jsx */}
+      {!clipGone && <IntroClip onGone={() => { remember(); setClipGone(true) }} replay={run} />}
+      {/* KNOB: once the clip is gone, a live terminal fills its spot (same commands as the / pop-up) */}
+      {clipGone && <div className="home-term"><Terminal inline /></div>}
 
       {/* KNOB: featured work. a project shows here when it has featured: true in src/data/projects.js */}
       <section className="block home-work" aria-labelledby="work-title">
