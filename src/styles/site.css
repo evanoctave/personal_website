@@ -1298,3 +1298,21 @@ main { min-height: 60vh; padding-bottom: 60px; }
 @media (prefers-reduced-motion: reduce) {
   .rc-paper { transform: none; }
 }
+
+/* fake admin page (FakeAdmin.jsx) */
+/* KNOB: the "nice try." stamp: tilt, colors, border */
+.nice-try {
+  display: inline-block;
+  margin: 0 0 18px;
+  padding: 4px 10px;
+  border: 2px solid currentColor;
+  border-radius: 3px;
+  color: #d94949;
+  font: 700 13px var(--mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  transform: rotate(-4deg);
+}
+/* KNOB: the footer's bait admin link */
+.footer-admin { margin-left: 10px; color: var(--muted); opacity: .5; text-decoration: none; }
+.footer-admin:hover { opacity: 1; text-decoration: underline; }

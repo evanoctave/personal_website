@@ -87,6 +87,14 @@ describe('site', () => {
     expect(document.body.style.overflow).toBe('')
   })
 
+  it('roasts anyone who tries /admin and records the egg', () => {
+    renderAt('/admin')
+    expect(screen.getByRole('heading', { level: 1, name: 'Very, very clever.' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'go back to the main page.' })).toHaveAttribute('href', '/home')
+    expect(document.title).toBe('Admin | Evan Octave')
+    expect(JSON.parse(window.localStorage.getItem('eo-eggs'))).toContain('admin')
+  })
+
   it('shows 404 page and records the lost easter egg', () => {
     renderAt('/drifted-away')
     expect(screen.getByRole('heading', { name: 'Not sure how YOU got here...' })).toBeInTheDocument()

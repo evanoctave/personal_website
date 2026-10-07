@@ -23,6 +23,7 @@ const destination = (pathname) => {
     const project = getProjectBySlug(pathname.slice('/work/'.length))
     if (project) return { name: project.title.toLowerCase(), index: 1.5, number: 'work / case study' }
   }
+  if (pathname === '/admin') return { name: 'admin', index: -1, number: '403 / forbidden' }
   return { name: 'lost', index: -1, number: '404' }
 }
 

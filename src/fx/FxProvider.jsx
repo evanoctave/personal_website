@@ -14,6 +14,7 @@ export const EGGS = {
   sudo: 'Asked for root',
   shake: 'Shook the mouse',
   lost: 'Got lost on purpose',
+  admin: 'Tried the admin page',
   print: 'Tried to print the page',
 }
 

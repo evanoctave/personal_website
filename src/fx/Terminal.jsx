@@ -10,7 +10,7 @@ import { EGGS, useFx } from './FxProvider.jsx'
 import { printReceipt } from './Receipt.jsx'
 
 // KNOB: pages `ls` lists and `cd <page>` can jump to
-const PAGES = { home: '/home', work: '/work', about: '/about', life: '/life', contact: '/contact' }
+const PAGES = { home: '/home', work: '/work', about: '/about', life: '/life', contact: '/contact', admin: '/admin' }
 // KNOB: line(s) shown when the terminal first opens
 const GREETING = [
   'eo-shell v2.6 — type `help` to see commands.',
@@ -111,7 +111,7 @@ export default function Terminal({ inline = false }) {
       case 'sudo':
         findEgg('sudo')
         actions.invert()
-        return ['[sudo] password for guest: ********', 'access granted. please use your powers responsibly.']
+        return ['[sudo] password for guest: ********', 'access granted. please use your powers responsibly.', '(the admin panel is at /admin, obviously)']
       case 'rm':
         pulse('fx-wobble', 100)
         return ['lol nice try bud, not today.']

@@ -9,6 +9,7 @@ import PageWarp from './fx/PageWarp.jsx'
 import { willPrint } from './fx/PrinterIntro.jsx'
 import AboutPage from './pages/AboutPage.jsx'
 import ContactPage from './pages/ContactPage.jsx'
+import FakeAdmin from './pages/FakeAdmin.jsx'
 import ConstructionPage from './pages/ConstructionPage.jsx'
 import HomePage from './pages/HomePage.jsx'
 import LifePage from './pages/LifePage.jsx'
@@ -85,6 +86,7 @@ export default function App() {
           <Route path="about" element={<AboutPage />} />
           <Route path="life" element={<LifePage />} />
           <Route path="contact" element={<ContactPage />} />
+          <Route path="admin" element={<FakeAdmin />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </WarpRoutes>

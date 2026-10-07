@@ -22,6 +22,7 @@ const getPageTitle = (pathname) => {
   if (pathname === '/about') return 'About'
   if (pathname === '/life') return 'Life'
   if (pathname === '/contact') return 'Contact'
+  if (pathname === '/admin') return 'Admin'
   if (pathname.startsWith('/work/')) return getProjectBySlug(pathname.slice('/work/'.length))?.title ?? 'Lost'
   return 'Lost'
 }
@@ -91,7 +92,11 @@ export default function SiteShell() {
       <footer className="site-footer">
         {/* KNOB: footer text (the year updates itself) */}
         <p>Evan Octave: Made by hand (or by keyboard, if you will) {new Date().getFullYear()}.</p>
-        <p>{eggs.size} of {Object.keys(EGGS).length} secrets found.</p>
+        <p>
+          {eggs.size} of {Object.keys(EGGS).length} secrets found.
+          {/* KNOB: the bait link to the fake admin page */}
+          {' '}<NavLink className="footer-admin" to="/admin">admin</NavLink>
+        </p>
       </footer>
 
       <Cursor />
