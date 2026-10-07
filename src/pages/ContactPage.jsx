@@ -31,7 +31,7 @@ export default function ContactPage() {
       </p>
       {/* KNOB: reply-time note */}
       <p>I usually reply within a day or two. Work stuff, project ideas, or just saying hi are all fine. Open to connecting with anyone for projects, collaborations, or Apex Legends.</p>
-      {/* KNOB: social links, text and url. Instagram still points at the bare instagram.com homepage */}
+      {/* KNOB: social links, text and url */}
       <h2>Elsewhere</h2>
       <ul>
         <li><a href="https://github.com/evanoctave" rel="noreferrer" target="_blank">GitHub</a></li>
