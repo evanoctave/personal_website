@@ -18,7 +18,7 @@ const GREETING = [
 // KNOB: what the inline (home page) terminal starts with
 const INLINE_GREETING = [
   'eo-shell v2.6 — this one is real. click and type.',
-  'try: ls · whoami · work · open 2 · print · coffee',
+  'try: ls · whoami · work · work 2 · print · coffee',
 ]
 
 export default function Terminal({ inline = false }) {
@@ -31,6 +31,12 @@ export default function Terminal({ inline = false }) {
   const [cursor, setCursor] = useState(-1)
   const inputRef = useRef(null)
   const logRef = useRef(null)
+  // delayed follow-up lines (like the `work` hint); cleared if the terminal goes away first
+  const timers = useRef([])
+  useEffect(() => () => timers.current.forEach(window.clearTimeout), [])
+  const later = (ms, extra) => {
+    timers.current.push(window.setTimeout(() => setLines((current) => [...current, ...extra]), ms))
+  }
 
   useEffect(() => {
     // the pop-up grabs focus when it opens; the inline one waits to be clicked
@@ -64,7 +70,7 @@ export default function Terminal({ inline = false }) {
           'ls              list pages',
           'cd <page>       go to a page',
           'work            list projects',
-          'open <n>        open project n',
+          'work <n>        open project n',
           'whoami          who is this',
           'date            local time',
           'invert | trail | grid | rain | blast',
@@ -83,13 +89,18 @@ export default function Terminal({ inline = false }) {
       }
       case 'work':
       case 'projects':
-        return projects.map((project, i) => `[${i + 1}] ${project.title} — ${project.year}`)
-        
       case 'open': {
-        const project = projects[Number(arg) - 1]
-        if (!project) return [`open: pick 1–${projects.length}`]
-        go(`/work/${project.slug}`)
-        return []
+        // `work 2` / `open 2` opens project 2; plain `work` lists them
+        if (arg) {
+          const project = projects[Number(arg) - 1]
+          if (!project) return [`${command.toLowerCase()}: pick 1–${projects.length}`]
+          go(`/work/${project.slug}`)
+          return []
+        }
+        if (command.toLowerCase() === 'open') return [`open: pick 1–${projects.length}`]
+        // KNOB: the follow-up hint and how long it waits after the list (ms)
+        later(750, ["try 'work' then a number (like 'work 2') to open that project"])
+        return projects.map((project, i) => `[${i + 1}] ${project.title} — ${project.year}`)
       }
       case 'whoami':
         // KNOB: whoami reply

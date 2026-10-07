@@ -144,7 +144,7 @@ describe('site', () => {
     const input = screen.getByRole('textbox')
     await user.type(input, 'work{Enter}')
     expect(screen.getByText(/\[1\] Digital Package Tracker/)).toBeInTheDocument()
-    expect(await screen.findByText("try 'open' then a number to open that specific project", {}, { timeout: 2000 })).toBeInTheDocument()
+    expect(await screen.findByText("try 'work' then a number (like 'work 2') to open that project", {}, { timeout: 2000 })).toBeInTheDocument()
     await user.type(input, 'sudo{Enter}')
     expect(screen.getByText(/access granted/)).toBeInTheDocument()
     await user.type(input, 'cd work{Enter}')
