@@ -28,12 +28,16 @@ trap '$SSH -O exit "$HOST" 2>/dev/null || true' EXIT
 echo "› connecting to $HOST"
 $SSH -fN "$HOST"
 
+# --chmod: whatever the permissions are on this Mac, the server copies must be readable by nginx
+# (a few photo exports came out owner-only and 403'd on the live site)
+PERMS="--chmod=D755,F644"
+
 # order matters, so nobody gets a page whose files aren't there yet:
 # 1) the new hashed assets and media, 2) index.html, which switches visitors to them,
 # 3) then clear out files the new build no longer has
 echo "› uploading"
-rsync -az -e "$SSH" --exclude index.html dist/ "$HOST:$DEST/"
-rsync -az -e "$SSH" dist/index.html "$HOST:$DEST/index.html"
-rsync -az --delete -e "$SSH" dist/ "$HOST:$DEST/"
+rsync -az $PERMS -e "$SSH" --exclude index.html dist/ "$HOST:$DEST/"
+rsync -az $PERMS -e "$SSH" dist/index.html "$HOST:$DEST/index.html"
+rsync -az $PERMS --delete -e "$SSH" dist/ "$HOST:$DEST/"
 
 echo "› live: https://evanoctave.dev"
