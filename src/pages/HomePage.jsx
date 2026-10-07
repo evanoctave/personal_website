@@ -91,17 +91,17 @@ export default function HomePage() {
         </h1>
         {/* KNOB: the line under the heading (your title) */}
         <p>
-          SWE (larper) / IT Assistant at California State University, Fullerton
+          IT Assistant at California State University, Fullerton
         </p>
         {/* KNOB: the small note under that */}
         <p className="muted">
-          This site is used to keep track of my work and projects.
+          Summary of my work and projects. Contains a little bit about me.
           Press <kbd>?</kbd> for...idk figure it out.
         </p>
         {/* KNOB: replay button text (hidden when reduced motion is on) */}
         {!prefersReducedMotion() && (
           <button className="replay" onClick={replay} type="button">
-            <span aria-hidden="true">↺</span> replay intro
+            <span aria-hidden="true">↺</span> watch that again
           </button>
         )}
       </section>
@@ -126,8 +126,8 @@ export default function HomePage() {
           {/* KNOB: the about blurb + its link text */}
           <h2 id="about-title">About</h2>
           <p>
-            Most of what I do professionally includes going ham on a keyboard, glazing Linus Torvalds, and plugging in cables.
-            Ask me about Typescript. Or gcc vs. clang. or bit-packing. Or my sister's art!</p>
+            Most of what I do professionally includes mashing a keyboard, keeping my Github repository green, and plugging in cables.
+            Ask me about Typescript. Or gcc vs. clang. or bit-packing. <a href="https://madibarreau.com" rel="noreferrer" target="_blank">Or my sister's art!</a></p>
             
             <p>Don't ask me about LeBron leaving the Lakers. I'm heartbroken, too.
           </p>
