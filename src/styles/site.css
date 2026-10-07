@@ -291,64 +291,48 @@ main { min-height: 60vh; padding-bottom: 60px; }
 /* KNOB: the intro clip box: shape matches the 4:3 video; black while it loads (the clip fades in from black) */
 .intro-clip { position: relative; display: block; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; background: #000; }
 .intro-clip > video, .intro-clip-after { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-/* the clip -> photo hand-off, one move on one curve (--ic-ease, --ic-wipe):
-   a scan line with ruler ticks sweeps top to bottom; above it the photo is revealed while settling from
-   a slight zoom; below it the video dims and softens; then a caption types into the corner.
-   every rule rests in its finished state, so with animations off (reduced motion) it's just the photo */
+/* the clip -> photo hand-off. IntroClip.jsx adds .is-done about a second before the clip ends, so the
+   wave is still moving when the photo arrives. the photo comes in through a soft diagonal wipe and a
+   dissolve, settling out of a slight zoom, while the video keeps pushing in underneath: two layers moving
+   against each other. transitions (not keyframes) so a replay snaps back cleanly. with reduced motion
+   .is-done is there from the start and transitions are off, so it's just the photo */
 .intro-clip {
-  /* KNOB: wipe length and curve. the scan line, photo reveal and video dim all share these */
-  --ic-wipe: 1.15s;
-  --ic-ease: cubic-bezier(.76, 0, .24, 1);
+  /* KNOB: the hand-off's length and curve (an even ease-in-out reads smoother than anything snappy) */
+  --ic-dur: 2s;
+  --ic-ease: cubic-bezier(.65, 0, .35, 1);
 }
-.intro-clip-after { clip-path: inset(0 0 100% 0); }
+.intro-clip > video, .intro-clip-after { will-change: transform, opacity; }
+.intro-clip-after {
+  opacity: 0;
+  transform: scale(1.08);
+  /* soft-edged diagonal mask: a feathered band slides across, sized so either end is fully clear/solid.
+     KNOB: the angle (115deg) and the feather (the gap between 42% and 58%) */
+  -webkit-mask-image: linear-gradient(115deg, #000 42%, transparent 58%);
+  mask-image: linear-gradient(115deg, #000 42%, transparent 58%);
+  -webkit-mask-size: 280% 100%;
+  mask-size: 280% 100%;
+  -webkit-mask-position: 100% 0;
+  mask-position: 100% 0;
+}
 .intro-clip.is-done .intro-clip-after {
-  clip-path: inset(0);
-  /* KNOB: reveal (wipe) plus the photo settling out of a 1.12 zoom, a beat longer than the wipe */
-  animation: ic-reveal var(--ic-wipe) var(--ic-ease) both, ic-settle 2.6s cubic-bezier(.16, 1, .3, 1) both;
-}
-.intro-clip.is-done > video { animation: ic-cover var(--ic-wipe) var(--ic-ease) both; }
-.intro-clip-scan {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 9px;
-  margin-top: -1px;
-  pointer-events: none;
-  opacity: 0;
-  background:
-    linear-gradient(#fff, #fff) 0 0 / 100% 1px no-repeat,
-    repeating-linear-gradient(90deg, #fff 0 1px, transparent 1px 10px) 0 1px / 100% 4px no-repeat,
-    repeating-linear-gradient(90deg, #fff 0 1px, transparent 1px 50px) 0 1px / 100% 8px no-repeat;
-  box-shadow: 0 0 22px rgb(255 255 255 / .55);
-}
-.intro-clip.is-done .intro-clip-scan { animation: ic-scan var(--ic-wipe) var(--ic-ease) both; }
-.intro-clip-cap {
-  position: absolute;
-  left: 14px;
-  bottom: 12px;
-  padding: 3px 6px;
-  background: rgb(0 0 0 / .45);
-  color: #fff;
-  font: 10px / 1.4 var(--mono);
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  opacity: 0;
-}
-.intro-clip.is-done .intro-clip-cap {
   opacity: 1;
-  /* KNOB: caption types in right after the wipe lands (steps = roughly one per letter) */
-  animation: ic-type .5s steps(15) calc(var(--ic-wipe) - .1s) both;
+  transform: none;
+  -webkit-mask-position: 0 0;
+  mask-position: 0 0;
+  /* KNOB: the wipe and dissolve share the hand-off curve; the settle-in zoom runs longer on a soft
+     ease-out so the photo is still drifting after the wipe lands */
+  transition:
+    -webkit-mask-position var(--ic-dur) var(--ic-ease),
+    mask-position var(--ic-dur) var(--ic-ease),
+    opacity calc(var(--ic-dur) * .9) cubic-bezier(.45, 0, .55, 1),
+    transform 3.4s cubic-bezier(.16, 1, .3, 1);
 }
-@keyframes ic-reveal { from { clip-path: inset(0 0 100% 0); } }
-@keyframes ic-settle { from { transform: scale(1.12); } }
-@keyframes ic-cover { to { filter: brightness(.35) blur(6px); transform: scale(.97); } }
-@keyframes ic-scan {
-  0% { top: 0; opacity: 1; }
-  92% { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
+/* KNOB: how far the video pushes in and darkens as it leaves */
+.intro-clip.is-done > video {
+  transform: scale(1.06);
+  filter: brightness(.8);
+  transition: transform var(--ic-dur) var(--ic-ease), filter var(--ic-dur) var(--ic-ease);
 }
-@keyframes ic-type { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
 
 /* KNOB: space between home sections */
 .block { margin-top: 70px; }

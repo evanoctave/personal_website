@@ -1,5 +1,5 @@
-// IntroClip: the "fade in and wave" clip under the home page heading. It plays once, then a scan line
-// sweeps down and wipes it into a photo that stays (the Manhattan Beach sunset), and a caption types in.
+// IntroClip: the "fade in and wave" clip under the home page heading. It plays once and, about a second
+// before it ends, eases into a photo that stays (the Manhattan Beach sunset) with a soft wipe.
 // It starts once nothing covers the page (the printer intro or a page warp) so the fade-in is never
 // hidden. Reduced motion skips straight to the photo. Used by HomePage.jsx; styles are .intro-clip in
 // site.css.
@@ -11,12 +11,15 @@ import { prefersReducedMotion } from '../fx/FxProvider.jsx'
 // 1344x1008 from the top centre (drops the burned-in date stamp, stays 4:3), fade in 0.9s
 export const SRC = '/clips/wave.mp4'
 const LABEL = 'Evan sits down in front of the camera and waves'
-// KNOB: the photo the clip turns into (also printed on the page in the printer intro), its crop, its
-// description, and the caption that types in. the wipe's timing lives under .intro-clip in site.css
+// KNOB: the photo the clip turns into (also printed on the page in the printer intro), its crop, and its
+// description. the hand-off's look and timing live under .intro-clip in site.css
 export const STILL = '/photos/mb-pier.jpg'
 const STILL_POSITION = '70% 50%'
 const STILL_ALT = 'Sun setting beside the Manhattan Beach pier'
-const STILL_CAPTION = 'manhattan beach'
+
+// KNOB: how many seconds before the clip ends the hand-off starts. overlapping keeps the wave moving
+// under the wipe instead of freezing on the last frame first
+const LEAD = 1.3
 
 // the printer intro (.pi) and page warp (.pw) both sit on top of the page while they run
 const covered = () => document.querySelector('.pi, .pw')
@@ -38,6 +41,14 @@ export default function IntroClip({ replay = 0 }) {
     } catch {
       // not ready yet; it starts from the top anyway
     }
+    // once playing, check every frame and start the hand-off LEAD seconds before the end
+    const watch = () => {
+      if (video.duration && video.currentTime >= video.duration - LEAD) {
+        setDone(true)
+        return
+      }
+      frame = window.requestAnimationFrame(watch)
+    }
     const start = () => {
       if (covered()) {
         frame = window.requestAnimationFrame(start)
@@ -46,6 +57,7 @@ export default function IntroClip({ replay = 0 }) {
       // autoplay can be refused (low power mode etc.); then skip to the photo rather than sit on black
       const playing = video.play?.()
       playing?.catch?.(() => setDone(true))
+      frame = window.requestAnimationFrame(watch)
     }
     frame = window.requestAnimationFrame(start)
     return () => window.cancelAnimationFrame(frame)
@@ -57,8 +69,6 @@ export default function IntroClip({ replay = 0 }) {
         <video aria-hidden={done} aria-label={LABEL} muted onEnded={() => setDone(true)} playsInline preload="auto" ref={ref} src={SRC} />
       )}
       <img alt={STILL_ALT} aria-hidden={!done} className="intro-clip-after" src={STILL} style={{ objectPosition: STILL_POSITION }} />
-      <span aria-hidden="true" className="intro-clip-scan" />
-      <span aria-hidden="true" className="intro-clip-cap">{STILL_CAPTION}</span>
     </div>
   )
 }
