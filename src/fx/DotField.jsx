@@ -40,10 +40,16 @@ export default function DotField() {
     let frame = 0
 
     const resize = () => {
+      // on phones the address bar grows and shrinks while scrolling, which fires resize with only the
+      // height changing. rebuilding then made the background flash and jump mid-scroll, so only rebuild
+      // when the width changes (or it needs to get taller), and size it for the tallest the screen gets
+      const touch = window.matchMedia?.('(pointer: coarse)').matches
+      const tallest = Math.max(window.innerHeight, touch ? window.screen?.height || 0 : 0)
+      if (width === window.innerWidth && height >= window.innerHeight) return
       // KNOB: max pixel ratio — 2 keeps retina screens crisp; higher = sharper but slower
       const ratio = Math.min(window.devicePixelRatio || 1, 2)
       width = window.innerWidth
-      height = window.innerHeight
+      height = tallest
       canvas.width = width * ratio
       canvas.height = height * ratio
       canvas.style.width = `${width}px`

@@ -185,6 +185,27 @@ describe('site', () => {
     expect(JSON.parse(window.localStorage.getItem('eo-eggs'))).toContain('sixseven')
   })
 
+  it('gives touch screens the site keyboard instead of the native one', () => {
+    // pretend to be a phone: coarse pointer, everything else off
+    vi.stubGlobal('matchMedia', (query) => ({ matches: query.includes('coarse'), addEventListener() {}, removeEventListener() {} }))
+    window.sessionStorage.setItem('eo-printed', '1')
+    renderAt('/home')
+    fireEvent.keyDown(window, { key: '/' })
+    const input = screen.getByRole('textbox')
+    expect(input).toHaveAttribute('inputmode', 'none')
+    fireEvent.focus(input)
+    const press = (name) => fireEvent.pointerDown(screen.getByRole('button', { name }))
+    ;['l', 's'].forEach(press)
+    expect(input).toHaveValue('ls')
+    press('Run')
+    expect(screen.getByText(/home\/\s+work\//)).toBeInTheDocument()
+    // keys still count as typing: a fast 6 then 7 pops the clip
+    press('6')
+    press('7')
+    expect(document.querySelector('.six7')).toHaveAttribute('aria-hidden', 'false')
+    fireEvent.click(screen.getByRole('button', { name: 'Hide keyboard' }))
+  })
+
   it('triggers god mode with the konami code', () => {
     vi.useFakeTimers()
     renderAt('/home')

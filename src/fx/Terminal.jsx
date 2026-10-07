@@ -2,12 +2,14 @@
 // Two ways to show it: the pop-up (rendered inside Overlays.jsx) and `inline`, a window that sits in the
 // home page once the intro clip has gone (HomePage.jsx). Both share every command below.
 // Rendered inside Overlays.jsx; toggles fx state from FxProvider.jsx; `print` calls Receipt.jsx.
+// On touch screens it uses the site's own keyboard (TouchKeyboard.jsx) instead of the phone's.
 // Styles in site.css under .fx-terminal.
 import { useEffect, useId, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { projects } from '../data/projects.js'
 import { EGGS, useFx } from './FxProvider.jsx'
 import { printReceipt } from './Receipt.jsx'
+import TouchKeyboard from './TouchKeyboard.jsx'
 
 // KNOB: pages `ls` lists and `cd <page>` can jump to
 const PAGES = { home: '/home', work: '/work', about: '/about', life: '/life', contact: '/contact', admin: '/admin' }
@@ -21,6 +23,9 @@ const INLINE_GREETING = [
   'try: ls · whoami · work · work 2 · print · coffee',
 ]
 
+// phones and tablets: no mouse, finger only
+const isTouch = () => typeof window !== 'undefined' && Boolean(window.matchMedia?.('(pointer: coarse)').matches)
+
 export default function Terminal({ inline = false }) {
   const navigate = useNavigate()
   const { actions, eggs, findEgg, pop, pulse, setTerminalOpen, terminalOpen } = useFx()
@@ -31,6 +36,8 @@ export default function Terminal({ inline = false }) {
   const [cursor, setCursor] = useState(-1)
   const inputRef = useRef(null)
   const logRef = useRef(null)
+  const [touch] = useState(isTouch)
+  const [keyboard, setKeyboard] = useState(false)
   // delayed follow-up lines (like the `work` hint); cleared if the terminal goes away first
   const timers = useRef([])
   useEffect(() => () => timers.current.forEach(window.clearTimeout), [])
@@ -46,6 +53,20 @@ export default function Terminal({ inline = false }) {
   useEffect(() => {
     logRef.current?.scrollTo?.({ top: logRef.current.scrollHeight })
   }, [lines])
+
+  // with the keyboard up, make sure the input sits just above it rather than behind it
+  useEffect(() => {
+    if (!keyboard) return undefined
+    const frame = window.requestAnimationFrame(() => {
+      const input = inputRef.current
+      const kb = document.querySelector('.tkb')
+      if (!input || !kb) return
+      // measure where the keyboard ends up, not where it is mid slide-in (offsetHeight ignores the slide)
+      const gap = input.getBoundingClientRect().bottom - (window.innerHeight - kb.offsetHeight) + 16
+      if (gap > 0) window.scrollBy({ top: gap, behavior: 'smooth' })
+    })
+    return () => window.cancelAnimationFrame(frame)
+  }, [keyboard])
 
   if (!inline && !terminalOpen) return null
 
@@ -158,14 +179,24 @@ export default function Terminal({ inline = false }) {
     }
   }
 
-  const onSubmit = (event) => {
-    event.preventDefault()
+  const submit = () => {
     const output = run(value)
     if (output !== null) setLines((current) => [...current, `> ${value}`, ...output])
     // KNOB: how many past commands ↑/↓ remembers (30)
     if (value.trim()) setHistory((current) => [value, ...current].slice(0, 30))
     setValue('')
     setCursor(-1)
+  }
+  const onSubmit = (event) => {
+    event.preventDefault()
+    submit()
+  }
+
+  // what the on-screen keyboard's keys do (it has already sent the keydown through the input)
+  const onTouchKey = (key) => {
+    if (key === 'Enter') submit()
+    else if (key === 'Backspace') setValue((current) => current.slice(0, -1))
+    else setValue((current) => current + key)
   }
 
   const onKeyDown = (event) => {
@@ -196,13 +227,18 @@ export default function Terminal({ inline = false }) {
           autoCapitalize="off"
           autoComplete="off"
           id={fieldId}
+          // touch screens get the site's keyboard instead of the phone's
+          inputMode={touch ? 'none' : undefined}
+          onBlur={() => setKeyboard(false)}
           onChange={(event) => setValue(event.target.value)}
+          onFocus={() => touch && setKeyboard(true)}
           onKeyDown={onKeyDown}
           ref={inputRef}
           spellCheck="false"
           value={value}
         />
       </form>
+      {keyboard && <TouchKeyboard onHide={() => inputRef.current?.blur()} onKey={onTouchKey} target={inputRef.current} />}
     </>
   )
 
