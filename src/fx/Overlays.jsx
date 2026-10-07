@@ -208,25 +208,6 @@ function GridOverlay() {
   )
 }
 
-function ScrollProgress() {
-  const barRef = useRef(null)
-  useEffect(() => {
-    const update = () => {
-      const max = document.documentElement.scrollHeight - window.innerHeight
-      if (barRef.current) barRef.current.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`
-    }
-    update()
-    window.addEventListener('scroll', update, { passive: true })
-    window.addEventListener('resize', update)
-    return () => {
-      window.removeEventListener('scroll', update)
-      window.removeEventListener('resize', update)
-    }
-  }, [])
-  // KNOB: the bar is hidden by .fx-progress { display: none } in site.css — change that to show it
-  return <div aria-hidden="true" className="fx-progress" ref={barRef} />
-}
-
 function AwayTitle() {
   useEffect(() => {
     let saved = document.title
@@ -248,7 +229,6 @@ function AwayTitle() {
 export default function Overlays() {
   return (
     <>
-      <ScrollProgress />
       <GridOverlay />
       <Pops />
       <Toasts />

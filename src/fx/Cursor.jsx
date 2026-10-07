@@ -5,16 +5,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { useFx } from './FxProvider.jsx'
 
-// KNOB: what counts as clickable — hovering any of these grows the ring. a data-cursor="text" attribute
-// also sets the ring's label, but .fx-cursor-ring span is display:none in site.css, so it's hidden for now
-const INTERACTIVE = 'a, button, [data-cursor], input, textarea, label'
+// KNOB: what counts as clickable — hovering any of these grows the ring
+const INTERACTIVE = 'a, button, input, textarea, label'
 
 export default function Cursor() {
   const dotRef = useRef(null)
   const ringRef = useRef(null)
   const coordsRef = useRef(null)
   const [enabled, setEnabled] = useState(false)
-  const [label, setLabel] = useState('')
   const [hovering, setHovering] = useState(false)
   const [pressed, setPressed] = useState(false)
   const { findEgg, pulse, pop } = useFx()
@@ -41,7 +39,6 @@ export default function Cursor() {
       target.y = event.clientY
       const hit = event.target.closest?.(INTERACTIVE)
       setHovering(Boolean(hit))
-      setLabel(hit?.dataset?.cursor ?? '')
 
       // KNOB: shake egg — 26 = min px per move to count as a swing, 700 = time window (ms), 7 = flips needed
       const dx = event.clientX - shake.lastX
@@ -97,13 +94,12 @@ export default function Cursor() {
   const ringClass = [
     'fx-cursor-ring',
     hovering && 'is-hovering',
-    label && 'has-label',
     pressed && 'is-pressed',
   ].filter(Boolean).join(' ')
 
   return (
     <div aria-hidden="true" className="fx-cursor">
-      <div className={ringClass} ref={ringRef}><span>{label}</span></div>
+      <div className={ringClass} ref={ringRef} />
       <div className="fx-cursor-dot" ref={dotRef} />
       <div className="fx-cursor-coords" ref={coordsRef} />
     </div>

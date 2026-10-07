@@ -1,9 +1,7 @@
 // Contact page (/contact): email with a copy button, a joke phone button, and social links.
 // the little pop-up messages come from toast() in src/fx/FxProvider.jsx.
+import { EMAIL } from '../data/contact.js'
 import { useFx } from '../fx/FxProvider.jsx'
-
-// KNOB: your email: the link, the copy button, and the fallback toast. HomePage.jsx types it out separately
-const EMAIL = 'evanoctav3@gmail.com'
 
 export default function ContactPage() {
   const { toast } = useFx()

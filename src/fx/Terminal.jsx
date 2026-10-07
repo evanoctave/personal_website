@@ -7,8 +7,8 @@ import { projects } from '../data/projects.js'
 import { EGGS, useFx } from './FxProvider.jsx'
 import { printReceipt } from './Receipt.jsx'
 
-// KNOB: pages `ls` lists and `cd <page>` can jump to (life isn't here — add life: '/life' to reach it)
-const PAGES = { home: '/', work: '/work', about: '/about', contact: '/contact' }
+// KNOB: pages `ls` lists and `cd <page>` can jump to
+const PAGES = { home: '/home', work: '/work', about: '/about', life: '/life', contact: '/contact' }
 // KNOB: line(s) shown when the terminal first opens
 const GREETING = [
   'eo-shell v2.6 — type `help` to see commands.',

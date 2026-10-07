@@ -1,7 +1,7 @@
 // Every project on the site. /work lists them, /work/<slug> is each case study,
 // and /home shows the ones with featured: true. the /work filter buttons come from the tags.
-// to add one: copy an entry, give it a new slug, and put its images in public/work/<folder>/
-// (any folder name, the src paths just have to match). projects.test.js and App.test.jsx check some values.
+// to add one: copy an entry, give it a new slug, and put its images in public/work/<slug>/.
+// projects.test.js and App.test.jsx check some values.
 // KNOB: order of this array = order on /work and /home, and the 'Next:' chain on project pages
 // (projects.test.js expects ai-sentiment-analysis before and rumie after the package tracker)
 export const projects = [
@@ -23,15 +23,13 @@ export const projects = [
     challenge: 'Campus teams need one reliable package workflow that keeps each tracking number, recipient, department, and delivery record connected.',
     solution: 'Built an authenticated Express and SQLite application with carrier detection, camera barcode scanning, grouped intake, shared signature capture, and searchable package records.',
     outcome: 'Used by CSUF IT and Building Engineering for structured receiving, search, and delivery confirmation.',
-    // orbit isn't read anywhere right now (leftover), safe to ignore
-    orbit: { color: 'coral', size: 'large', angle: 12 },
     // KNOB: cover = the big 16:9 image (src under public/, alt, optional position for the crop)
-    cover: { src: '/work/package-tracker/search.jpg', alt: 'Package search page listing unsigned and logged packages with tracking numbers, departments, and carriers (demo data)' },
+    cover: { src: '/work/digital-package-tracker/search.jpg', alt: 'Package search page listing unsigned and logged packages with tracking numbers, departments, and carriers (demo data)' },
     // KNOB: gallery = screenshots under the text: src, alt, caption, ratio (the image width / height).
     // leave it out and the page shows grey placeholder boxes
     gallery: [
-      { src: '/work/package-tracker/log.jpg', alt: 'Package logging form filled in with a UPS tracking number, receiver, type, and department (demo data)', caption: 'Logging a package', ratio: '1148 / 700' },
-      { src: '/work/package-tracker/sign.jpg', alt: 'Recipient signature page with a drawn signature and printed name (demo data)', caption: 'Signing for it', ratio: '1148 / 700' },
+      { src: '/work/digital-package-tracker/log.jpg', alt: 'Package logging form filled in with a UPS tracking number, receiver, type, and department (demo data)', caption: 'Logging a package', ratio: '1148 / 700' },
+      { src: '/work/digital-package-tracker/sign.jpg', alt: 'Recipient signature page with a drawn signature and printed name (demo data)', caption: 'Signing for it', ratio: '1148 / 700' },
     ],
     // KNOB: links on the case study page; null hides one. devpostUrl works too (see Rumie)
     liveUrl: null,
@@ -39,8 +37,6 @@ export const projects = [
     githubUrl: null,
     // KNOB: featured: true puts this project in the home page Work list
     featured: true,
-    // media isn't read anywhere right now
-    media: [],
   },
   {
     slug: 'rumie',
@@ -68,7 +64,6 @@ export const projects = [
     githubUrl: 'https://github.com/evanoctave/rumie-app',
     devpostUrl: 'https://devpost.com/software/rumie',
     featured: true,
-    media: [],
   },
   {
     slug: 'basevolytics',
@@ -91,7 +86,6 @@ export const projects = [
     codeUrl: null,
     githubUrl: 'https://github.com/evanoctave/summer-project',
     featured: true,
-    media: [],
   },
   {
     slug: 'evoeat',
@@ -115,7 +109,6 @@ export const projects = [
     codeUrl: null,
     githubUrl: 'https://github.com/evanoctave/plately',
     featured: true,
-    media: [],
   },
   {
     slug: 'csufsched',
@@ -137,7 +130,6 @@ export const projects = [
     codeUrl: null,
     githubUrl: 'https://github.com/evanoctave/CSUFsched',
     featured: true,
-    media: [],
   },
   {
     slug: 'gspot-eats',
@@ -162,7 +154,6 @@ export const projects = [
     codeUrl: null,
     githubUrl: 'https://github.com/evanoctave/g-spot-eats',
     featured: false,
-    media: [],
   },
   {
     // KNOB: App.test.jsx expects this exact title and GitHub url for this project
@@ -177,16 +168,14 @@ export const projects = [
     challenge: 'Turn raw review text into an approachable project that covers data preparation, model training, evaluation, and interactive analysis.',
     solution: 'Prepared text with NLTK, trained a TF-IDF and Logistic Regression pipeline, then exposed single-text, batch CSV, and model-performance views in Streamlit.',
     outcome: 'Created an end-to-end learning project with model persistence, confidence scores, batch results, and evaluation visuals.',
-    orbit: { color: 'mint', size: 'medium', angle: 142 },
-    cover: { src: '/work/ai-sentiment/analyze.jpg', alt: 'Streamlit app classifying a movie review as positive with 86.6% confidence, shown on a gauge' },
+    cover: { src: '/work/ai-sentiment-analysis/analyze.jpg', alt: 'Streamlit app classifying a movie review as positive with 86.6% confidence, shown on a gauge' },
     gallery: [
-      { src: '/work/ai-sentiment/train.jpg', alt: 'Train Model page with the generated sample training data and cleaned review text', caption: 'Training on generated reviews', ratio: '16 / 10' },
+      { src: '/work/ai-sentiment-analysis/train.jpg', alt: 'Train Model page with the generated sample training data and cleaned review text', caption: 'Training on generated reviews', ratio: '16 / 10' },
     ],
     liveUrl: null,
     codeUrl: null,
     githubUrl: 'https://github.com/evanoctave/AI-project',
     featured: false,
-    media: [],
   },
 ]
 
