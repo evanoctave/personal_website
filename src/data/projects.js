@@ -10,19 +10,20 @@ export const projects = [
     slug: 'digital-package-tracker',
     // KNOB: title (heading, list row, tab title), eyebrow (small line under the title), year, role
     title: 'Digital Package Tracker',
-    eyebrow: 'CSUF internal operations tool',
+    eyebrow: 'Internal tool for Associated Students Inc., CSUF',
     year: '2026',
     role: 'Full-stack developer',
     // KNOB: stack = the "Built with" line. tags = /work filter buttons (projects.test.js lists every tag,
     // and checks this entry's title / role / stack)
     stack: ['Node.js', 'Express', 'SQLite', 'PWA'],
     tags: ['Product', 'Web', 'Backend'],
+    // text fields can hold links written as [words](https://...) (components/RichText.jsx)
     // KNOB: summary = list row + lede. challenge / solution / outcome = the "The problem",
     // "What I built", and "How it went" sections
     summary: 'Barcode-to-signature package intake for campus teams that need a durable delivery record.',
     challenge: 'I noticed the Building Engineering team at my school was tracking their incoming packages on paper...many, many pages of paper.',
     solution: 'Built an authenticated Express and SQLite application with carrier detection, camera barcode scanning, grouped intake, shared signature capture, and searchable package records.',
-    outcome: 'Used by CSUF IT, CSUF Building Engineering, and other CSU campuses for structured receiving, search, and delivery confirmation. Maintained by me and the IT department as of Summer 2026',
+    outcome: 'Cut average handling time per package by 70%. Used by CSUF IT, CSUF Building Engineering, and other CSU campuses for structured receiving, search, and delivery confirmation. Maintained by me and the IT department as of summer 2026.',
     // KNOB: cover = the big 16:9 image (src under public/, alt, optional position for the crop)
     cover: { src: '/work/digital-package-tracker/search.jpg', alt: 'Package search page listing unsigned and logged packages with tracking numbers, departments, and carriers (demo data)' },
     // KNOB: gallery = screenshots under the text: src, alt, caption, ratio (the image width / height).
@@ -43,7 +44,7 @@ export const projects = [
     title: 'Rumie',
     eyebrow: 'DesignVerse 2026, Major League Hacking prize winner',
     year: '2026',
-    role: 'Mobile developer, in collaboration with <Link to=" Anjelo Go',
+    role: 'Mobile developer, in collaboration with [Anjelo Go](https://github.com/anjelogo)',
     stack: ['Flutter', 'Dart', 'MongoDB Atlas', 'Cloudflare', 'Vultr'],
     tags: ['Mobile', 'Product'],
     summary: 'Swipe, match, and chat to find a compatible roommate and a place to live.',
@@ -66,7 +67,7 @@ export const projects = [
     featured: true,
   },
   {
-    slug: 'Evolytics',
+    slug: 'evolytics',
     title: 'Evolytics',
     eyebrow: 'MLB player analytics dashboard',
     year: '2026',
@@ -74,13 +75,13 @@ export const projects = [
     stack: ['React', 'TypeScript', 'Express', 'Zod', 'Recharts', 'Tailwind'],
     tags: ['Web', 'Data', 'Backend'],
     summary: 'Search any MLB player, read the trends, and compare two players side by side.',
-    challenge: 'My favorite website for baseball analytics, <a href="https://baseball-reference.com" target="_blank" rel="noreferrer">Baseball Reference, looks very cramped. So, I made a baseball analytics website with a more open-concept approach--purely for improved aesthetics. I also added my own stat!</a>.',
+    challenge: 'My favorite website for baseball analytics, [Baseball Reference](https://www.baseball-reference.com), looks very cramped. So I made a baseball analytics site with a more open-concept approach, purely for the aesthetics. I also added my own stat!',
     solution: "An npm-workspaces monorepo with an Express and Zod API over the public MLB Stats API, cached for five minutes, and a React and Recharts front end. It covers player search, season stats and game logs, wOBA, ISO, and FIP with their formulas, trend charts in each team's colors, a 0 to 100 Hot/Cold form score, head-to-head comparison, league leaders, standings, rosters, and a saved watchlist.",
     outcome: 'Seven API routes and eight pages running on public data with no API keys, with backend tests on the routes.',
-    cover: { src: '/work/basevolytics/home.jpg', alt: 'Basevolytics home page with a player search and a Shohei Ohtani form card' },
+    cover: { src: '/work/evolytics/home.jpg', alt: 'Evolytics home page with a player search and a Shohei Ohtani form card' },
     gallery: [
-      { src: '/work/basevolytics/player.jpg', alt: 'Basevolytics player page for Shohei Ohtani with slash line, form score, and season totals', caption: 'Player page' },
-      { src: '/work/basevolytics/leaders.jpg', alt: 'Basevolytics league leaders table for batting average', caption: 'League leaders' },
+      { src: '/work/evolytics/player.jpg', alt: 'Evolytics player page for Shohei Ohtani with slash line, form score, and season totals', caption: 'Player page' },
+      { src: '/work/evolytics/leaders.jpg', alt: 'Evolytics league leaders table for batting average', caption: 'League leaders' },
     ],
     liveUrl: null,
     codeUrl: null,
@@ -119,9 +120,9 @@ export const projects = [
     stack: ['TypeScript', 'Fastify', 'PostgreSQL', 'React', 'Docker'],
     tags: ['Web', 'Backend', 'Data'],
     summary: 'Builds conflict-free CSUF class schedules from the catalog, with professor ratings alongside.',
-    challenge: 'CSUf schedule builder kinda...sucks, so I built my own that actually works.',
-    solution: 'Scrapers pull the CSUF catalog and RateMyProfessor ratings into Postgres behind a Fastify API, and a solver package enumerates, filters, and scores section combinations. The React front-end has a drag-and-drop calendar, course search, professor popovers, share links, and .ics calendar export for all the Apple users.',
-    outcome: 'Runs with Docker Compose and is covered by unit, integration, and Playwright tests in CI. A full catalog scrape takes about 90 minutes--it is not hosted publicly yet.',
+    challenge: "CSUF's schedule builder kinda...sucks, so I built my own that actually works.",
+    solution: 'Scrapers pull the CSUF catalog and RateMyProfessor ratings into Postgres behind a Fastify API, and a solver package enumerates, filters, and scores section combinations. The React front-end has a drag-and-drop calendar, course search, professor popovers, share links, and .ics export that drops straight into any calendar app.',
+    outcome: 'Runs with Docker Compose and is covered by unit, integration, and Playwright tests in CI. A full catalog scrape takes about 90 minutes, and it is not hosted publicly yet.',
     cover: { src: '/work/csufsched/solver.jpg', alt: 'Week calendar with CPSC 131, CPSC 240, CPSC 315, and MATH 270A placed around a busy block, next to ranked generated schedules (demo data)' },
     gallery: [
       { src: '/work/csufsched/professor.jpg', alt: 'Course search showing CPSC 131 sections with a professor rating popover (demo data)', caption: 'Sections with professor ratings', ratio: '1152 / 800' },
@@ -132,6 +133,26 @@ export const projects = [
     featured: true,
   },
   {
+    // written from the résumé line and the server setup; reword the challenge to taste
+    slug: 'evoserver',
+    title: 'evoserver',
+    eyebrow: 'Self-hosted infrastructure',
+    year: '2026',
+    role: 'Sole operator',
+    stack: ['Linux', 'Docker', 'nginx', 'Cloudflare Tunnels', 'Tailscale'],
+    tags: ['Infra', 'Backend'],
+    summary: 'The Linux server that runs this site and the websites for my family\'s businesses.',
+    challenge: 'I wanted real production sites running on hardware I control, without exposing the server to the open internet.',
+    solution: 'Each site runs in its own Docker container and is published through Cloudflare Tunnels, so the server has zero open inbound ports; Tailscale handles private remote access. This portfolio is a stock nginx container serving a folder that a one-command deploy script updates.',
+    outcome: 'Three production websites live, with me as the sole operator for DNS, TLS, updates, and recovery.',
+    cover: { src: null },
+    gallery: [],
+    liveUrl: 'https://evanoctave.dev',
+    codeUrl: null,
+    githubUrl: null,
+    featured: false,
+  },
+  {
     slug: 'gspot-eats',
     title: 'GSpot Eats',
     eyebrow: 'CSUF dining companion',
@@ -140,7 +161,7 @@ export const projects = [
     stack: ['Expo', 'React Native', 'Supabase', 'SQLite', 'React Query'],
     tags: ['Mobile', 'Product', 'Data'],
     summary: 'Dining-hall menus, macro tracking, and a plate planner for CSUF students.',
-    challenge: 'I wanted a food tracking app thats tailored to my university\'s dining hall, :).',
+    challenge: 'I wanted a food tracking app tailored to my university\'s dining halls :)',
     solution: 'An Expo app with a day view that builds a plate for a chosen diet direction from the current meal, an on-device diary of meal snapshots, and progress against personal targets. A Supabase cron job and edge function are set up to ingest the menu during each meal window and store versioned snapshots.',
     outcome: 'Runs end to end on a clearly labeled sample menu. Live menu ingestion stays switched off until data permission is in writing.',
     cover: { src: '/work/gspot-eats/today.jpg', alt: 'GSpot Eats Today screen suggesting a high-protein plate across three dining stations', position: '50% 20%' },
@@ -167,7 +188,7 @@ export const projects = [
     summary: 'A train-to-analysis workflow for classifying movie-review sentiment.',
     challenge: 'My first machine learning project--wanted it to be a real-world application based on a practical problem.',
     solution: 'Prepared text with NLTK, trained a TF-IDF and Logistic Regression pipeline, then exposed single-text, batch CSV, and model-performance views in Streamlit.',
-    outcome: 'Created an end-to-end learning project with model persistence, confidence scores, batch results, and evaluation visuals.',
+    outcome: 'An end-to-end pipeline with model persistence, confidence scores, batch results, and evaluation visuals. It trains on generated sample reviews, so treat its accuracy as a demo, not a benchmark.',
     cover: { src: '/work/ai-sentiment-analysis/analyze.jpg', alt: 'Streamlit app classifying a movie review as positive with 86.6% confidence, shown on a gauge' },
     gallery: [
       { src: '/work/ai-sentiment-analysis/train.jpg', alt: 'Train Model page with the generated sample training data and cleaned review text', caption: 'Training on generated reviews', ratio: '16 / 10' },
@@ -179,7 +200,14 @@ export const projects = [
   },
 ]
 
-export const getProjectBySlug = (slug) => projects.find((project) => project.slug === slug)
+// KNOB: old project URLs that should still work after a rename (old slug -> current slug)
+const RENAMED = { basevolytics: 'evolytics' }
+
+// slugs match case-insensitively, so /work/Evolytics and /work/evolytics both land on the page
+export const getProjectBySlug = (slug = '') => {
+  const wanted = RENAMED[slug.toLowerCase()] ?? slug.toLowerCase()
+  return projects.find((project) => project.slug === wanted)
+}
 
 // filter tags = 'All' + every tag used above, alphabetical (projects.test.js asserts the full list)
 export const getProjectTags = () => [

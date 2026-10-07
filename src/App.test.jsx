@@ -90,6 +90,12 @@ describe('site', () => {
     expect(document.body.style.overflow).toBe('')
   })
 
+  it('turns [words](url) in project text into real links', () => {
+    renderAt('/work/rumie')
+    expect(screen.getByRole('link', { name: 'Anjelo Go' })).toHaveAttribute('href', 'https://github.com/anjelogo')
+    expect(screen.queryByText(/\[Anjelo Go\]/)).not.toBeInTheDocument()
+  })
+
   it('roasts anyone who tries /admin and records the egg', () => {
     renderAt('/admin')
     expect(screen.getByRole('heading', { level: 1, name: 'Very, very clever.' })).toBeInTheDocument()

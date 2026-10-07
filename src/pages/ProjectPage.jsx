@@ -2,6 +2,7 @@
 // reads cover, gallery, links, and the problem / built / went text from that entry. unknown slug -> 404.
 import { Link, useParams } from 'react-router-dom'
 import Placeholder from '../components/Placeholder.jsx'
+import RichText from '../components/RichText.jsx'
 import { getAdjacentProjects, getProjectBySlug } from '../data/projects.js'
 import NotFoundPage from './NotFoundPage.jsx'
 
@@ -37,8 +38,9 @@ export default function ProjectPage() {
       {/* KNOB: back link text */}
       <p><Link to="/work">← back</Link></p>
       <h1>{project.title}</h1>
-      <p className="muted">{project.eyebrow}, {project.year}. {project.role}.</p>
-      <p className="lede">{project.summary}</p>
+      {/* text fields can hold links written as [words](https://...) (see components/RichText.jsx) */}
+      <p className="muted"><RichText text={project.eyebrow} />, {project.year}. <RichText text={project.role} />.</p>
+      <p className="lede"><RichText text={project.summary} /></p>
 
       {/* KNOB: cover shape is fixed at 16 / 9 here; layout: 'phone' shows the screenshot row instead */}
       {phone ? shots : project.cover?.src && <Placeholder alt={project.cover.alt} label="cover" position={project.cover.position} ratio="16 / 9" src={project.cover.src} />}
@@ -61,11 +63,11 @@ export default function ProjectPage() {
 
       {/* KNOB: the three section headings on every project page */}
       <h2>The problem</h2>
-      <p>{project.challenge}</p>
+      <p><RichText text={project.challenge} /></p>
       <h2>What I built</h2>
-      <p>{project.solution}</p>
+      <p><RichText text={project.solution} /></p>
       <h2>How it went</h2>
-      <p>{project.outcome}</p>
+      <p><RichText text={project.outcome} /></p>
 
       {!phone && gallery.length > 0 && shots}
 
