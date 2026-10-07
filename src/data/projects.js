@@ -66,8 +66,8 @@ export const projects = [
     featured: true,
   },
   {
-    slug: 'basevolytics',
-    title: 'Basevolytics',
+    slug: 'Evolytics',
+    title: 'Evolytics',
     eyebrow: 'MLB player analytics dashboard',
     year: '2026',
     role: 'Full-stack developer',
@@ -112,7 +112,7 @@ export const projects = [
   },
   {
     slug: 'csufsched',
-    title: 'CSUFsched',
+    title: 'CSUF Sched',
     eyebrow: 'Class schedule builder',
     year: '2026',
     role: 'Full-stack developer',
