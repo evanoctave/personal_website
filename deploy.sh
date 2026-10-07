@@ -9,6 +9,7 @@
 # doesn't show up.
 #
 # usage: ./deploy.sh   (asks for the evoserver password once)
+echo "YEEAAAAH HERE WE GOOOOOOOOOOO"
 set -euo pipefail
 cd "$(dirname "$0")"
 
@@ -16,9 +17,9 @@ cd "$(dirname "$0")"
 HOST=evoserver
 DEST=/home/evanoctav3/evanoctave/dist
 
-echo "› tests"
+echo "npm vitest run --tests on my life this shit runnin tests"
 npx vitest run --reporter=dot
-echo "› build"
+echo "npm run build u feel me"
 npm run build
 # nginx on the server must be able to read every file. a few photo exports came out owner-only (0600)
 # on this Mac, rsync copied that over, and nginx answered 403 for them. (macOS's openrsync ignores
@@ -29,17 +30,21 @@ chmod -R a+rX dist
 SOCK="$(mktemp -u "${TMPDIR:-/tmp}/eo-deploy.XXXXXX")"
 SSH="ssh -o ControlMaster=auto -o ControlPath=$SOCK -o ControlPersist=60"
 trap '$SSH -O exit "$HOST" 2>/dev/null || true' EXIT
-echo "› connecting to $HOST"
+echo "hol on twin lemme connect to $HOST real quick"
 $SSH -fN "$HOST"
 
 # order matters, so nobody gets a page whose files aren't there yet:
 # 1) the new hashed assets and media, 2) index.html, which switches visitors to them,
 # 3) then clear out files the new build no longer has
-echo "› uploading"
+echo "gotta upload some files n shi sit tight brotha, uploading rn"
 rsync -az -e "$SSH" --exclude index.html dist/ "$HOST:$DEST/"
 rsync -az -e "$SSH" dist/index.html "$HOST:$DEST/index.html"
 rsync -az --delete -e "$SSH" dist/ "$HOST:$DEST/"
 # and on the server too, in case anything already there is unreadable
 $SSH "$HOST" "chmod -R a+rX '$DEST'"
+echo "almost done yo"
 
-echo "› live: https://evanoctave.dev"
+echo "done, hope its good luh bro them tests better have passed"
+echo "better not have no errors bruh"
+echo "im not playin"
+echo "no dumb shit"
