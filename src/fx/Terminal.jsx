@@ -92,7 +92,7 @@ export default function Terminal({ inline = false }) {
       }
       case 'whoami':
         // KNOB: whoami reply
-        return ['guest. but the site belongs to Evan   — developer, designer, tinkerer.']
+        return ['idk, who r u?']
       case 'date':
         return [new Date().toString()]
       case 'echo':
@@ -113,8 +113,8 @@ export default function Terminal({ inline = false }) {
         actions.invert()
         return ['[sudo] password for guest: ********', 'access granted. please use your powers responsibly.']
       case 'rm':
-        pulse('fx-wobble', 700)
-        return ['nice try.']
+        pulse('fx-wobble', 100)
+        return ['lol nice try bud, not today.']
       case 'konami':
         return ['↑ ↑ ↓ ↓ ← → ← → B A — but not in here.']
       case 'hello':
@@ -122,16 +122,16 @@ export default function Terminal({ inline = false }) {
         return ['hi :)']
       case 'vim':
       case 'emacs':
-        return ['let’s not start that here.']
+        return ['let’s DEFINITELY not start that here.']
       case 'print':
       case 'receipt':
         printReceipt()
-        return ['sending job to EO-1…']
+        return ['sending job to E. OCTAVE-1…']
       case 'coffee':
         return ['      ( (', '       ) )', '    ........', '    |      |]', '    \\      /', '     `----\'']
       case 'clear':
         setLines([])
-        return null
+        return ['clear as day.']
       case 'exit':
       case 'quit':
         close()
