@@ -28,16 +28,16 @@ export default function ConstructionPage() {
           {/* KNOB: the gate copy: stamp, big heading, lede, follow-up, link text. */}
           {/* App.test.jsx checks the heading, */}
           {/* the 'Enter unfinished site anyway' text, and that it links to /home */}
-          <p className="construction-stamp">Status: making things</p>
-          <h1 aria-label="UNDER CONSTRUCTION" id="construction-title">UNDER<br />CONSTRUCTION</h1>
-          <p className="construction-lede">Portfolio currently contains 18% content, 62% loose wires, and 20% suspicious confidence.</p>
-          <p className="construction-copy">Please return in about one week, when this place has projects, photos, and fewer exposed cables.</p>
-          <Link className="construction-link" to="/home">Enter unfinished site anyway</Link>
+          <p className="construction-stamp">im a useless box</p>
+          <h1 aria-label="UNDER CONSTRUCTION" id="construction-title">HELLO_WORLD <br /></h1>
+          <p className="construction-lede">Portfolio currently contains about 18% content, 34% loose cables, and 48% super mario galaxy mentions. Go ahead, snoop around. No judging here.</p>
+          <p className="construction-copy">welcome to my website!</p>
+          <Link className="construction-link" to="/home">npx ts-node portfolio.ts</Link>
         </section>
 
         {/* KNOB: the three photos + captions (files in public/photos/). App.test.jsx expects 3 images. */}
         {/* the --wide / --tall / --close classes pick each spot in site.css */}
-        <section aria-label="Recent signs of life" className="construction-gallery">
+       {/*  <section aria-label="Recent signs of life" className="construction-gallery">
           <figure className="construction-photo construction-photo--wide">
             <img alt="Evan with arms out wide in an empty parking lot at night" src="/photos/PICT0025.jpg" />
             <figcaption>Evidence of activity, maybe.</figcaption>
@@ -50,11 +50,11 @@ export default function ConstructionPage() {
             <img alt="Hand splayed over packs of stew meat" src="/photos/PICT0010.jpg" />
             <figcaption>Do not feed after midnight.</figcaption>
           </figure>
-        </section>
+        </section> */}
       </main>
 
       {/* KNOB: footer line */}
-      <footer className="construction-footer">Site in temporary hibernation. Check back soon.</footer>
+      <footer className="construction-footer">Evan Octave - 2026 - All rights reserved.</footer>
     </div>
   )
 }
