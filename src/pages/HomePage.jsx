@@ -11,7 +11,7 @@ import WorkList from '../components/WorkList.jsx'
 import { prefersReducedMotion } from '../fx/FxProvider.jsx'
 import PrinterIntro, { willPrint } from '../fx/PrinterIntro.jsx'
 import Terminal from '../fx/Terminal.jsx'
-import { EMAIL } from '../data/contact.js'
+import { EMAIL, RESUME } from '../data/contact.js'
 import { projects } from '../data/projects.js'
 
 // a few from the digicam. the full roll is on /life
@@ -91,12 +91,11 @@ export default function HomePage() {
         </h1>
         {/* KNOB: the line under the heading (your title) */}
         <p>
-          IT Assistant at California State University, Fullerton
+          Aspiring Software Engineer / Current IT Assistant at Associated Students Inc., Cal State Fullerton
         </p>
         {/* KNOB: the small note under that */}
         <p className="muted">
-          Summary of my work and projects. Contains a little bit about me.
-          Press <kbd>?</kbd> for...idk figure it out.
+          My work, my projects, and a little bit of me. Press <kbd>?</kbd> for...idk, figure it out.
         </p>
         {/* KNOB: replay button text (hidden when reduced motion is on) */}
         {!prefersReducedMotion() && (
@@ -126,8 +125,8 @@ export default function HomePage() {
           {/* KNOB: the about blurb + its link text */}
           <h2 id="about-title">About</h2>
           <p>
-            Most of what I do professionally includes mashing a keyboard, keeping my Github repository green, and plugging in cables.
-            Ask me about Typescript. Or gcc vs. clang. or bit-packing. <a href="https://madibarreau.com" rel="noreferrer" target="_blank">Or my sister's art!</a></p>
+            Most of what I do professionally is mashing a keyboard, keeping my GitHub green, and plugging in cables.
+            Ask me about TypeScript, gcc vs. clang, or bit-packing. <a href="https://madibarreau.com" rel="noreferrer" target="_blank">Or my sister's art!</a></p>
             
             <p>Don't ask me about LeBron leaving the Lakers. I'm heartbroken, too.
           </p>
@@ -155,7 +154,8 @@ export default function HomePage() {
         <h2 id="contact-title">Say hi</h2>
         <p>
           Best way to reach me is email: <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.
-          Or go to the <Link to="/contact">contact page</Link>.
+          Or go to the <Link to="/contact">contact page</Link>. Here&apos;s my{' '}
+          <a href={RESUME} rel="noreferrer" target="_blank">résumé</a>, too.
         </p>
       </section>
     </div>

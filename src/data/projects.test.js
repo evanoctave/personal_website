@@ -21,7 +21,7 @@ describe('project templates', () => {
   })
 
   it('returns unique filter tags', () => {
-    expect(getProjectTags()).toEqual(['All', 'AI', 'Backend', 'Data', 'Mobile', 'Product', 'Web'])
+    expect(getProjectTags()).toEqual(['All', 'AI', 'Backend', 'Data', 'Infra', 'Mobile', 'Product', 'Web'])
   })
 
   it('wraps adjacent project navigation', () => {
