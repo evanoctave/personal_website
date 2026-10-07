@@ -16,6 +16,7 @@ export const EGGS = {
   lost: 'Got lost on purpose',
   admin: 'Tried the admin page',
   print: 'Tried to print the page',
+  sixseven: 'Typed 67',
 }
 
 // KNOB: localStorage key for found eggs — renaming it resets everyone's progress
@@ -218,7 +219,8 @@ export function FxProvider({ children }) {
       }
 
       // KNOB: any other key pops itself on screen, uppercased
-      if (event.key.length === 1 && event.key !== ' ') pop(event.key.toUpperCase())
+      // a fast 67 shows the clip (SixSeven.jsx) instead of the 7 pop
+      if (event.key.length === 1 && event.key !== ' ' && !event.fxSixSeven) pop(event.key.toUpperCase())
     }
 
     window.addEventListener('keydown', onKey)

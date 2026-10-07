@@ -169,6 +169,22 @@ describe('site', () => {
     expect(JSON.parse(window.localStorage.getItem('eo-eggs'))).toContain('print')
   })
 
+  it('pops the 67 clip when 7 follows 6 fast, and only then', () => {
+    vi.useFakeTimers()
+    renderAt('/home')
+    fireEvent.keyDown(window, { key: '6' })
+    act(() => { vi.advanceTimersByTime(1000) })
+    fireEvent.keyDown(window, { key: '7' })
+    // the player is always mounted (preloaded); aria-hidden says whether it's up
+    expect(document.querySelector('.six7')).toHaveAttribute('aria-hidden', 'true')
+    fireEvent.keyDown(window, { key: '6' })
+    fireEvent.keyDown(window, { key: '7' })
+    expect(document.querySelector('.six7')).toHaveAttribute('aria-hidden', 'false')
+    expect(document.querySelector('.six7 video')).toHaveAttribute('src', '/clips/67.mp4')
+    expect(screen.getByText('67 × 1')).toBeInTheDocument()
+    expect(JSON.parse(window.localStorage.getItem('eo-eggs'))).toContain('sixseven')
+  })
+
   it('triggers god mode with the konami code', () => {
     vi.useFakeTimers()
     renderAt('/home')

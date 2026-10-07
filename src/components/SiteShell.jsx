@@ -10,6 +10,7 @@ import { EGGS, useFx } from '../fx/FxProvider.jsx'
 import Lightbox from '../fx/Lightbox.jsx'
 import Overlays from '../fx/Overlays.jsx'
 import Receipt from '../fx/Receipt.jsx'
+import SixSeven from '../fx/SixSeven.jsx'
 
 // KNOB: your name in every tab title ("Work | Evan Octave"). App.test.jsx expects "Life | Evan Octave" etc.
 const SITE = 'Evan Octave'
@@ -103,6 +104,7 @@ export default function SiteShell() {
       <Overlays />
       <Lightbox />
       <Receipt />
+      <SixSeven />
     </div>
   )
 }

@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { EGGS, prefersReducedMotion, useFx } from './FxProvider.jsx'
+import { readSixSevenCount } from './SixSeven.jsx'
 
 // Easter egg: ⌘P / Ctrl+P (or `print` in the terminal) doesn't open the print
 // dialog. The site's printer spits out a thermal receipt of your visit instead.
@@ -102,6 +103,7 @@ export default function Receipt() {
             <Row label="TIME ON SITE" value={clock(receipt.time)} />
             <Row label="KEYS PRESSED" value={receipt.keys} />
             <Row label="SECRETS FOUND" value={`${found}/${Object.keys(EGGS).length}`} />
+            <Row label="67s TYPED" value={readSixSevenCount()} />
             <hr />
             <Row label="1 × PORTFOLIO VISIT" value="$0.00" />
             <Row label={`${receipt.keys} × KEY PRESS @ ${dollars(CENTS_PER_KEY)}`} value={dollars(keyCents)} />

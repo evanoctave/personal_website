@@ -1316,3 +1316,22 @@ main { min-height: 60vh; padding-bottom: 60px; }
 /* KNOB: the footer's bait admin link */
 .footer-admin { margin-left: 10px; color: var(--muted); opacity: .5; text-decoration: none; }
 .footer-admin:hover { opacity: 1; text-decoration: underline; }
+
+/* 67 (SixSeven.jsx): the clip pops up in the middle of the screen */
+/* no animation: the clip appears the moment it starts playing and vanishes the moment it ends. the player
+   stays mounted and preloaded (hidden) so a 67 starts it instantly */
+.six7 { position: fixed; inset: 0; z-index: 91; display: grid; place-items: center; padding: 16px; visibility: hidden; pointer-events: none; }
+.six7.is-on { visibility: visible; pointer-events: auto; }
+/* KNOB: clip size and corner rounding */
+.six7-card {
+  position: relative;
+  width: min(380px, 80vw);
+  margin: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #000;
+  box-shadow: 0 30px 80px rgb(0 0 0 / .6);
+}
+.six7-card video { display: block; width: 100%; height: auto; }
+.six7-count { position: absolute; left: 10px; top: 10px; padding: 3px 8px; border-radius: 999px; background: rgb(0 0 0 / .6); color: #fff; font: 700 12px var(--mono); letter-spacing: .06em; }
+.six7-close { position: absolute; right: 10px; top: 10px; padding: 3px 8px; border: 0; border-radius: 999px; background: rgb(0 0 0 / .6); color: #fff; font: 11px var(--mono); cursor: pointer; }
