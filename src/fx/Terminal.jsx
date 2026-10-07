@@ -31,6 +31,12 @@ export default function Terminal({ inline = false }) {
   const [cursor, setCursor] = useState(-1)
   const inputRef = useRef(null)
   const logRef = useRef(null)
+  // delayed follow-up lines (like the `work` hint); cleared if the terminal goes away first
+  const timers = useRef([])
+  useEffect(() => () => timers.current.forEach(window.clearTimeout), [])
+  const later = (ms, extra) => {
+    timers.current.push(window.setTimeout(() => setLines((current) => [...current, ...extra]), ms))
+  }
 
   useEffect(() => {
     // the pop-up grabs focus when it opens; the inline one waits to be clicked
@@ -83,6 +89,8 @@ export default function Terminal({ inline = false }) {
       }
       case 'work':
       case 'projects':
+        // KNOB: the follow-up hint and how long it waits after the list (ms)
+        later(750, ["try 'open' then a number to open that specific project"])
         return projects.map((project, i) => `[${i + 1}] ${project.title} — ${project.year}`)
       case 'open': {
         const project = projects[Number(arg) - 1]
@@ -116,8 +124,12 @@ export default function Terminal({ inline = false }) {
         pulse('fx-wobble', 100)
         return ['lol nice try bud, not today.']
       case 'konami':
-        return ['↑ ↑ ↓ ↓ ← → ← → B A — but not in here.']
+        return ['up, up, down, down, left, right, left, right, B, A...but not in here.']
       case 'hello':
+      case 'what\'s up':
+      case 'whats up':
+      case 'sup':
+        return ['yo.']
       case 'hi':
         return ['hi :)']
       case 'vim':
