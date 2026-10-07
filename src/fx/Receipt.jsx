@@ -6,10 +6,17 @@ import { EGGS, prefersReducedMotion, useFx } from './FxProvider.jsx'
 // Easter egg: ⌘P / Ctrl+P (or `print` in the terminal) doesn't open the print
 // dialog. The site's printer spits out a thermal receipt of your visit instead.
 // Click it or press Esc to tear it off.
+// Every key pressed after the printer intro costs a cent, and the receipt bills you for it.
 export const printReceipt = () => window.dispatchEvent(new CustomEvent('fx:receipt'))
 
 const pad = (n) => String(n).padStart(2, '0')
 const clock = (ms) => `${pad(Math.floor(ms / 60000))}:${pad(Math.floor(ms / 1000) % 60)}`
+// KNOB: price per key press, in cents (1 = $0.01)
+const CENTS_PER_KEY = 1
+// money is kept in whole cents so it never picks up floating-point dust like $0.30000000000000004
+const dollars = (cents) => `$${(cents / 100).toFixed(2)}`
+// keys only count once the printer intro (the .pi overlay) is off the screen
+const introPlaying = () => Boolean(document.querySelector('.pi'))
 const stamp = (d) => `${pad(d.getMonth() + 1)}/${pad(d.getDate())}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`
 
 // one receipt line: label on the left, value on the right, dotted leader between
@@ -53,7 +60,8 @@ export default function Receipt() {
         tear()
         return
       }
-      if (!event.repeat) visit.current.keys += 1
+      // held-down repeats don't count, and neither does anything pressed during the intro (like skipping it)
+      if (!event.repeat && !introPlaying()) visit.current.keys += 1
     }
     window.addEventListener('keydown', onKey)
     window.addEventListener('fx:receipt', print)
@@ -67,6 +75,7 @@ export default function Receipt() {
 
   // eggs from the closure can lag one render behind findEgg('print'); count it either way
   const found = new Set([...eggs, 'print']).size
+  const keyCents = receipt.keys * CENTS_PER_KEY
 
   return (
     <aside aria-label="Receipt of your visit" className={`rc${tearing ? ' rc--tear' : ''}`} key={receipt.id}>
@@ -95,9 +104,10 @@ export default function Receipt() {
             <Row label="SECRETS FOUND" value={`${found}/${Object.keys(EGGS).length}`} />
             <hr />
             <Row label="1 × PORTFOLIO VISIT" value="$0.00" />
+            <Row label={`${receipt.keys} × KEY PRESS @ ${dollars(CENTS_PER_KEY)}`} value={dollars(keyCents)} />
             <Row label="COOKIES" value="NONE" />
             <Row label="TAX (VIBES)" value="$0.00" />
-            <p className="rc-total"><span>TOTAL</span><span>$0.00</span></p>
+            <p className="rc-total"><span>TOTAL</span><span>{dollars(keyCents)}</span></p>
             <hr />
             <p className="rc-center">THANK YOU, COME AGAIN</p>
             <span className="rc-code" />

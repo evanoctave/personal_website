@@ -142,13 +142,19 @@ describe('site', () => {
   })
 
   it('prints a receipt instead of the print dialog and counts it as an egg', async () => {
+    // intro already seen, so key presses count from the start
+    window.sessionStorage.setItem('eo-printed', '1')
     renderAt('/home')
+    ;['q', 'w', 'e'].forEach((key) => fireEvent.keyDown(window, { key }))
     const event = new KeyboardEvent('keydown', { key: 'p', metaKey: true, cancelable: true, bubbles: true })
     act(() => { window.dispatchEvent(event) })
     expect(event.defaultPrevented).toBe(true)
     const receipt = screen.getByRole('complementary', { name: 'Receipt of your visit' })
     expect(receipt).toHaveTextContent('/home')
     expect(receipt).toHaveTextContent('SECRETS FOUND')
+    // a cent a key: three presses before printing
+    expect(receipt).toHaveTextContent('3 × KEY PRESS @ $0.01')
+    expect(receipt).toHaveTextContent(/TOTAL\s*\$0\.03/)
     expect(JSON.parse(window.localStorage.getItem('eo-eggs'))).toContain('print')
   })
 
