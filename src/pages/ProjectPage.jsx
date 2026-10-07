@@ -5,12 +5,6 @@ import Placeholder from '../components/Placeholder.jsx'
 import { getAdjacentProjects, getProjectBySlug } from '../data/projects.js'
 import NotFoundPage from './NotFoundPage.jsx'
 
-// until a project has its own gallery: [{ src, alt, ratio }]
-// KNOB: the grey boxes shown when a project has no gallery yet
-const emptyGallery = [
-  { label: 'screenshot', ratio: '16 / 10' },
-  { label: 'screenshot', ratio: '16 / 10' },
-]
 
 export default function ProjectPage() {
   const { slug } = useParams()
@@ -18,7 +12,8 @@ export default function ProjectPage() {
   if (!project) return <NotFoundPage />
 
   const { next } = getAdjacentProjects(slug)
-  const gallery = project.gallery?.length ? project.gallery : emptyGallery
+  // a project without images just leaves them out (grey placeholder boxes read as unfinished)
+  const gallery = project.gallery ?? []
   // phone apps lead with a row of screenshots instead of a cropped 16:9 cover
   const phone = project.layout === 'phone'
   // KNOB: link labels on a project page (App.test.jsx expects 'GitHub'). a new *Url field needs a line here
@@ -46,7 +41,7 @@ export default function ProjectPage() {
       <p className="lede">{project.summary}</p>
 
       {/* KNOB: cover shape is fixed at 16 / 9 here; layout: 'phone' shows the screenshot row instead */}
-      {phone ? shots : <Placeholder alt={project.cover?.alt} label="cover" position={project.cover?.position} ratio="16 / 9" src={project.cover?.src} />}
+      {phone ? shots : project.cover?.src && <Placeholder alt={project.cover.alt} label="cover" position={project.cover.position} ratio="16 / 9" src={project.cover.src} />}
 
       {/* KNOB: the facts labels ('Built with', 'Links') */}
       <dl className="facts">
@@ -72,7 +67,7 @@ export default function ProjectPage() {
       <h2>How it went</h2>
       <p>{project.outcome}</p>
 
-      {!phone && shots}
+      {!phone && gallery.length > 0 && shots}
 
       {/* KNOB: 'Next:' link. follows the order of the projects list in projects.js and wraps around */}
       {next && next.slug !== project.slug && (

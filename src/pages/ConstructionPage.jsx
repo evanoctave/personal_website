@@ -11,7 +11,7 @@ export default function ConstructionPage() {
 
   useEffect(() => {
     // KNOB: tab title for this page
-    document.title = 'Under Construction | Evan Octave'
+    document.title = 'Hello World | Evan Octave'
   }, [])
 
   return (
@@ -29,7 +29,7 @@ export default function ConstructionPage() {
           {/* App.test.jsx checks the heading, */}
           {/* the 'Enter unfinished site anyway' text, and that it links to /home */}
           <p className="construction-stamp">im a useless box</p>
-          <h1 aria-label="UNDER CONSTRUCTION" id="construction-title">HELLO_WORLD <br /></h1>
+          <h1 id="construction-title">HELLO_WORLD</h1>
           <p className="construction-lede">Portfolio currently contains about 18% content, 34% loose cables, and 48% super mario galaxy mentions. Go ahead, snoop around. No judging here.</p>
           <p className="construction-copy">welcome to my website!</p>
           <Link className="construction-link" to="/home">npx ts-node portfolio.ts</Link>

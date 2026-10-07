@@ -1,6 +1,6 @@
 // Contact page (/contact): email with a copy button, a joke phone button, and social links.
 // the little pop-up messages come from toast() in src/fx/FxProvider.jsx.
-import { EMAIL } from '../data/contact.js'
+import { EMAIL, RESUME } from '../data/contact.js'
 import { useFx } from '../fx/FxProvider.jsx'
 
 export default function ContactPage() {
@@ -34,6 +34,7 @@ export default function ContactPage() {
       {/* KNOB: social links, text and url */}
       <h2>Elsewhere</h2>
       <ul>
+        <li><a href={RESUME} rel="noreferrer" target="_blank">Résumé (PDF)</a></li>
         <li><a href="https://github.com/evanoctave" rel="noreferrer" target="_blank">GitHub</a></li>
         <li><a href="https://www.linkedin.com/in/evanbarreau" rel="noreferrer" target="_blank">LinkedIn</a></li>
         <li><a href="https://www.instagram.com/swevan_tsx" rel="noreferrer" target="_blank">Instagram</a></li>

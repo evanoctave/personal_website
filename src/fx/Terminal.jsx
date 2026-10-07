@@ -8,6 +8,7 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { projects } from '../data/projects.js'
 import { EGGS, useFx } from './FxProvider.jsx'
+import { RESUME } from '../data/contact.js'
 import { printReceipt } from './Receipt.jsx'
 import TouchKeyboard from './TouchKeyboard.jsx'
 
@@ -110,6 +111,7 @@ export default function Terminal({ inline = false }) {
           'cd <page>       go to a page',
           'work            list projects',
           'work <n>        open project n',
+          'resume          open my résumé (PDF)',
           'whoami          who is this',
           'date            local time',
           'invert | trail | grid | rain | blast',
@@ -141,6 +143,10 @@ export default function Terminal({ inline = false }) {
         later(750, ["try 'work' then a number (like 'work 2') to open that project"])
         return projects.map((project, i) => `[${i + 1}] ${project.title} — ${project.year}`)
       }
+      case 'resume':
+      case 'cv':
+        window.open(RESUME, '_blank', 'noopener')
+        return ['opening the résumé in a new tab…']
       case 'whoami':
         // KNOB: whoami reply
         return ['idk, who r u?']

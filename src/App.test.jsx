@@ -18,11 +18,14 @@ describe('site', () => {
     vi.useRealTimers()
   })
 
-  it('shows construction gate at root with date and the link into the site', () => {
+  it('sends the bare domain to /home and keeps the old gate at /hello', () => {
+    renderAt('/')
+    expect(screen.getByRole('heading', { level: 1, name: "What's up" })).toBeInTheDocument()
+    cleanup()
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-09-27T12:00:00'))
-    renderAt('/')
-    expect(screen.getByRole('heading', { level: 1, name: 'UNDER CONSTRUCTION' })).toBeInTheDocument()
+    renderAt('/hello')
+    expect(screen.getByRole('heading', { level: 1, name: 'HELLO_WORLD' })).toBeInTheDocument()
     expect(screen.getByText('As of Sunday, September 27, 2026')).toBeInTheDocument()
     expect(screen.queryAllByRole('img')).toHaveLength(0)
     expect(screen.getByRole('link', { name: 'npx ts-node portfolio.ts' })).toHaveAttribute('href', '/home')

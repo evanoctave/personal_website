@@ -39,7 +39,8 @@ function WarpRoutes({ children }) {
   // effects (title, scroll, focus), then get swapped back out.
   if (location !== previous) {
     setPrevious(location)
-    const moved = previous.pathname !== location.pathname
+    // the bare domain redirects to /home on arrival; that's not a page switch, so no warp for it
+    const moved = previous.pathname !== location.pathname && previous.pathname !== '/'
     // mid-warp: the old page stays frozen until covered, which then shows the newest location.
     // first visit to home: the printer intro is the transition.
     // KNOB: when a warp plays. drop the `location.pathname === '/home' && willPrint()` part to warp into home
@@ -72,7 +73,9 @@ export default function App() {
       <WarpRoutes>
         {/* KNOB: "/" is the under-construction gate. point it at <HomePage /> to open the real site there */}
         {/* (App.test.jsx expects the gate at "/", so update that test too) */}
-        <Route path="/" element={<ConstructionPage />} />
+        {/* KNOB: the bare domain goes straight to /home; the old construction gate lives on at /hello */}
+        <Route path="/" element={<Navigate replace to="/home" />} />
+        <Route path="/hello" element={<ConstructionPage />} />
         {/* KNOB: the site URLs, path -> page. adding a page: add a Route here, its tab title */}
         {/* in SiteShell.jsx, and a nav link there. optionally a number key in src/fx/FxProvider.jsx ROUTES */}
         {/* and src/fx/PageWarp.jsx ORDER */}
