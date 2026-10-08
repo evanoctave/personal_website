@@ -151,11 +151,11 @@ export default function HomePage() {
 
       <section className="block home-contact" aria-labelledby="contact-title">
         {/* KNOB: say-hi text. the address itself lives in src/data/contact.js */}
-        <h2 id="contact-title">Say hi</h2>
+        <h2 id="contact-title">Say hello</h2>
         <p>
           Best way to reach me is email: <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.
-          Or go to the <Link to="/contact">contact page</Link>. Here&apos;s my{' '}
-          <a href={RESUME} rel="noreferrer" target="_blank">résumé</a>, too.
+          Or go to the <Link to="/contact">contact page</Link>. It&apos;s got my{' '}
+          <a href={RESUME} rel="noreferrer" target="_blank">resume</a>, too.
         </p>
       </section>
     </div>
