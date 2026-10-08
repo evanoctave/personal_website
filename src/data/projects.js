@@ -134,14 +134,14 @@ export const projects = [
   },
   {
     // written from the résumé line and the server setup; reword the challenge to taste
-    slug: 'evoserver',
-    title: 'evoserver',
+    slug: 'Evoserver',
+    title: 'Evoserver',
     eyebrow: 'Self-hosted infrastructure',
     year: '2026',
     role: 'Sole operator',
     stack: ['Linux', 'Docker', 'nginx', 'Cloudflare Tunnels', 'Tailscale'],
     tags: ['Infra', 'Backend'],
-    summary: 'The Linux server that runs this site and the websites for my family\'s businesses.',
+    summary: 'The Linux server that runs this site and the websites for my family\'s side hustles, as well as my sister\'s <a href="https://madibarreau.com" target=_blank>art website!</a>.',
     challenge: 'I wanted real production sites running on hardware I control, without exposing the server to the open internet.',
     solution: 'Each site runs in its own Docker container and is published through Cloudflare Tunnels, so the server has zero open inbound ports; Tailscale handles private remote access. This portfolio is a stock nginx container serving a folder that a one-command deploy script updates.',
     outcome: 'Three production websites live, with me as the sole operator for DNS, TLS, updates, and recovery.',
