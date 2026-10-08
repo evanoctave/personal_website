@@ -3,11 +3,7 @@
 // and src/data/projects.js (only projects with featured: true show here).
 import { useLayoutEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-<<<<<<< HEAD
-import OrbSpace from '../components/OrbSpace.jsx'
-=======
 import IntroClip from '../components/IntroClip.jsx'
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 import Placeholder from '../components/Placeholder.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Scramble from '../components/Scramble.jsx'
@@ -79,11 +75,6 @@ export default function HomePage() {
   }
 
   return (
-<<<<<<< HEAD
-    <div className="home">
-      <OrbSpace />
-
-=======
     <div className={`home${clipGone ? ' home--noclip' : ''}`} ref={homeRef}>
       <PrinterIntro
         force={run > 0}
@@ -91,7 +82,6 @@ export default function HomePage() {
         onEnter={() => setEntry('enter')}
         onLand={() => setEntry('landed')}
       />
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
       <section className="intro">
         {/* KNOB: the big heading: text and scramble speed (duration 3 = 3x slower). */}
         {/* App.test.jsx expects "What's up" */}
@@ -142,12 +132,8 @@ export default function HomePage() {
           </p>
           <p><Link to="/about">More about me</Link></p>
         </Reveal>
-<<<<<<< HEAD
-        <Placeholder alt="Evan with arms out wide in an empty parking lot at night" ratio="4 / 5" src="/photos/PICT0025-smooth.jpg" />
-=======
         {/* KNOB: the photo beside the about blurb */}
         <Placeholder alt="Evan with arms out wide in an empty parking lot at night" ratio="4 / 5" src="/photos/PICT0025.jpg" />
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
       </section>
 
       <section className="block home-photos" aria-labelledby="photos-title">

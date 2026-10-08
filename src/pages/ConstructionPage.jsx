@@ -18,12 +18,8 @@ export default function ConstructionPage() {
   const dateValue = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
 
   useEffect(() => {
-<<<<<<< HEAD
-    document.title = 'Under Construction'
-=======
     // KNOB: tab title for this page
     document.title = 'Hello World | Evan Octave'
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
   }, [])
 
   return (
@@ -32,28 +28,13 @@ export default function ConstructionPage() {
       <Loader prints={PRINTS} />
       <a className="skip-link" href="#construction-content">Skip to content</a>
       <header className="construction-header">
-<<<<<<< HEAD
-        <span></span>
-=======
         {/* KNOB: name in the top bar */}
         <span>Evan Octave</span>
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
         <time dateTime={dateValue}>As of {formattedDate}</time>
       </header>
 
       <main id="construction-content">
         <section className="construction-intro" aria-labelledby="construction-title">
-<<<<<<< HEAD
-          <h1 aria-label="UNDER CONSTRUCTION" id="construction-title">UNDER<br />CONSTRUCTION</h1>
-          <p className="construction-lede">Portfolio currently contains 18% content, 62% loose wires, and 20% suspicious confidence.</p>
-          <p className="construction-copy">Please return in about one week, when this place has projects, photos, and fewer exposed cables.</p>
-          <Link className="construction-link" to="/home">Enter unfinished site anyway</Link>
-        </section>
-
-        <p className="construction-stamp">Status: making things</p>
-
-        <section aria-label="Recent signs of life" className="construction-gallery">
-=======
           {/* KNOB: the gate copy: stamp, big heading, lede, follow-up, link text. */}
           {/* App.test.jsx checks the heading, */}
           {/* the 'Enter unfinished site anyway' text, and that it links to /home */}
@@ -67,7 +48,6 @@ export default function ConstructionPage() {
         {/* KNOB: the three photos + captions (files in public/photos/). App.test.jsx expects 3 images. */}
         {/* the --wide / --tall / --close classes pick each spot in site.css */}
        {/*  <section aria-label="Recent signs of life" className="construction-gallery">
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
           <figure className="construction-photo construction-photo--wide">
             <img alt="Evan with arms out wide in an empty parking lot at night" src="/photos/PICT0025-smooth.jpg" />
           </figure>
