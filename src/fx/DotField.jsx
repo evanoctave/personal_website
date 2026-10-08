@@ -1,9 +1,14 @@
+// The dot-grid background, drawn on a <canvas> behind every page. Dots shove away from the pointer,
+// clicks send a ripple ring, T draws a fading trail, and blast() (X key, photo clicks, god mode) fires
+// a shockwave. Mounted by SiteShell.jsx; dot color follows --fg; .fx-field in site.css sets its opacity.
 import { useEffect, useRef } from 'react'
 import { prefersReducedMotion, useFx } from './FxProvider.jsx'
 
+// KNOB: GAP = px between dots (smaller = denser + heavier to draw); REACH = how far the pointer pushes (px)
 const GAP = 30
 const REACH = 140
 
+// KNOB: fallback dot color if --fg can't be read (same color as the starting ink below)
 const readInk = () => getComputedStyle(document.documentElement).getPropertyValue('--fg').trim() || '#f2f2ee'
 
 export default function DotField() {
@@ -35,9 +40,16 @@ export default function DotField() {
     let frame = 0
 
     const resize = () => {
+      // on phones the address bar grows and shrinks while scrolling, which fires resize with only the
+      // height changing. rebuilding then made the background flash and jump mid-scroll, so only rebuild
+      // when the width changes (or it needs to get taller), and size it for the tallest the screen gets
+      const touch = window.matchMedia?.('(pointer: coarse)').matches
+      const tallest = Math.max(window.innerHeight, touch ? window.screen?.height || 0 : 0)
+      if (width === window.innerWidth && height >= window.innerHeight) return
+      // KNOB: max pixel ratio — 2 keeps retina screens crisp; higher = sharper but slower
       const ratio = Math.min(window.devicePixelRatio || 1, 2)
       width = window.innerWidth
-      height = window.innerHeight
+      height = tallest
       canvas.width = width * ratio
       canvas.height = height * ratio
       canvas.style.width = `${width}px`
@@ -52,6 +64,7 @@ export default function DotField() {
     const onMove = (event) => {
       mouse.x = event.clientX
       mouse.y = event.clientY
+      // KNOB: trail length — how many pointer points are kept (48)
       points.push({ x: mouse.x, y: mouse.y, life: 1 })
       if (points.length > 48) points.shift()
     }
@@ -69,6 +82,7 @@ export default function DotField() {
       ctx.strokeStyle = inkRef.current
 
       for (const ripple of ripples) {
+        // KNOB: ripple speed (9 px per frame) and fade (.012 per frame; smaller = ripple lives longer)
         ripple.r += 9 * ripple.power
         ripple.life -= 0.012 / ripple.power
       }
@@ -82,6 +96,7 @@ export default function DotField() {
         const dy = dot.y - mouse.y
         const dist = Math.hypot(dx, dy)
         if (dist < REACH && dist > 0.1) {
+          // KNOB: pointer push — 26 = max px a dot moves right next to the pointer
           const force = (1 - dist / REACH) ** 2
           tx += (dx / dist) * force * 26
           ty += (dy / dist) * force * 26
@@ -91,6 +106,7 @@ export default function DotField() {
           const rx = dot.x - ripple.x
           const ry = dot.y - ripple.y
           const rd = Math.hypot(rx, ry)
+          // KNOB: ripple ring thickness (46 px band, both spots) and push strength (22 px)
           const band = Math.abs(rd - ripple.r)
           if (band < 46 && rd > 0.1) {
             const force = (1 - band / 46) * ripple.life
@@ -99,14 +115,17 @@ export default function DotField() {
             glow = Math.max(glow, force)
           }
         }
+        // KNOB: spring back, 0–1 — higher = dots snap into place faster
         dot.ox += (tx - dot.ox) * 0.16
         dot.oy += (ty - dot.oy) * 0.16
+        // KNOB: dot look — .16 = resting opacity (lit dots go to 1), size 1px growing to 2.8px when lit
         ctx.globalAlpha = 0.16 + glow * 0.84
         const size = 1 + glow * 1.8
         ctx.fillRect(dot.x + dot.ox - size / 2, dot.y + dot.oy - size / 2, size, size)
       }
 
       ctx.globalAlpha = 1
+      // KNOB: ripple outline — .5 = max opacity, lineWidth = stroke px
       for (const ripple of ripples) {
         ctx.globalAlpha = ripple.life * 0.5
         ctx.lineWidth = 1
@@ -115,6 +134,7 @@ export default function DotField() {
         ctx.stroke()
       }
 
+      // KNOB: trail fade (.035 per frame; smaller = longer trail); lineWidth below = up to 10px thick
       for (const point of points) point.life -= 0.035
       while (points.length && points[0].life <= 0) points.shift()
       if (trailRef.current && points.length > 1) {

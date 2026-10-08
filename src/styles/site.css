@@ -1,47 +1,86 @@
+/* site.css: all the styling for the whole site, in one file. sections, top to bottom:
+   tokens/colors · base type · layout (header, footer) · construction page · home · work list · inner pages
+   (filters, project, about, contact, 404) · life rolls · placeholders · clickable photos · lightbox · reveal
+   · fx overlays (cursor, grid, pops, toasts, panel, terminal, rain, saver) · phone + reduced motion
+   · printer intro · home entrance · replay button · page warp · receipt.
+   the :root variables right below drive the colors for both themes: dark is the default, the light theme
+   is the inverted palette under [data-fx-inverted]. search `KNOB:` to find every value worth tweaking. */
+/* tokens: colors + fonts. this block is the dark theme (the default) */
 :root {
   color-scheme: dark;
+  /* KNOB: page background color in dark mode */
   --bg: #0d0d0d;
+  /* KNOB: main text color in dark mode */
   --fg: #e8e6e1;
+  /* KNOB: grey secondary text color in dark mode (dates, captions, nav) */
   --muted: #8a8884;
+  /* KNOB: hairline border/divider color in dark mode */
   --line: #2a2a2a;
+  /* KNOB: empty photo box / loading background color in dark mode */
   --ph: #1a1a1a;
+  /* KNOB: serif font, used for body text and headings */
   --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  /* KNOB: sans font, used for nav, footer, small ui bits */
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  /* KNOB: monospace font, used for captions, labels, terminal */
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --chrome: radial-gradient(circle at 32% 26%, #fff 0, #bdbdb9 5%, #4a4a48 22%, #141414 55%, #060606 74%, #6f6f6c 100%);
 }
 
+/* light theme: the inverted palette, on when the fx panel's invert switch sets data-fx-inverted */
 :root[data-fx-inverted="true"] {
   color-scheme: light;
+  /* KNOB: page background color in light mode */
   --bg: #f4f3ef;
+  /* KNOB: main text color in light mode */
   --fg: #151515;
+  /* KNOB: grey secondary text color in light mode */
   --muted: #6b6a66;
+  /* KNOB: hairline border/divider color in light mode */
   --line: #d9d7d1;
+  /* KNOB: empty photo box / loading background color in light mode */
   --ph: #e6e4de;
 }
 
+/* base: page-wide type and element defaults */
 * { box-sizing: border-box; }
 
-html { background: var(--bg); }
+html {
+  background: var(--bg);
+  /* no rubber-band bounce: on phones it dragged the page away from the fixed dot background */
+  overscroll-behavior: none;
+  /* keep iPhone from re-sizing text when the phone is turned sideways */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* no grey flash on tap */
+  -webkit-tap-highlight-color: transparent;
+}
 
 body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
   font-family: var(--serif);
+  /* KNOB: body text size (the phone size lives in the max-width: 600px block) */
   font-size: 19px;
+  /* KNOB: line spacing of body text */
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  /* KNOB: how fast colors fade when switching themes */
   transition: background-color .3s, color .3s;
 }
 
+/* KNOB: link underline thickness + gap below text (hover makes it thicker) */
 a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 a:hover { text-decoration-thickness: 2px; }
 img, video { max-width: 100%; display: block; }
 button { font: inherit; color: inherit; }
 
+/* KNOB: heading weight + line spacing */
 h1, h2 { font-weight: 400; line-height: 1.15; }
+/* KNOB: page title (h1) size, spacing, letter tightness */
 h1 { font-size: 2.6rem; margin: 0 0 1rem; letter-spacing: -.01em; }
+/* KNOB: section heading (h2) size + space above it */
 h2 { font-size: 1.35rem; margin: 2.5rem 0 .6rem; }
 p { margin: 0 0 1rem; }
 ul { padding-left: 1.2em; }
@@ -56,24 +95,34 @@ kbd {
 }
 
 .muted { color: var(--muted); }
+/* KNOB: size of the intro paragraph under a page title */
 .lede { font-size: 1.2rem; }
 
+/* KNOB: colors of selected/highlighted text */
 ::selection { background: var(--fg); color: var(--bg); }
+/* KNOB: keyboard focus outline thickness + gap */
 :focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
 #main-content:focus { outline: none; }
 
+/* accessibility helpers: screen-reader-only text and the skip-to-content link */
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .skip-link { position: absolute; left: -999px; top: 8px; background: var(--fg); color: var(--bg); padding: 6px 10px; z-index: 100; }
 .skip-link:focus { left: 8px; }
 
 /* layout */
 
-.site { position: relative; min-height: 100vh; }
+/* KNOB: z-index stacking, low to high: dot field 0 · page 2 · dev grid 25 · rain 55 · pops 60 · toasts 70
+   · panel/terminal 80 · lightbox 85 · receipt 87 · page warp 88 · printer intro 89 · cursor 90 · saver 95
+   · skip link 100. keep that order if you change one */
+.site { position: relative; min-height: 100vh; min-height: 100svh; }
+/* site shell (SiteShell.jsx): header, main and footer share one centered column */
 .site-header, main, .site-footer {
   position: relative;
   z-index: 2;
+  /* KNOB: max width of the page column (the dev grid overlay copies this) */
   max-width: 720px;
   margin: 0 auto;
+  /* KNOB: side padding of the page column */
   padding-left: 20px;
   padding-right: 20px;
 }
@@ -84,16 +133,21 @@ kbd {
   align-items: baseline;
   flex-wrap: wrap;
   gap: 8px 24px;
+  /* KNOB: space above and below the header */
   padding-top: 28px;
   padding-bottom: 28px;
   font-family: var(--sans);
+  /* KNOB: header/nav font size */
   font-size: 15px;
 }
 .home-link { text-decoration: none; font-weight: 600; }
+/* KNOB: gap between nav links */
 .site-header nav { display: flex; gap: 20px; align-items: baseline; }
 .site-header nav a { text-decoration: none; color: var(--muted); }
 .site-header nav a:hover, .site-header nav a.active { color: var(--fg); }
 .site-header nav a.active { text-decoration: underline; }
+/* the round ? button in the header (opens the fx panel) */
+/* KNOB: its size is width/height */
 .help {
   background: none;
   border: 1px solid var(--line);
@@ -108,27 +162,34 @@ kbd {
 }
 .help:hover { color: var(--fg); border-color: var(--fg); }
 
+/* KNOB: minimum page height + space before the footer */
 main { min-height: 60vh; padding-bottom: 60px; }
 
+/* footer */
 .site-footer {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 0 20px;
+  /* KNOB: footer spacing */
   padding-top: 20px;
   padding-bottom: 40px;
   border-top: 1px solid var(--line);
+  /* KNOB: footer font size */
   font: 13px var(--sans);
   color: var(--muted);
 }
 
 /* temporary construction gate */
 
+/* ConstructionPage.jsx */
 .construction {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
+  /* KNOB: construction page padding */
   padding: 24px clamp(20px, 5vw, 72px) 28px;
+  /* KNOB: background: soft glow top right + faint 4-column lines */
   background:
     radial-gradient(circle at 76% 20%, rgb(232 230 225 / .1), transparent 22rem),
     repeating-linear-gradient(90deg, transparent 0, transparent calc(25% - 1px), rgb(232 230 225 / .06) calc(25% - 1px), rgb(232 230 225 / .06) 25%);
@@ -150,9 +211,16 @@ main { min-height: 60vh; padding-bottom: 60px; }
 
 .construction main {
   display: grid;
+  /* KNOB: two columns, text on the left, gallery on the right (gallery never under 320px) */
   grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
+<<<<<<< HEAD
   align-items: start;
+=======
+  align-items: center;
+  /* KNOB: gap between text and gallery */
+>>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
   gap: clamp(40px, 8vw, 112px);
+  /* KNOB: max width of the construction layout */
   max-width: 1280px;
   min-height: calc(100vh - 106px);
   margin: 0 auto;
@@ -175,6 +243,7 @@ main { min-height: 60vh; padding-bottom: 60px; }
 }
 .construction h1 {
   margin: 0;
+<<<<<<< HEAD
   font-family: var(--serif);
   width: max-content;
   font-size: clamp(2.4rem, 6.6vw, 7rem);
@@ -189,6 +258,17 @@ main { min-height: 60vh; padding-bottom: 60px; }
   line-height: 1.18;
 }
 
+=======
+  font-family: var(--sans);
+  /* KNOB: giant headline size, weight, line spacing, letter tightness */
+  font-size: clamp(3.7rem, 9vw, 8.7rem);
+  font-weight: 800;
+  line-height: .82;
+  letter-spacing: -.085em;
+}
+/* KNOB: construction lede size + width */
+.construction-lede { max-width: 31ch; margin: clamp(30px, 5vw, 56px) 0 18px; font-size: clamp(1.25rem, 2.4vw, 1.8rem); line-height: 1.18; }
+>>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 .construction-copy { max-width: 48ch; color: var(--muted); }
 .construction-link {
   display: inline-block;
@@ -200,6 +280,7 @@ main { min-height: 60vh; padding-bottom: 60px; }
 }
 .construction-link:hover { background: var(--fg); color: var(--bg); }
 
+<<<<<<< HEAD
 /* every photo keeps its own aspect ratio, so nothing gets cropped */
 .construction-gallery { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; gap: 12px; align-self: stretch; }
 .construction-photo { position: relative; margin: 0; overflow: hidden; border: 1px solid var(--line); background: var(--ph); aspect-ratio: 16 / 10; }
@@ -207,9 +288,30 @@ main { min-height: 60vh; padding-bottom: 60px; }
 .construction-photo--wide { width: 85%; aspect-ratio: 4 / 3; }
 .construction-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.08); transition: filter .7s, opacity .5s; }
 .construction-photo:hover img { filter: none; }
+=======
+.construction-gallery {
+  display: grid;
+  /* KNOB: construction gallery grid: wide photo on the left spans both rows */
+  grid-template-columns: 1.2fr .8fr;
+  grid-template-rows: 1fr 1fr;
+  /* KNOB: gap between construction photos */
+  gap: 12px;
+  /* KNOB: gallery height */
+  min-height: min(66vw, 620px);
+}
+.construction-photo { position: relative; min-height: 0; margin: 0; overflow: hidden; border: 1px solid var(--line); background: var(--ph); }
+.construction-photo--wide { grid-row: span 2; }
+/* KNOB: photo filter (black and white) + hover zoom speed/easing */
+.construction-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.08); transition: transform .7s cubic-bezier(.16, 1, .3, 1); }
+.construction-photo--wide img { object-position: 50% 40%; }
+.construction-photo--tall img { object-position: 30% center; }
+/* KNOB: crop zoom on the close-up photo, and the hover zoom amounts below */
+.construction-photo--close img { transform: scale(1.4); object-position: 45% 55%; }
+>>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 .construction-photo figcaption { position: absolute; right: 8px; bottom: 7px; left: 8px; margin: 0; color: #f4f3ef; font: 11px var(--sans); text-shadow: 0 1px 10px #0d0d0d; }
 .construction-footer { max-width: 1280px; margin: 0 auto; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); letter-spacing: 0; text-transform: none; }
 
+/* KNOB: construction phone breakpoint: stacks to one column under 760px */
 @media (max-width: 760px) {
   .construction { padding: 18px 20px 22px; background-image: radial-gradient(circle at 90% 20%, rgb(232 230 225 / .1), transparent 16rem); }
   .construction-header { align-items: flex-start; }
@@ -220,6 +322,7 @@ main { min-height: 60vh; padding-bottom: 60px; }
   .construction-photo--wide { width: 100%; }
 }
 
+/* KNOB: reduced motion: don't remove, accessibility. turns off the hover zoom */
 @media (prefers-reduced-motion: reduce) {
   .construction-photo img { transition: none; }
 }
@@ -314,54 +417,112 @@ main { min-height: 60vh; padding-bottom: 60px; }
 
 /* home */
 
+/* HomePage.jsx */
+/* KNOB: space above the intro */
 .intro { padding-top: 40px; }
+/* KNOB: size of your name at the top of home (phone size in the 600px block) */
 .name { font-size: 3.2rem; margin-bottom: 1.2rem; }
+/* KNOB: space around the intro photo */
 .intro-photo { margin: 40px 0 10px; }
+/* KNOB: the intro clip box: shape matches the 4:3 video; black while it loads (the clip fades in from black) */
+.intro-clip { position: relative; display: block; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; background: #000; }
+.intro-clip > video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* the clip's exit: a second before the end the video fades to black (.is-fading), then the black box
+   fades away (.is-out) and IntroClip.jsx removes itself; HomePage.jsx then glides the page into the gap.
+   KNOB: the two lengths here must match FADE_MS / OUT_MS in IntroClip.jsx */
+.intro-clip > video { transition: opacity .9s cubic-bezier(.45, 0, .55, 1); }
+.intro-clip.is-fading > video { opacity: 0; }
+.intro-clip { transition: opacity .35s ease; }
+.intro-clip.is-out { opacity: 0; }
 
+/* KNOB: space between home sections */
 .block { margin-top: 70px; }
 .block h2 { margin-top: 0; }
 .block-head { display: flex; justify-content: space-between; align-items: baseline; }
 .block-head a { font: 14px var(--sans); color: var(--muted); }
 
+/* KNOB: about blurb: text column + 200px photo column, and the gap between */
 .about-bit { display: grid; grid-template-columns: 1fr 200px; gap: 32px; align-items: start; }
 
+/* KNOB: home photo grid: number of columns + gap */
 .photos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; align-items: start; }
+
+/* home goes two-up on wide screens (SiteShell.jsx adds .site--wide on /home only):
+     intro   | .
+     clip    | work
+     about   | photos
+     contact | photos
+   phones and narrow windows keep the single column in the original order */
+@media (min-width: 900px) {
+  /* KNOB: how wide the page gets on /home (other pages keep the 720px reading column) */
+  .site--wide :is(.site-header, main, .site-footer) { max-width: 1120px; }
+  .home {
+    display: grid;
+    /* KNOB: left vs right column widths, and the gaps between rows / columns */
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    grid-template-areas:
+      "intro   ."
+      "clip    work"
+      "about   photos"
+      "contact photos";
+    /* the last row soaks up the photo column's extra height, so "Say hi" sits right under About */
+    grid-template-rows: auto auto auto 1fr;
+    gap: 56px 56px;
+    align-items: start;
+  }
+  .home > .intro { grid-area: intro; }
+  .home > .intro-clip { grid-area: clip; margin: 0; }
+  .home > .home-work { grid-area: work; }
+  .home > .home-about { grid-area: about; grid-template-columns: 1fr 160px; }
+  .home > .home-photos { grid-area: photos; }
+  .home > .home-contact { grid-area: contact; }
+  /* once the clip is gone, Work moves up beside the intro and everything below rises a row */
+  .home.home--noclip {
+    grid-template-areas:
+      "intro   work"
+      "term    work"
+      "about   photos"
+      "contact photos";
+    grid-template-rows: auto auto auto 1fr;
+  }
+  .home > .home-term { grid-area: term; margin-top: 0; }
+  /* the grid gap does the spacing now */
+  .home > .block { margin-top: 0; }
+}
+/* the tall photo spans two rows; the fill photo takes the leftover height with no intrinsic size of its own */
+.photos:has(.photos-fill) { grid-template-rows: auto auto 1fr; }
+.photos .photos-tall { grid-row: span 2; }
+.photos .photos-fill { position: relative; align-self: stretch; min-height: 0; overflow: hidden; }
+.photos .photos-fill img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
 /* work list */
 
+/* WorkList.jsx: rows on /work and the home page */
 .work-list ul { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
 .work-list li { margin: 0; }
 .work-list a {
   display: grid;
+  /* KNOB: year column width + gap to the title */
   grid-template-columns: 60px 1fr;
   column-gap: 12px;
+  /* KNOB: row height (top/bottom padding) */
   padding: 16px 0;
   border-bottom: 1px solid var(--line);
   text-decoration: none;
 }
 .work-year { grid-row: span 2; color: var(--muted); font: 14px/1.9 var(--sans); }
+/* KNOB: project title + summary sizes */
 .work-title { font-size: 1.2rem; }
 .work-summary { color: var(--muted); font-size: .95rem; }
 .work-list a:hover .work-title { text-decoration: underline; text-underline-offset: 4px; }
 
-.work-preview {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 15;
-  width: 240px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity .15s;
-}
-.work-preview.is-on { opacity: 1; }
-.work-preview .ph { background: var(--ph); }
-@media (hover: none) { .work-preview { display: none; } }
 
 /* inner pages */
 
 .page { padding-top: 40px; }
 
+/* filter buttons (WorkPage.jsx) */
+/* KNOB: gap + spacing */
 .filters { display: flex; flex-wrap: wrap; gap: 6px; margin: 24px 0; }
 .filters button {
   background: none;
@@ -375,17 +536,29 @@ main { min-height: 60vh; padding-bottom: 60px; }
 .filters button:hover { color: var(--fg); }
 .filters button[aria-pressed="true"] { background: var(--fg); border-color: var(--fg); color: var(--bg); }
 
+/* project pages (ProjectPage.jsx) */
 .project .lede { margin: 1.5rem 0 2rem; }
+/* KNOB: facts list: label column width, gaps, font */
 .facts { display: grid; grid-template-columns: 100px 1fr; gap: 4px 16px; margin: 24px 0 0; font: 15px/1.6 var(--sans); }
 .facts dt { color: var(--muted); }
 .facts dd { margin: 0; }
 
+/* project galleries */
+/* KNOB: gap between gallery images */
 .gallery { display: grid; gap: 12px; margin-top: 40px; }
+/* KNOB: three-up gallery columns (drops to two on phones) */
 .gallery--three { grid-template-columns: repeat(3, 1fr); margin-top: 12px; }
+/* KNOB: phone screenshots: min width each, and how round their corners are */
+.gallery--phones { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); margin-top: 24px; }
+.gallery--two { grid-template-columns: 1fr 1fr; }
+.gallery--phones .photo { border-radius: 14px; }
 .next { margin-top: 50px; }
 
+/* about page photo (AboutPage.jsx) */
+/* KNOB: width of the floated photo */
 .page .about-photo { float: right; width: 220px; margin: 6px 0 20px 28px; }
 
+/* copy buttons on the contact page (ContactPage.jsx) */
 .copy {
   background: none;
   border: 1px solid var(--line);
@@ -398,15 +571,23 @@ main { min-height: 60vh; padding-bottom: 60px; }
 }
 .copy:hover { color: var(--fg); }
 
+/* 404 page (NotFoundPage.jsx) */
+/* KNOB: size of the big 404 */
 .four-oh-four { font-size: 7rem; line-height: 1; margin: 20px 0; color: var(--muted); }
 
 /* life: full width, photos drifting in space */
 
+<<<<<<< HEAD
 main:has(> .life) { max-width: none; }
 .life-intro, .chapter-head, .day-head { max-width: 680px; margin-inline: auto; }
 .life-intro { display: flow-root; }
+=======
+/* LifePage.jsx */
+>>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 .life .lede { margin-bottom: .4rem; }
+/* KNOB: width of the floated camera photo */
 .page .life-cam { float: right; width: 150px; margin: 6px 0 16px 24px; }
+<<<<<<< HEAD
 
 .life-nav {
   position: sticky;
@@ -430,9 +611,20 @@ main:has(> .life) { max-width: none; }
 .chapter-head h2 { margin: 0 0 4px; }
 .chapter-head p { margin: 0; font-size: .95rem; }
 .day { margin-top: 56px; }
+=======
+/* KNOB: space between chapters */
+.chapter { clear: both; margin-top: 72px; }
+.chapter-head { margin-bottom: 18px; }
+.chapter-head h2 { margin: 0 0 4px; }
+.chapter-head p { margin: 0; font-size: .95rem; }
+/* KNOB: space between days */
+.day { margin-top: 40px; }
+>>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 .day-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin-bottom: 14px; }
+/* KNOB: day label font + orange accent color (same orange as the lightbox counter) */
 .day-head h3 { margin: 0; font: 15px var(--mono); letter-spacing: .04em; color: #ff8a3d; }
 .day-head p { margin: 0; font-size: .95rem; }
+<<<<<<< HEAD
 
 .roll {
   list-style: none;
@@ -466,12 +658,22 @@ main:has(> .life) { max-width: none; }
 .shot:hover figure { transform: scale(1.06); }
 .shot .photo { box-shadow: 0 20px 45px rgb(0 0 0 / .45); }
 .shot figcaption { margin-top: 8px; font: 12px var(--mono); color: var(--muted); }
+=======
+/* KNOB: life roll grid: 2 columns, gap is rows then columns */
+.roll { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: dense; gap: 12px 10px; align-items: start; }
+.shot { margin: 0; }
+.shot figure { margin: 0; }
+.shot figcaption { margin-top: 5px; font: 12px var(--mono); color: var(--muted); }
+/* KNOB: which shots span the full row (clips and wide photos) */
+.shot--clip, .shot--wide { grid-column: span 2; }
+>>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 .shot .when { color: var(--muted); opacity: .7; }
 @keyframes drift {
   from { transform: translate3d(0, 0, 0) rotate(var(--r)); }
   to { transform: translate3d(6px, -16px, 0) rotate(calc(var(--r) * -.5)); }
 }
 
+/* video clips (Clip.jsx) with the hover sound toggle */
 .clip { position: relative; }
 .clip video { width: 100%; object-fit: cover; background: var(--ph); }
 .clip-sound {
@@ -486,6 +688,7 @@ main:has(> .life) { max-width: none; }
   color: #e8e6e1;
   cursor: pointer;
   opacity: 0;
+  /* KNOB: sound button fade speed */
   transition: opacity .15s;
 }
 .clip:hover .clip-sound, .clip-sound:focus-visible, .clip-sound[aria-pressed="true"] { opacity: 1; }
@@ -493,6 +696,7 @@ main:has(> .life) { max-width: none; }
 
 /* image placeholders */
 
+/* Placeholder.jsx: grey box shown where a photo isn't in yet */
 .ph {
   position: relative;
   width: 100%;
@@ -508,17 +712,131 @@ main:has(> .life) { max-width: none; }
 }
 .photo { width: 100%; object-fit: cover; }
 
+<<<<<<< HEAD
 .reveal { opacity: 0; transform: translateY(18px); filter: blur(6px); transition: opacity .7s, transform .7s cubic-bezier(.16, 1, .3, 1), filter .7s; transition-delay: var(--delay); }
 .reveal.is-in { opacity: 1; transform: none; filter: none; }
+=======
+/* clickable photos */
+
+.photo-btn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: var(--ph);
+  cursor: pointer;
+  overflow: hidden;
+}
+.photo-btn { position: relative; }
+.photo-btn .photo { height: 100%; transition: filter .45s ease; }
+/* hover: four crop marks glide in from the edges and lock on, like a viewfinder framing the shot.
+   one pseudo-element draws all four corners with gradients */
+.photo-btn::after {
+  content: "";
+  position: absolute;
+  /* KNOB: where the marks start (0 = on the edge) — hover moves them to the inset below */
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  /* KNOB: crop mark length (16px) and thickness (1px) */
+  --m: 16px;
+  --t: 1px;
+  background:
+    linear-gradient(#fff, #fff) top left / var(--m) var(--t), linear-gradient(#fff, #fff) top left / var(--t) var(--m),
+    linear-gradient(#fff, #fff) top right / var(--m) var(--t), linear-gradient(#fff, #fff) top right / var(--t) var(--m),
+    linear-gradient(#fff, #fff) bottom left / var(--m) var(--t), linear-gradient(#fff, #fff) bottom left / var(--t) var(--m),
+    linear-gradient(#fff, #fff) bottom right / var(--m) var(--t), linear-gradient(#fff, #fff) bottom right / var(--t) var(--m);
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 0 3px rgb(0 0 0 / .6));
+  /* KNOB: how fast the marks glide in */
+  transition: inset .5s cubic-bezier(.16, 1, .3, 1), opacity .25s ease;
+}
+/* KNOB: how far in the marks lock on, and how much the photo dims behind them */
+.photo-btn:hover::after, .photo-btn:focus-visible::after { inset: 10px; opacity: 1; }
+.photo-btn:hover .photo { filter: brightness(.9); }
+/* press: the marks snap tighter */
+.photo-btn:active::after { inset: 16px; transition-duration: .12s; }
+.photo-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 3px; }
+.about-photo.photo-btn { float: right; width: 220px; margin: 6px 0 20px 28px; }
+
+/* lightbox */
+
+/* Lightbox.jsx: full-screen photo viewer */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 85;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  /* KNOB: backdrop darkness + blur (light theme version is the next rule after this block) */
+  background: rgba(13, 13, 13, .94);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  /* KNOB: lightbox fade-in speed */
+  animation: lightbox-in .2s ease-out;
+}
+:root[data-fx-inverted="true"] .lightbox { background: rgba(244, 243, 239, .94); }
+@keyframes lightbox-in { from { opacity: 0; } }
+/* KNOB: max image width in the lightbox */
+.lightbox-frame { margin: 0; max-width: min(1100px, 100%); max-height: 100%; display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 10px; }
+.lightbox-frame img {
+  max-width: 100%;
+  max-height: calc(100vh - 110px);
+  width: auto;
+  height: auto;
+  justify-self: center;
+  border: 1px solid var(--line);
+  cursor: pointer;
+  /* KNOB: 'develop' speed, blurry to sharp (Lightbox.jsx drops is-developing after 40ms) */
+  transition: filter .55s ease-out, transform .55s cubic-bezier(.16, 1, .3, 1), opacity .3s;
+}
+/* KNOB: how blurry/grey a photo starts before it develops */
+.lightbox-frame.is-developing img { filter: blur(14px) grayscale(1) contrast(1.4); transform: scale(.96); opacity: .4; transition: none; }
+.lightbox-frame figcaption { display: flex; gap: 16px; align-items: baseline; font: 12px var(--mono); color: var(--muted); }
+.lightbox-count { color: #ff8a3d; letter-spacing: .06em; }
+.lightbox-ui { position: absolute; inset: 0; pointer-events: none; }
+.lightbox-btn {
+  position: absolute;
+  pointer-events: auto;
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 6px 10px;
+  font: 12px var(--mono);
+  color: var(--muted);
+  cursor: pointer;
+}
+.lightbox-btn:hover, .lightbox-btn:focus-visible { color: var(--fg); border-color: var(--fg); }
+.lightbox-close { top: 16px; right: 16px; }
+.lightbox-prev { left: 16px; top: 50%; transform: translateY(-50%); }
+.lightbox-next { right: 16px; top: 50%; transform: translateY(-50%); }
+/* KNOB: lightbox phone breakpoint: prev/next move to the bottom */
+@media (max-width: 600px) {
+  .lightbox { padding: 16px; }
+  .lightbox-frame img { max-height: calc(100vh - 140px); }
+  .lightbox-prev, .lightbox-next { top: auto; bottom: 16px; transform: none; }
+}
+
+/* scroll reveal (Reveal.jsx): fades things in as they scroll into view */
+/* KNOB: slide distance + fade speed; --delay comes from Reveal.jsx */
+.reveal { opacity: 0; transform: translateY(10px); transition: opacity .6s, transform .6s; transition-delay: var(--delay); }
+.reveal.is-in { opacity: 1; transform: none; }
+>>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 
 /* ---- fx ---- */
 
+/* dot field background (DotField.jsx) */
+/* KNOB: how strong the dots show */
 .fx-field { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .6; }
 
+/* custom cursor (Cursor.jsx) */
 .has-fx-cursor, .has-fx-cursor * { cursor: none !important; }
 .fx-cursor { position: fixed; inset: 0; z-index: 90; pointer-events: none; mix-blend-mode: difference; }
 .fx-cursor-dot, .fx-cursor-ring, .fx-cursor-coords { position: fixed; top: 0; left: 0; }
+/* KNOB: cursor dot size (margin is minus half the size) */
 .fx-cursor-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: #fff; }
+/* KNOB: cursor ring size (margin is minus half the size) */
 .fx-cursor-ring { width: 30px; height: 30px; margin: -15px 0 0 -15px; }
 .fx-cursor-ring::before {
   content: "";
@@ -526,21 +844,22 @@ main:has(> .life) { max-width: none; }
   inset: 0;
   border: 1px solid #fff;
   border-radius: 50%;
+  /* KNOB: ring grow/shrink speed */
   transition: transform .25s;
 }
-.fx-cursor-ring span { display: none; }
+/* KNOB: ring scale on hover and on press */
 .fx-cursor-ring.is-hovering::before { transform: scale(1.5); }
 .fx-cursor-ring.is-pressed::before { transform: scale(.7); }
 .fx-cursor-coords { display: none; font: 11px var(--mono); color: #fff; }
 [data-fx-grid="true"] .fx-cursor-coords { display: block; }
 
-.fx-progress { display: none; }
-
+/* dev grid overlay (Overlays.jsx): 12-column layout grid */
 .fx-grid {
   position: fixed;
   inset: 0;
   z-index: 25;
   display: grid;
+  /* KNOB: grid columns + gap; width/padding should match the page column */
   grid-template-columns: repeat(12, 1fr);
   gap: 16px;
   max-width: 720px;
@@ -548,9 +867,11 @@ main:has(> .life) { max-width: none; }
   padding: 0 20px;
   pointer-events: none;
 }
+/* KNOB: grid tint colors */
 .fx-grid span { position: relative; background: rgba(255, 0, 0, .06); border-inline: 1px solid rgba(255, 0, 0, .25); }
 .fx-grid small { position: absolute; bottom: 8px; left: 3px; font: 10px var(--mono); color: rgb(255, 80, 80); }
 
+/* pops (Overlays.jsx): little labels that burst where you click */
 .fx-pops { position: fixed; inset: 0; z-index: 60; pointer-events: none; overflow: hidden; }
 .fx-pop {
   position: absolute;
@@ -561,9 +882,12 @@ main:has(> .life) { max-width: none; }
   color: var(--bg);
   font: 16px var(--mono);
   white-space: nowrap;
+  /* KNOB: pop speed; FxProvider.jsx removes pops after 1100ms, keep this shorter */
   animation: pop .9s ease-out forwards;
 }
+/* KNOB: size of the big pop */
 .fx-pop--big { padding: 0; background: none; color: var(--fg); font: 9rem/1 var(--serif); }
+/* KNOB: pop timeline: scale in, drift up, fade out */
 @keyframes pop {
   0% { opacity: 0; transform: translate(-50%, -40%) rotate(var(--r)) scale(.6); }
   15% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--r)) scale(1); }
@@ -571,6 +895,7 @@ main:has(> .life) { max-width: none; }
   100% { opacity: 0; transform: translate(-50%, -65%) rotate(var(--r)); }
 }
 
+/* toasts (Overlays.jsx): little messages bottom right */
 .fx-toasts { position: fixed; right: 16px; bottom: 16px; z-index: 70; display: grid; gap: 6px; justify-items: end; pointer-events: none; }
 .fx-toast {
   margin: 0;
@@ -579,10 +904,12 @@ main:has(> .life) { max-width: none; }
   color: var(--bg);
   font: 13px var(--sans);
   border-radius: 3px;
+  /* KNOB: toast fades after 3s over .3s; FxProvider.jsx removes it at 3400ms, keep the sum under that */
   animation: toast-out .3s 3s forwards;
 }
 @keyframes toast-out { to { opacity: 0; } }
 
+/* fx panel + terminal (Overlays.jsx, Terminal.jsx): dimmed backdrop and the boxes on it */
 .fx-backdrop {
   position: fixed;
   inset: 0;
@@ -590,9 +917,11 @@ main:has(> .life) { max-width: none; }
   display: grid;
   place-items: center;
   padding: 16px;
+  /* KNOB: backdrop darkness */
   background: rgba(0, 0, 0, .55);
 }
 .fx-panel, .fx-terminal {
+  /* KNOB: panel/terminal width */
   width: min(520px, 100%);
   max-height: calc(100vh - 32px);
   overflow: auto;
@@ -618,6 +947,7 @@ main:has(> .life) { max-width: none; }
 }
 .fx-panel-head button kbd { display: none; }
 .fx-keys { display: grid; gap: 2px; margin: 0; }
+/* KNOB: key column width in the shortcuts list */
 .fx-keys div { display: grid; grid-template-columns: 80px 1fr; padding: 4px 0; }
 .fx-keys dd { margin: 0; color: var(--muted); }
 .fx-switch { display: flex; gap: 8px; align-items: center; margin-top: 14px; color: var(--muted); cursor: pointer; }
@@ -626,6 +956,8 @@ main:has(> .life) { max-width: none; }
 .fx-eggs li.is-found { color: var(--fg); }
 .fx-eggs li.is-found::before { content: "[x] "; }
 
+/* terminal (Terminal.jsx) */
+/* KNOB: terminal height + font */
 .fx-terminal { display: grid; grid-template-rows: auto 1fr auto; height: min(420px, 80vh); font: 13px/1.5 var(--mono); }
 .fx-terminal-bar { display: flex; justify-content: space-between; align-items: center; padding: 6px 8px 6px 12px; border-bottom: 1px solid var(--line); color: var(--muted); }
 .fx-terminal-log { overflow: auto; padding: 10px 12px; }
@@ -633,14 +965,30 @@ main:has(> .life) { max-width: none; }
 .fx-terminal-input { display: flex; gap: 8px; padding: 8px 12px; border-top: 1px solid var(--line); }
 .fx-terminal-input input { flex: 1; border: 0; background: none; outline: none; font: inherit; color: var(--fg); }
 
+/* the inline terminal on the home page (Terminal inline, placed by HomePage.jsx where the clip was).
+   it rises in after the page has glided into place */
+.home-term { margin-top: 40px; }
+/* KNOB: inline terminal size */
+.fx-terminal--inline { width: 100%; max-height: none; height: 260px; cursor: text; }
+.fx-terminal--inline:focus-within { border-color: var(--muted); }
+.fx-terminal-hint { font-size: 11px; letter-spacing: .08em; opacity: .7; }
+/* KNOB: how the inline terminal arrives: delay (after the .9s glide), length, curve */
+.home-term { animation: term-in .9s cubic-bezier(.16, 1, .3, 1) .55s both; }
+@keyframes term-in { from { opacity: 0; transform: translateY(14px); } }
+
+/* rain canvas (Overlays.jsx); runs 7s, set in FxProvider.jsx */
 .fx-rain { position: fixed; inset: 0; z-index: 55; pointer-events: none; }
 
+/* screensaver (Overlays.jsx): bouncing box after 45s idle (the 45000 in Overlays.jsx) */
 .fx-saver { position: fixed; inset: 0; z-index: 95; background: var(--bg); }
+/* KNOB: screensaver box size + font */
 .fx-saver-box { display: grid; justify-items: center; width: max-content; padding: 10px 18px; border: 1px solid var(--fg); font: 2.4rem/1 var(--serif); }
 .fx-saver-box small { font: 11px var(--sans); color: var(--muted); }
 .fx-saver-box.is-flipped { background: var(--fg); color: var(--bg); }
 .fx-saver-box.is-flipped small { color: var(--bg); }
 
+/* one-off gags (FxProvider.jsx, SiteShell.jsx, Cursor.jsx): barrel roll, spin the name, wobble */
+/* KNOB: speeds; the pulse() ms in JS (1400 / 1000 / 700) should stay a bit longer than these */
 .fx-barrel-roll .site { animation: roll 1.2s ease-in-out; }
 .fx-spin .home-link { display: inline-block; animation: spin .3s linear 3; }
 .fx-wobble .site { animation: wobble .5s; }
@@ -652,6 +1000,7 @@ main:has(> .life) { max-width: none; }
   75% { transform: translateX(-3px); }
 }
 
+<<<<<<< HEAD
 /* ---- floating stuff ---- */
 
 .fx-orbs { --mx: 0; --my: 0; --sy: 0; --px: 50vw; --py: 30vh; position: fixed; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
@@ -833,15 +1182,23 @@ main > * { animation: page-in .6s cubic-bezier(.16, 1, .3, 1) backwards; }
 .site-header nav a { display: inline-block; transition: translate .25s, color .25s; }
 .site-header nav a:hover { translate: 0 -2px; }
 
+=======
+/* KNOB: phone breakpoint (600px): smaller type, one-column about, two-up galleries */
+>>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 @media (max-width: 600px) {
+  /* KNOB: body text size on phones */
   body { font-size: 17px; }
+<<<<<<< HEAD
   .fx-orbs:not(.fx-orbs--atom) i:nth-child(n+4) { display: none; }
   .space { --k: .55; }
+=======
+  /* KNOB: name + h1 sizes on phones */
+>>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
   .name { font-size: 2.4rem; }
   h1 { font-size: 2rem; }
   .about-bit { grid-template-columns: 1fr; }
   .about-bit .ph { max-width: 240px; }
-  .page .about-photo { float: none; width: 60%; margin: 0 0 20px; }
+  .page .about-photo, .about-photo.photo-btn { float: none; width: 60%; margin: 0 0 20px; }
   .gallery--three { grid-template-columns: 1fr 1fr; }
   .roll { gap: 28px 14px; }
   .shot { width: calc(50% - 7px); margin-top: 0; }
@@ -849,6 +1206,7 @@ main > * { animation: page-in .6s cubic-bezier(.16, 1, .3, 1) backwards; }
   .page .life-cam { width: 110px; margin-left: 16px; }
 }
 
+<<<<<<< HEAD
 /* desktop: pages spread out sideways. under 900px everything stays the single column above */
 @media (min-width: 900px) {
   .site-header, main, .site-footer, .fx-grid { max-width: 1240px; padding-left: 40px; padding-right: 40px; }
@@ -890,7 +1248,587 @@ main > * { animation: page-in .6s cubic-bezier(.16, 1, .3, 1) backwards; }
   .project .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
+=======
+/* KNOB: reduced motion: don't remove, accessibility. kills every animation for people who ask for less */
+>>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; filter: none; }
 }
+
+/* printer intro (PrinterIntro.jsx): first /home visit per session, or the replay button.
+   ~10s, black and white, like a technical drawing. timeline in seconds:
+   0.0 calibrate · 1.2 assemble (parts fly in, callouts) · 3.0 load media · 3.6 print (stepped feed)
+   7.0 inspect (printer drops, page lifts, crop marks) · 8.5 handoff (JS, on pi-hold end): the title
+   flies to the real h1 while the rest racks out of focus and the page assembles */
+
+.pi {
+  /* KNOB: printer size on screen — everything inside scales from --w */
+  --w: min(380px, 74vw, calc((100svh - 170px) / 1.22));
+  /* KNOB: intro colors: ink (bright lines), dim (labels), hair (faint lines) */
+  --ink: #f2f2ee;
+  --dim: #8a8884;
+  --hair: #2e2e2c;
+  /* KNOB: intro easings: expo = fast then slow, io = slow-fast-slow, snap = slight overshoot */
+  --expo: cubic-bezier(.16, 1, .3, 1);
+  --io: cubic-bezier(.7, 0, .2, 1);
+  --snap: cubic-bezier(.3, 1.3, .5, 1);
+  position: fixed;
+  inset: 0;
+  z-index: 89;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  /* KNOB: intro background color */
+  background: #0a0a0a;
+  color: var(--ink);
+  cursor: pointer;
+}
+/* dot grid, like cutting-mat paper */
+.pi::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* KNOB: dot grid brightness + spacing (24px) and fade-in */
+  background: radial-gradient(circle, rgb(242 242 238 / .09) 1px, transparent 1.2px) 50% 50% / 24px 24px;
+  animation: pi-fade 1s ease .2s both;
+}
+/* KNOB: how fast the intro fades when you click to skip */
+.pi--skip { animation: pi-out .3s ease forwards; }
+.pi--skip * { animation-play-state: paused !important; }
+
+/* calibration frame */
+.pi-frame { position: absolute; inset: 0; pointer-events: none; }
+/* KNOB: calibrate step: corner brackets draw in, staggered by the delays below */
+.pi-corner { position: absolute; width: 22px; height: 22px; border: 0 solid var(--ink); animation: pi-corner .8s var(--expo) both; }
+.pi-corner--tl { top: 22px; left: 22px; border-width: 1px 0 0 1px; transform-origin: 0 0; animation-delay: .05s; }
+.pi-corner--tr { top: 22px; right: 22px; border-width: 1px 1px 0 0; transform-origin: 100% 0; animation-delay: .1s; }
+.pi-corner--bl { bottom: 22px; left: 22px; border-width: 0 0 1px 1px; transform-origin: 0 100%; animation-delay: .15s; }
+.pi-corner--br { bottom: 22px; right: 22px; border-width: 0 1px 1px 0; transform-origin: 100% 100%; animation-delay: .2s; }
+/* KNOB: rulers stretch in at .15s */
+.pi-ruler { position: absolute; color: var(--hair); animation: pi-ruler 1s var(--expo) .15s both; }
+.pi-ruler--top {
+  top: 56px; left: 64px; right: 64px; height: 7px; transform-origin: 0 50%;
+  background: repeating-linear-gradient(90deg, currentColor 0 1px, transparent 1px 8px), repeating-linear-gradient(90deg, var(--dim) 0 1px, transparent 1px 40px);
+  background-size: auto 4px, auto 7px;
+  background-repeat: repeat-x;
+  background-position: 0 0, 0 0;
+}
+.pi-ruler--left {
+  left: 22px; top: 96px; bottom: 96px; width: 7px; transform-origin: 50% 0; animation-name: pi-ruler-y;
+  background: repeating-linear-gradient(180deg, currentColor 0 1px, transparent 1px 8px), repeating-linear-gradient(180deg, var(--dim) 0 1px, transparent 1px 40px);
+  background-size: 4px auto, 7px auto;
+  background-repeat: repeat-y;
+}
+/* KNOB: scan line sweep timing (starts .2s, takes 1.1s) */
+.pi-scan { position: absolute; left: 0; right: 0; top: 0; height: 64px; background: linear-gradient(to bottom, transparent, rgb(242 242 238 / .07) 92%, var(--ink) 99%, transparent); opacity: 0; animation: pi-scan 1.1s cubic-bezier(.65, 0, .35, 1) .2s both; }
+/* KNOB: crosshair spin in and out (pi-cross keyframes below) */
+.pi-cross { position: absolute; top: 50%; left: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; animation: pi-cross 1.6s var(--io) .1s both; }
+.pi-cross::before, .pi-cross::after { content: ""; position: absolute; background: var(--ink); animation: pi-grow .7s var(--expo) .1s both; }
+.pi-cross::before { left: 0; right: 0; top: 50%; height: 1px; }
+.pi-cross::after { top: 0; bottom: 0; left: 50%; width: 1px; }
+.pi-cross span { position: absolute; inset: 34px; border: 1px solid var(--ink); border-radius: 50%; animation: pi-pop .6s var(--expo) .3s both; }
+
+/* readouts */
+/* KNOB: readout text size + fade-in */
+.pi-hud { position: absolute; inset: 0; z-index: 7; pointer-events: none; font: 10.5px / 1.5 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--dim); animation: pi-fade .5s ease .1s both; }
+.pi-hud p { margin: 0; }
+.pi-hud > * { position: absolute; }
+.pi-hud-tl { top: 22px; left: 56px; display: grid; }
+.pi-hud-tl span:first-child { color: var(--ink); }
+.pi-hud-tr { top: 22px; right: 56px; color: var(--ink); font-variant-numeric: tabular-nums; }
+.pi-hud-bl { bottom: 22px; left: 56px; display: grid; gap: 2px; min-width: 240px; }
+.pi-hud-bl p:first-child { color: var(--ink); }
+.pi-read { font-variant-numeric: tabular-nums; }
+.pi-progress { position: relative; display: block; height: 5px; margin-top: 6px; background: repeating-linear-gradient(90deg, var(--hair) 0 1px, transparent 1px 12px); }
+.pi-progress::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--hair); }
+/* KNOB: progress bar: 3.4s starting 3.6s, same as the paper feed (pi-feed) */
+.pi-progress span { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--ink); transform: scaleX(0); transform-origin: 0 50%; animation: pi-progress 3.4s linear 3.6s forwards; }
+.pi-hud-br { bottom: 22px; right: 56px; }
+
+.pi-camera { position: relative; z-index: 1; }
+/* camera: starts on the machine, then tracks down with the paper as it feeds */
+/* KNOB: camera follows the paper down: starts 3.3s, takes 3.9s */
+.pi-stage { animation: pi-track 3.9s cubic-bezier(.45, 0, .25, 1) 3.3s both; }
+.pi-stage { position: relative; width: var(--w); height: calc(var(--w) * 1.19); }
+
+/* the machine */
+/* KNOB: inspect step: printer drops away at 7s */
+.pi-machine { position: relative; z-index: 1; width: 100%; aspect-ratio: 2; animation: pi-away .8s var(--io) 7s forwards; }
+.pi-printer { display: block; width: 100%; height: 100%; overflow: visible; }
+/* KNOB: assemble step: each part flies in at its --at (set per part in PrinterIntro.jsx) */
+.pi-part { transform-box: view-box; transform-origin: 50% 50%; animation: pi-part 1s var(--expo) var(--at) both; }
+/* KNOB: line drawing speed and line thickness */
+.pi-draw { fill: none; stroke: var(--ink); stroke-width: 1.25; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: pi-draw .9s cubic-bezier(.65, 0, .35, 1) var(--at) forwards; }
+.pi-draw--fine { stroke-width: .75; stroke: var(--dim); }
+.pi-fill { fill: #121211; opacity: 0; animation: pi-fade .5s ease calc(var(--at) + .55s) forwards; }
+.pi-slot { fill: #0a0a0a; stroke: var(--ink); stroke-width: 1.25; opacity: 0; animation: pi-fade .3s ease calc(var(--at) + .6s) forwards; }
+.pi-btn, .pi-screw { fill: none; stroke: var(--dim); stroke-width: 1; }
+/* KNOB: led blinks at 3s, stays on for the print at 3.6s, off at 7s */
+.pi-led { fill: var(--ink); opacity: 0; animation: pi-blink .2s steps(1) 3s 3, pi-fade .01s 3.6s forwards, pi-fade-out .2s 7s forwards; }
+.pi-brand { fill: var(--dim); font: 8.5px var(--mono); letter-spacing: .14em; }
+.pi-brand--sn { font-size: 5.5px; letter-spacing: .1em; }
+/* KNOB: sheet loads at 3s, gets pulled in during the 3.6s-7s print */
+.pi-sheetin { fill: #e9e9e4; animation: pi-load .6s var(--snap) 3s both, pi-consume 3.4s linear 3.6s forwards; }
+/* KNOB: print head shuttles 20 times from 3.6s (.17s each pass) */
+.pi-head { fill: var(--ink); opacity: 0; animation: pi-fade .2s calc(var(--at) + .6s) forwards, pi-shuttle .17s cubic-bezier(.65, 0, .35, 1) 3.6s 20 alternate; }
+
+/* callouts */
+/* KNOB: callouts appear from ~1.95s staggered by --i (set in PrinterIntro.jsx), fade from 3.35s.
+   the dot, line and label each have their own delay below */
+.pi-call { position: absolute; width: 0; height: 0; animation: pi-fade-out .3s ease calc(3.35s + var(--i) * .04s) forwards; }
+.pi-call::before { content: ""; position: absolute; width: 5px; height: 5px; margin: -3px 0 0 -3px; border: 1px solid var(--ink); border-radius: 50%; background: #0a0a0a; animation: pi-pop .4s var(--expo) calc(1.95s + var(--i) * .08s) both; }
+.pi-call-line { position: absolute; top: 0; width: 52px; height: 1px; background: var(--ink); animation: pi-grow .45s var(--expo) calc(2s + var(--i) * .08s) both; }
+.pi-call-label { position: absolute; top: 0; transform: translateY(-50%); white-space: nowrap; font: 9px var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); animation: pi-type .4s steps(14) calc(2.1s + var(--i) * .08s) both; }
+.pi-call-label b { margin-right: 6px; font-weight: 400; color: var(--dim); }
+.pi-call--left .pi-call-line { right: 3px; transform-origin: 100% 50%; }
+.pi-call--left .pi-call-label { right: 62px; --clip: inset(0 0 0 100%); }
+.pi-call--right .pi-call-line { left: 3px; transform-origin: 0 50%; }
+.pi-call--right .pi-call-label { left: 62px; --clip: inset(0 100% 0 0); }
+
+/* the sheet: everything above the slot centre is clipped */
+.pi-sheet {
+  /* KNOB: sheet position/size, in units of the 360-wide printer drawing */
+  position: absolute;
+  z-index: 3;
+  top: calc(var(--w) * 138 / 360);
+  left: calc(var(--w) * 68 / 360);
+  width: calc(var(--w) * 224 / 360);
+  height: calc(var(--w) * 224 / 360 * 1.294);
+  /* lift to the middle of the screen for inspection */
+  /* KNOB: lift starts 7.1s, takes 1.05s (pi-lift keyframe sets how far/how big) */
+  animation: pi-lift 1.05s var(--io) 7.1s forwards;
+}
+.pi-feed { position: absolute; inset: 0; overflow: hidden; }
+.pi-paper {
+  height: 100%;
+  padding: 1.3em 1.3em 1em;
+  display: flex;
+  flex-direction: column;
+  gap: .5em;
+  background: #f2f2ee;
+  color: #0a0a0a;
+  /* KNOB: paper font size, scales with --w */
+  font: calc(var(--w) * .032) / 1.3 var(--mono);
+  transform: translateY(-100%);
+  /* KNOB: print step: feed starts 3.6s, takes 3.4s. keep pi-progress, pi-consume, pi-head, pi-band in sync */
+  animation: pi-feed 3.4s linear 3.6s forwards;
+}
+.pi-paper p { margin: 0; }
+.pi-paper-meta { display: flex; justify-content: space-between; padding-bottom: .5em; border-bottom: 1px solid #0a0a0a; font-size: .8em; letter-spacing: .08em; }
+/* KNOB: title size on the printed page */
+.pi-paper-title { font: 400 3.3em / .92 var(--serif); letter-spacing: -.02em; }
+.pi-paper-photo { position: relative; flex: 1; min-height: 0; overflow: hidden; }
+/* KNOB: printed photo crop + newspaper look (grayscale/contrast) */
+.pi-paper-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; filter: grayscale(1) contrast(1.25) brightness(.85); }
+.pi-paper-photo::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle, transparent 45%, rgb(242 242 238 / .7) 55%) 0 0 / 3px 3px; }
+.pi-paper-line { font-size: .85em; }
+.pi-paper-foot { display: flex; align-items: center; gap: .8em; }
+.pi-paper-code { flex: 1; height: 1.6em; background: repeating-linear-gradient(90deg, #0a0a0a 0 1px, transparent 1px 3px, #0a0a0a 3px 5px, transparent 5px 6px, #0a0a0a 6px 7px, transparent 7px 10px); }
+.pi-paper-reg { position: relative; width: 1.4em; height: 1.4em; border: 1px solid #0a0a0a; border-radius: 50%; }
+.pi-paper-reg::before, .pi-paper-reg::after { content: ""; position: absolute; background: #0a0a0a; }
+.pi-paper-reg::before { left: -30%; right: -30%; top: 50%; height: 1px; }
+.pi-paper-reg::after { top: -30%; bottom: -30%; left: 50%; width: 1px; }
+/* raster band just under the slot: dots resolving into ink */
+.pi-band {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--w) * .07);
+  background:
+    linear-gradient(#0a0a0a, #0a0a0a) 0 0 / 100% 1px no-repeat,
+    radial-gradient(circle, rgb(10 10 10 / .55) 40%, transparent 46%) 0 0 / 3px 3px;
+  -webkit-mask-image: linear-gradient(#000, transparent);
+  mask-image: linear-gradient(#000, transparent);
+  opacity: 0;
+  /* KNOB: raster band shows during the print, 3.6s to 6.95s */
+  animation: pi-fade .1s 3.6s forwards, pi-fade-out .2s 6.95s forwards;
+}
+/* KNOB: crop marks pop in at 7.75-7.9s (delays below) */
+.pi-crop { position: absolute; width: 14px; height: 14px; border: 0 solid var(--ink); animation: pi-pop .45s var(--expo) both; }
+.pi-crop--tl { top: -20px; left: -20px; border-width: 0 1px 1px 0; animation-delay: 7.75s; }
+.pi-crop--tr { top: -20px; right: -20px; border-width: 0 0 1px 1px; animation-delay: 7.8s; }
+.pi-crop--bl { bottom: -20px; left: -20px; border-width: 1px 1px 0 0; animation-delay: 7.85s; }
+.pi-crop--br { bottom: -20px; right: -20px; border-width: 1px 0 0 1px; animation-delay: 7.9s; }
+/* KNOB: dims label rises at 7.9s. its pi-hold animation ends at ~8.5s and that end triggers the JS
+   handoff in PrinterIntro.jsx, so this delay/duration is when the handoff starts */
+.pi-dims { position: absolute; top: calc(100% + 26px); left: 0; right: 0; margin: 0; display: flex; justify-content: center; gap: .6em; font: 8px var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--dim); animation: pi-rise-in .5s var(--expo) 7.9s both, pi-hold .5s 8s both; }
+.pi-dims::before, .pi-dims::after { content: ""; flex: 1; align-self: center; height: 1px; background: var(--hair); }
+
+/* handoff: the frame clears, everything but the flying title racks out of focus */
+/* KNOB: handoff speeds: background clears, frame fades, camera blurs out */
+.pi--handoff { pointer-events: none; animation: pi-clear .8s ease .15s forwards; }
+.pi--handoff::before, .pi--handoff .pi-frame, .pi--handoff .pi-hud { animation: pi-fade-out .35s ease forwards; }
+.pi--handoff .pi-camera { animation: pi-rack .8s cubic-bezier(.5, 0, .2, 1) forwards; }
+.pi-flyer { position: fixed; z-index: 5; margin: 0; line-height: normal; white-space: nowrap; transform-origin: 50% 50%; will-change: transform; }
+
+/* KNOB: intro keyframe shapes (what each move does; timings live on the rules above) */
+@keyframes pi-out { to { opacity: 0; visibility: hidden; } }
+@keyframes pi-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pi-fade-out { to { opacity: 0; } }
+@keyframes pi-clear { to { background-color: transparent; } }
+@keyframes pi-hold { to { opacity: 1; } }
+@keyframes pi-corner { from { opacity: 0; transform: scale(2.2); } }
+@keyframes pi-ruler { from { transform: scaleX(0); } }
+@keyframes pi-ruler-y { from { transform: scaleY(0); } }
+@keyframes pi-grow { from { transform: scale(0); } }
+@keyframes pi-pop { from { opacity: 0; transform: scale(0); } }
+@keyframes pi-scan {
+  0% { opacity: 1; transform: translateY(-64px); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(100vh); }
+}
+@keyframes pi-cross {
+  0% { transform: rotate(-90deg); }
+  55% { transform: none; opacity: 1; }
+  100% { transform: rotate(45deg) scale(0); opacity: 0; }
+}
+@keyframes pi-part { from { opacity: 0; transform: var(--from); } to { opacity: 1; transform: none; } }
+@keyframes pi-draw { to { stroke-dashoffset: 0; } }
+@keyframes pi-blink { 50% { opacity: 1; } }
+@keyframes pi-load { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(40px); } }
+@keyframes pi-consume { from { transform: translateY(40px); } to { transform: translateY(78px); } }
+@keyframes pi-shuttle { to { transform: translateX(212px); } }
+@keyframes pi-type { from { clip-path: var(--clip); } to { clip-path: inset(0); } }
+@keyframes pi-progress { to { transform: scaleX(1); } }
+@keyframes pi-away { to { opacity: 0; transform: translateY(30px); } }
+@keyframes pi-lift { to { transform: translateY(calc(var(--w) * -.19)) scale(1.22); } }
+@keyframes pi-track { from { transform: translateY(calc(var(--w) * .34)); } }
+@keyframes pi-rise-in { from { opacity: 0; transform: translateY(6px); } }
+@keyframes pi-rack { to { transform: scale(.95); filter: blur(8px); opacity: 0; } }
+
+/* stepped feed: ten jerks with holds, settles with a hair of overshoot */
+/* KNOB: feed timeline: each step moves 10% then holds; 97% is the overshoot */
+@keyframes pi-feed {
+  0%   { transform: translateY(-100%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  7%   { transform: translateY(-90%); }
+  10%  { transform: translateY(-90%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  17%  { transform: translateY(-80%); }
+  20%  { transform: translateY(-80%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  27%  { transform: translateY(-70%); }
+  30%  { transform: translateY(-70%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  37%  { transform: translateY(-60%); }
+  40%  { transform: translateY(-60%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  47%  { transform: translateY(-50%); }
+  50%  { transform: translateY(-50%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  57%  { transform: translateY(-40%); }
+  60%  { transform: translateY(-40%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  67%  { transform: translateY(-30%); }
+  70%  { transform: translateY(-30%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  77%  { transform: translateY(-20%); }
+  80%  { transform: translateY(-20%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  87%  { transform: translateY(-10%); }
+  90%  { transform: translateY(-10%); animation-timing-function: cubic-bezier(.3, .7, .3, 1); }
+  97%  { transform: translateY(.8%); animation-timing-function: ease-in-out; }
+  100% { transform: translateY(0); }
+}
+
+/* KNOB: intro phone breakpoint: hides callouts, left ruler, bottom-right readout */
+@media (max-width: 640px) {
+  .pi-call, .pi-ruler--left, .pi-hud-br { display: none; }
+  .pi-hud-tl, .pi-hud-bl { left: 22px; }
+  .pi-hud-tr { right: 22px; }
+  .pi-ruler--top { left: 22px; right: 22px; }
+}
+
+/* the page assembles under the dissolving intro. 'landed' keeps the same animations
+   so nothing restarts when the title touches down */
+:root[data-pi="waiting"] :is(.site-header, .home > :not(.pi), .site-footer),
+:root[data-pi="waiting"] .fx-field { opacity: 0; }
+:root:is([data-pi="waiting"], [data-pi="enter"]) .home .name { visibility: hidden; }
+
+:root:is([data-pi="enter"], [data-pi="landed"]) {
+  /* KNOB: easing for the page entrance */
+  --in: cubic-bezier(.16, 1, .3, 1);
+}
+/* KNOB: page entrance stagger, counted from the handoff: header .45s, intro lines .7/.8/.9s,
+   photo .75s, blocks 1s/1.08s, footer 1.2s, dot field .3s */
+:root:is([data-pi="enter"], [data-pi="landed"]) .site-header { animation: pi-drop 1s var(--in) .45s both; }
+:root:is([data-pi="enter"], [data-pi="landed"]) .fx-field { animation: pi-fade 1.6s ease .3s both; }
+:root:is([data-pi="enter"], [data-pi="landed"]) .intro > :not(.name) { animation: pi-rise 1.1s var(--in) both; }
+:root:is([data-pi="enter"], [data-pi="landed"]) .intro > :nth-child(2) { animation-delay: .7s; }
+:root:is([data-pi="enter"], [data-pi="landed"]) .intro > :nth-child(3) { animation-delay: .8s; }
+:root:is([data-pi="enter"], [data-pi="landed"]) .intro > :nth-child(4) { animation-delay: .9s; }
+/* the photo prints itself onto the page: wipes down from the top, ink settling */
+:root:is([data-pi="enter"], [data-pi="landed"]) .intro-photo { animation: pi-develop 1.4s var(--in) .75s both; }
+:root:is([data-pi="enter"], [data-pi="landed"]) .home > .block { animation: pi-rise 1.1s var(--in) 1s both; }
+:root:is([data-pi="enter"], [data-pi="landed"]) .home > .block + .block { animation-delay: 1.08s; }
+:root:is([data-pi="enter"], [data-pi="landed"]) .site-footer { animation: pi-fade 1s ease 1.2s both; }
+
+/* KNOB: entrance moves: rise distance/blur, header drop, photo develop wipe */
+@keyframes pi-rise { from { opacity: 0; transform: translateY(22px); filter: blur(6px); } }
+@keyframes pi-drop { from { opacity: 0; transform: translateY(-12px); filter: blur(4px); } }
+@keyframes pi-develop {
+  from { clip-path: inset(0 0 100% 0); transform: scale(1.04); filter: grayscale(1) contrast(1.3) brightness(1.4); }
+  60% { filter: grayscale(.4) contrast(1.1) brightness(1.05); }
+  to { clip-path: inset(0); transform: none; filter: none; }
+}
+
+/* replay button (HomePage.jsx): plays the printer intro again */
+.replay {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 4px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font: 12px var(--mono);
+  letter-spacing: .04em;
+  cursor: pointer;
+  /* KNOB: hover color fade speed */
+  transition: color .2s, border-color .2s;
+}
+.replay:hover { color: var(--fg); border-color: var(--fg); }
+/* KNOB: arrow spin speed + bouncy easing, and how far it turns on hover */
+.replay span { display: inline-block; transition: transform .5s cubic-bezier(.34, 1.56, .64, 1); }
+.replay:hover span { transform: rotate(-200deg); }
+
+
+/* page warp (PageWarp.jsx): a black sheet with a scan-line edge sweeps over the old page,
+   holds on the destination, sweeps off. --pw-total comes from PageWarp.jsx; keyframe percentages
+   assume its CLOSE 760 / HOLD 600 / OPEN 920 split: close 0-33.3%, hold to 59.6%, open to 100% */
+/* KNOB: warp colors (ink lines, dim marks) */
+.pw { position: fixed; inset: 0; z-index: 88; cursor: progress; --ink: #f2f2ee; --dim: #8a8884; }
+.pw-sheet {
+  position: absolute;
+  inset: 0;
+  /* KNOB: warp sheet color + dot grid */
+  background: #0a0a0a radial-gradient(circle, rgb(242 242 238 / .08) 1px, transparent 1.2px) 50% 50% / 24px 24px;
+  animation: pw-sheet-down var(--pw-total) both;
+}
+.pw--up .pw-sheet { animation-name: pw-sheet-up; }
+.pw-edge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  /* KNOB: scan-line edge thickness (height) and glow (box-shadow) */
+  height: 9px;
+  margin-top: -1px;
+  background:
+    linear-gradient(var(--ink), var(--ink)) 0 0 / 100% 1px no-repeat,
+    repeating-linear-gradient(90deg, var(--ink) 0 1px, transparent 1px 12px) 0 1px / 100% 4px no-repeat,
+    repeating-linear-gradient(90deg, var(--ink) 0 1px, transparent 1px 60px) 0 1px / 100% 8px no-repeat;
+  box-shadow: 0 0 18px rgb(242 242 238 / .35);
+  animation: pw-edge-down var(--pw-total) both;
+}
+.pw--up .pw-edge { animation-name: pw-edge-up; transform: scaleY(-1); }
+/* KNOB: registration marks size + distance from corners (24px) */
+.pw-reg { position: absolute; width: 18px; height: 18px; border: 1px solid var(--dim); border-radius: 50%; }
+.pw-reg::before, .pw-reg::after { content: ""; position: absolute; background: var(--dim); }
+.pw-reg::before { left: -6px; right: -6px; top: 50%; height: 1px; }
+.pw-reg::after { top: -6px; bottom: -6px; left: 50%; width: 1px; }
+.pw-reg--tl { top: 24px; left: 24px; }
+.pw-reg--tr { top: 24px; right: 24px; }
+.pw-reg--bl { bottom: 24px; left: 24px; }
+.pw-reg--br { bottom: 24px; right: 24px; }
+.pw-label { position: absolute; top: 50%; left: 0; right: 0; margin: 0; display: grid; justify-items: center; gap: 8px; transform: translateY(-50%); color: var(--ink); }
+/* KNOB: small label above the destination name */
+.pw-kicker { font: 10.5px var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--dim); animation: pw-label var(--pw-total) var(--io, cubic-bezier(.7, 0, .2, 1)) both; }
+/* KNOB: destination name size */
+.pw-name { max-width: 90vw; font: 400 clamp(2.4rem, 7vw, 4.4rem) / 1 var(--serif); letter-spacing: -.02em; text-align: center; animation: pw-label var(--pw-total) both; animation-delay: 30ms; }
+.pw-rule { width: 64px; height: 1px; background: var(--ink); transform: scaleX(0); animation: pw-rule var(--pw-total) both; }
+
+/* KNOB: warp timeline. 33.3% = CLOSE / total and 59.6% = (CLOSE + HOLD) / total, from CLOSE/HOLD/OPEN
+   in src/fx/PageWarp.jsx. change those and recompute these percentages (edge keyframes too) */
+@keyframes pw-sheet-down {
+  0% { clip-path: inset(0 0 100% 0); animation-timing-function: cubic-bezier(.7, 0, .25, 1); }
+  33.3%, 59.6% { clip-path: inset(0 0 0 0); animation-timing-function: cubic-bezier(.7, 0, .25, 1); }
+  100% { clip-path: inset(100% 0 0 0); }
+}
+@keyframes pw-sheet-up {
+  0% { clip-path: inset(100% 0 0 0); animation-timing-function: cubic-bezier(.7, 0, .25, 1); }
+  33.3%, 59.6% { clip-path: inset(0 0 0 0); animation-timing-function: cubic-bezier(.7, 0, .25, 1); }
+  100% { clip-path: inset(0 0 100% 0); }
+}
+@keyframes pw-edge-down {
+  0% { transform: translateY(0); opacity: 1; animation-timing-function: cubic-bezier(.7, 0, .25, 1); }
+  33.3% { transform: translateY(100vh); opacity: 1; }
+  33.4%, 59.5% { transform: translateY(0); opacity: 0; }
+  59.6% { transform: translateY(0); opacity: 1; animation-timing-function: cubic-bezier(.7, 0, .25, 1); }
+  100% { transform: translateY(100vh); opacity: 1; }
+}
+@keyframes pw-edge-up {
+  0% { transform: translateY(100vh) scaleY(-1); opacity: 1; animation-timing-function: cubic-bezier(.7, 0, .25, 1); }
+  33.3% { transform: translateY(0) scaleY(-1); opacity: 1; }
+  33.4%, 59.5% { transform: translateY(100vh) scaleY(-1); opacity: 0; }
+  59.6% { transform: translateY(100vh) scaleY(-1); opacity: 1; animation-timing-function: cubic-bezier(.7, 0, .25, 1); }
+  100% { transform: translateY(0) scaleY(-1); opacity: 1; }
+}
+/* KNOB: name fades up between 22% and 42%, rule draws between 30% and 55% */
+@keyframes pw-label {
+  0%, 22% { opacity: 0; transform: translateY(12px); clip-path: inset(0 0 100% 0); animation-timing-function: cubic-bezier(.16, 1, .3, 1); }
+  42%, 100% { opacity: 1; transform: none; clip-path: inset(0); }
+}
+@keyframes pw-rule {
+  0%, 30% { transform: scaleX(0); animation-timing-function: cubic-bezier(.16, 1, .3, 1); }
+  55%, 100% { transform: scaleX(1); }
+}
+
+/* receipt easter egg (Receipt.jsx): ⌘P prints a thermal receipt of the visit out of a slot
+   at the top of the screen. stepped feed like the intro's printer; click or Esc tears it off */
+/* KNOB: receipt position from the right edge + width */
+.rc { position: fixed; top: 0; right: clamp(16px, 6vw, 72px); z-index: 87; width: min(300px, calc(100vw - 32px)); pointer-events: none; }
+.rc-slot {
+  position: absolute; top: 0; left: -10px; right: -10px; z-index: 2; height: 12px;
+  background: #0a0a0a; border: 1px solid #3a3a38; border-top: 0; border-radius: 0 0 6px 6px;
+  box-shadow: 0 6px 18px rgb(0 0 0 / .45);
+  /* KNOB: slot drop speed */
+  animation: rc-slot .35s cubic-bezier(.16, 1, .3, 1) both;
+}
+.rc-feed { overflow: hidden; padding: 6px 4px 40px; margin-top: 6px; }
+.rc-paper {
+  display: block; width: 100%; padding: 0; border: 0; background: none; color: inherit; text-align: left;
+  cursor: pointer; pointer-events: auto;
+  transform: translateY(-101%);
+  /* KNOB: feed takes 1.9s after a .3s delay. Receipt.jsx doesn't time this, but it waits for the
+     rc-tear animation to end before removing the receipt, so keep that name */
+  animation: rc-feed 1.9s linear .3s forwards;
+  filter: drop-shadow(0 10px 22px rgb(0 0 0 / .35));
+}
+.rc-body {
+  display: block; padding: 18px 18px 26px;
+  /* KNOB: receipt paper + ink colors */
+  background: #f4f3ef; color: #151515;
+  /* KNOB: receipt font size + line spacing */
+  font: 11px / 1.55 var(--mono); letter-spacing: .02em;
+  /* torn zig-zag bottom edge */
+  /* KNOB: size of the torn teeth */
+  --tooth: 8px;
+  -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(var(--tooth) * 2) 100%;
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(var(--tooth) * 2) 100%;
+}
+.rc-body p { margin: 0; }
+.rc-body hr { margin: 8px 0; border: 0; border-top: 1px dashed #151515; }
+.rc-title { text-align: center; font-size: 15px; font-weight: 700; letter-spacing: .18em; }
+.rc-center { text-align: center; }
+.rc-small { margin-top: 4px !important; font-size: 9px; letter-spacing: .14em; color: #555; }
+.rc-head { margin-bottom: 2px !important; }
+.rc-page::before { content: "· "; }
+.rc-row { display: flex; gap: 6px; align-items: baseline; }
+.rc-dots { flex: 1; border-bottom: 1px dotted #9a9893; transform: translateY(-3px); }
+.rc-total { display: flex; justify-content: space-between; margin-top: 6px !important; font-size: 14px; font-weight: 700; }
+.rc-code { display: block; height: 34px; margin: 10px 0 6px; background: repeating-linear-gradient(90deg, #151515 0 1px, transparent 1px 3px, #151515 3px 5px, transparent 5px 6px, #151515 6px 7px, transparent 7px 10px, #151515 10px 13px, transparent 13px 15px); }
+.rc-paper:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
+/* KNOB: tear-off speed + easing */
+.rc--tear .rc-paper { animation: rc-tear .55s cubic-bezier(.5, 0, .75, 0) forwards; transform: none; }
+.rc--tear .rc-slot { animation: rc-slot-out .3s ease .35s forwards; }
+
+@keyframes rc-slot { from { transform: translateY(-100%); } }
+@keyframes rc-slot-out { to { transform: translateY(-100%); } }
+/* thermal printers feed in quick jerks */
+/* KNOB: receipt feed timeline: six jerks with holds */
+@keyframes rc-feed {
+  0%   { transform: translateY(-101%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  12%  { transform: translateY(-84%); }
+  18%  { transform: translateY(-84%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  30%  { transform: translateY(-66%); }
+  36%  { transform: translateY(-66%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  48%  { transform: translateY(-48%); }
+  54%  { transform: translateY(-48%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  66%  { transform: translateY(-30%); }
+  72%  { transform: translateY(-30%); animation-timing-function: cubic-bezier(.2, .8, .3, 1); }
+  84%  { transform: translateY(-12%); }
+  90%  { transform: translateY(-12%); animation-timing-function: cubic-bezier(.3, .7, .3, 1); }
+  100% { transform: translateY(0); }
+}
+/* KNOB: tear path: tug down, then spin and fall off screen */
+@keyframes rc-tear {
+  0% { transform: none; }
+  15% { transform: rotate(-2deg) translateY(4px); }
+  100% { transform: rotate(9deg) translate(30px, 110vh); opacity: .6; }
+}
+/* KNOB: reduced motion: don't remove, accessibility. receipt just appears */
+@media (prefers-reduced-motion: reduce) {
+  .rc-paper { transform: none; }
+}
+
+/* fake admin page (FakeAdmin.jsx) */
+/* KNOB: the "nice try." stamp: tilt, colors, border */
+.nice-try {
+  display: inline-block;
+  margin: 0 0 18px;
+  padding: 4px 10px;
+  border: 2px solid currentColor;
+  border-radius: 3px;
+  color: #d94949;
+  font: 700 13px var(--mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  transform: rotate(-4deg);
+}
+/* KNOB: the footer's bait admin link */
+.footer-admin { margin-left: 10px; color: var(--muted); opacity: .5; text-decoration: none; }
+.footer-admin:hover { opacity: 1; text-decoration: underline; }
+
+/* 67 (SixSeven.jsx): the clip pops up in the middle of the screen */
+/* no animation: the clip appears the moment it starts playing and vanishes the moment it ends. the player
+   stays mounted and preloaded (hidden) so a 67 starts it instantly */
+.six7 { position: fixed; inset: 0; z-index: 91; display: grid; place-items: center; padding: 16px; visibility: hidden; pointer-events: none; }
+.six7.is-on { visibility: visible; pointer-events: auto; }
+/* KNOB: clip size and corner rounding */
+.six7-card {
+  position: relative;
+  width: min(380px, 80vw);
+  margin: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #000;
+  box-shadow: 0 30px 80px rgb(0 0 0 / .6);
+}
+.six7-card video { display: block; width: 100%; height: auto; }
+.six7-count { position: absolute; left: 10px; top: 10px; padding: 3px 8px; border-radius: 999px; background: rgb(0 0 0 / .6); color: #fff; font: 700 12px var(--mono); letter-spacing: .06em; }
+.six7-close { position: absolute; right: 10px; top: 10px; padding: 3px 8px; border: 0; border-radius: 999px; background: rgb(0 0 0 / .6); color: #fff; font: 11px var(--mono); cursor: pointer; }
+
+/* the site's own keyboard for the terminal on touch screens (TouchKeyboard.jsx) */
+/* iPhone zooms into any text box under 16px; the terminal's is 13px, so bump it on touch screens */
+@media (pointer: coarse) {
+  .fx-terminal-input input { font-size: 16px; }
+}
+.tkb {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 92;
+  display: grid;
+  gap: 6px;
+  /* KNOB: keyboard padding. the bottom one lifts the keys clear of the strip at the very bottom of the
+     screen where a tap brings Safari's toolbar back (plus the iPhone home bar); keep it at 40px or more */
+  padding: 8px 6px calc(44px + env(safe-area-inset-bottom));
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -12px 30px rgb(0 0 0 / .35);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  /* no iPhone long-press bubble (copy / look up) on the keys */
+  -webkit-touch-callout: none;
+  animation: tkb-in .22s cubic-bezier(.16, 1, .3, 1) both;
+}
+.tkb-row { display: flex; gap: 5px; justify-content: center; }
+.tkb-key {
+  flex: 1 1 0;
+  max-width: 44px;
+  /* KNOB: key height, font, and corner rounding */
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--ph);
+  color: var(--fg);
+  font: 16px var(--mono);
+  cursor: pointer;
+}
+.tkb-key--fn { max-width: 64px; color: var(--muted); }
+.tkb-key--space { flex: 4 1 0; max-width: none; font-size: 12px; letter-spacing: .14em; color: var(--muted); }
+/* pressed: inverted, like the rest of the site's black-and-white states */
+.tkb-key:active { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+/* room to scroll the page up from behind the keyboard, and the pop-up terminal moves to the top */
+.has-tkb body { padding-bottom: 340px; }
+.has-tkb .fx-backdrop { align-items: start; padding-bottom: 340px; }
+@keyframes tkb-in { from { transform: translateY(100%); } }

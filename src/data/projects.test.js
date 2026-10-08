@@ -21,13 +21,13 @@ describe('project templates', () => {
   })
 
   it('returns unique filter tags', () => {
-    expect(getProjectTags()).toEqual(['All', 'AI', 'Backend', 'Data', 'Product', 'Web'])
+    expect(getProjectTags()).toEqual(['All', 'AI', 'Backend', 'Data', 'Infra', 'Mobile', 'Product', 'Web'])
   })
 
   it('wraps adjacent project navigation', () => {
     expect(getAdjacentProjects('digital-package-tracker')).toMatchObject({
       previous: { slug: 'ai-sentiment-analysis' },
-      next: { slug: 'ai-sentiment-analysis' },
+      next: { slug: 'rumie' },
     })
   })
 

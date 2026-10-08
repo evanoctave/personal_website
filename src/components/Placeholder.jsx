@@ -1,8 +1,13 @@
+// Placeholder: every photo slot on the site. with a src it is a photo button that opens the lightbox
+// (src/fx/Lightbox.jsx); without one it's a grey box showing its label and size. used by most pages.
 import { useEffect, useRef, useState } from 'react'
+import { openPhoto } from '../fx/Lightbox.jsx'
 
 // Image slot. Give it a src to show a real image, otherwise it's a grey box
 // that tells you what goes there and how big it currently renders.
-export default function Placeholder({ alt = '', className = '', label = 'image', position, ratio = '4 / 3', src }) {
+// KNOB: defaults when a page leaves them out: ratio '4 / 3' (shape), label 'image' (grey box text).
+// position = crop focus like '50% 20%'; interactive={false} = plain image, no lightbox; caption = lightbox text
+export default function Placeholder({ alt = '', caption, className = '', interactive = true, label = 'image', position, ratio = '4 / 3', src }) {
   const ref = useRef(null)
   const [size, setSize] = useState('')
 
@@ -16,8 +21,18 @@ export default function Placeholder({ alt = '', className = '', label = 'image',
     return () => ro.disconnect()
   }, [src])
 
-  if (src) {
+  if (src && !interactive) {
     return <img alt={alt} className={`photo ${className}`} loading="lazy" src={src} style={{ aspectRatio: ratio, objectPosition: position }} />
+  }
+
+  if (src) {
+    const onClick = (event) => openPhoto({ src, x: event.clientX, y: event.clientY, origin: event.currentTarget })
+    return (
+      <button className={`photo-btn ${className}`} onClick={onClick} style={{ aspectRatio: ratio }} type="button">
+        <img alt={alt} className="photo" data-caption={caption} data-photo="" loading="lazy" src={src} style={{ aspectRatio: ratio, objectPosition: position }} />
+        <span className="sr-only">Open photo</span>
+      </button>
+    )
   }
 
   return (

@@ -18,14 +18,22 @@ describe('site', () => {
     vi.useRealTimers()
   })
 
-  it('shows construction gate at root with date, photos, and unfinished-site link', () => {
+  it('sends the bare domain to /home and keeps the old gate at /hello', () => {
+    renderAt('/')
+    expect(screen.getByRole('heading', { level: 1, name: "What's up" })).toBeInTheDocument()
+    cleanup()
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-09-27T12:00:00'))
-    renderAt('/')
-    expect(screen.getByRole('heading', { level: 1, name: 'UNDER CONSTRUCTION' })).toBeInTheDocument()
+    renderAt('/hello')
+    expect(screen.getByRole('heading', { level: 1, name: 'HELLO_WORLD' })).toBeInTheDocument()
     expect(screen.getByText('As of Sunday, September 27, 2026')).toBeInTheDocument()
+<<<<<<< HEAD
     expect(screen.getAllByRole('img')).toHaveLength(2)
     expect(screen.getByRole('link', { name: 'Enter unfinished site anyway' })).toHaveAttribute('href', '/home')
+=======
+    expect(screen.queryAllByRole('img')).toHaveLength(0)
+    expect(screen.getByRole('link', { name: 'npx ts-node portfolio.ts' })).toHaveAttribute('href', '/home')
+>>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
   })
 
   it('covers the construction page with the sticker printer, then gets out of the way', () => {
@@ -46,7 +54,7 @@ describe('site', () => {
     expect(screen.getByRole('link', { name: 'Skip to content' })).toHaveAttribute('href', '#main-content')
     expect(screen.getByRole('navigation', { name: 'Primary' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 1, name: "What's up" })).toBeInTheDocument()
-    expect(screen.getByRole('img', { name: /Cal State Fullerton rooftops/ })).toHaveAttribute('src', '/photos/PICT0020.jpg')
+    expect(screen.getByLabelText(/sits down in front of the camera and waves/)).toHaveAttribute('src', '/clips/wave.mp4')
     expect(screen.queryByRole('img', { name: /Image placeholder/ })).not.toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'the whole roll' })).toHaveAttribute('href', '/life')
   })
@@ -55,12 +63,19 @@ describe('site', () => {
     const user = userEvent.setup()
     renderAt('/life')
     expect(screen.getByRole('heading', { level: 1, name: 'life' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { level: 3, name: '08 20 2026' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { level: 2, name: 'spring 2025' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 3, name: '09 27 2026' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 2, name: 'before the camera' })).toBeInTheDocument()
     expect(screen.getByRole('img', { name: /mid-pitch on the mound/ })).toHaveAttribute('src', '/photos/pitch.jpg')
+<<<<<<< HEAD
     expect(screen.getByRole('img', { name: /arms out wide/ })).toHaveAttribute('src', '/photos/PICT0025-smooth.jpg')
     const clip = document.querySelector('video[src="/clips/MOVI0007.mp4"]')
     expect(clip).toHaveAttribute('poster', '/clips/MOVI0007.jpg')
+=======
+    expect(screen.getByRole('img', { name: /Dodger Stadium under the lights/ })).toHaveAttribute('src', '/photos/dodgers-night.jpg')
+    expect(screen.queryByRole('img', { name: /Ghost cherry limeade/ })).not.toBeInTheDocument()
+    const clip = document.querySelector('video[src="/clips/MOVI0002.mp4"]')
+    expect(clip).toHaveAttribute('poster', '/clips/MOVI0002.jpg')
+>>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
     expect(clip.muted).toBe(true)
     const [sound] = screen.getAllByRole('button', { name: 'sound' })
     await user.click(sound)
@@ -82,6 +97,35 @@ describe('site', () => {
     renderAt('/projects/ai-sentiment-analysis')
     expect(screen.getByRole('heading', { level: 1, name: 'AI Sentiment Analysis System' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'GitHub' })).toHaveAttribute('href', 'https://github.com/evanoctave/AI-project')
+  })
+
+  it('opens a photo in the lightbox and walks the roll with the keyboard', async () => {
+    const user = userEvent.setup()
+    renderAt('/life')
+    await user.click(screen.getByRole('button', { name: /Dodger Stadium under the lights/ }))
+    const dialog = screen.getByRole('dialog', { name: 'Photo viewer' })
+    expect(dialog).toBeInTheDocument()
+    expect(document.body.style.overflow).toBe('hidden')
+    const count = document.querySelector('.lightbox-count').textContent
+    fireEvent.keyDown(window, { key: 'ArrowRight' })
+    expect(document.querySelector('.lightbox-count').textContent).not.toBe(count)
+    fireEvent.keyDown(window, { key: 'Escape' })
+    expect(screen.queryByRole('dialog', { name: 'Photo viewer' })).not.toBeInTheDocument()
+    expect(document.body.style.overflow).toBe('')
+  })
+
+  it('turns [words](url) in project text into real links', () => {
+    renderAt('/work/rumie')
+    expect(screen.getByRole('link', { name: 'Anjelo Go' })).toHaveAttribute('href', 'https://github.com/anjelogo')
+    expect(screen.queryByText(/\[Anjelo Go\]/)).not.toBeInTheDocument()
+  })
+
+  it('roasts anyone who tries /admin and records the egg', () => {
+    renderAt('/admin')
+    expect(screen.getByRole('heading', { level: 1, name: 'Very, very clever.' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'go back to the main page.' })).toHaveAttribute('href', '/home')
+    expect(document.title).toBe('Admin | Evan Octave')
+    expect(JSON.parse(window.localStorage.getItem('eo-eggs'))).toContain('admin')
   })
 
   it('shows 404 page and records the lost easter egg', () => {
@@ -141,11 +185,72 @@ describe('site', () => {
     renderAt('/home')
     fireEvent.keyDown(window, { key: '/' })
     const input = screen.getByRole('textbox')
+    await user.type(input, 'work{Enter}')
+    expect(screen.getByText(/\[1\] Digital Package Tracker/)).toBeInTheDocument()
+    expect(await screen.findByText("try 'work' then a number (like 'work 2') to open that project", {}, { timeout: 2000 })).toBeInTheDocument()
     await user.type(input, 'sudo{Enter}')
     expect(screen.getByText(/access granted/)).toBeInTheDocument()
     await user.type(input, 'cd work{Enter}')
     expect(screen.queryByRole('dialog', { name: 'Terminal' })).not.toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 1, name: 'Work' })).toBeInTheDocument()
+  })
+
+  it('prints a receipt instead of the print dialog and counts it as an egg', async () => {
+    // intro already seen, so key presses count from the start
+    window.sessionStorage.setItem('eo-printed', '1')
+    renderAt('/home')
+    ;['q', 'w', 'e'].forEach((key) => fireEvent.keyDown(window, { key }))
+    const event = new KeyboardEvent('keydown', { key: 'p', metaKey: true, cancelable: true, bubbles: true })
+    act(() => { window.dispatchEvent(event) })
+    expect(event.defaultPrevented).toBe(true)
+    const receipt = screen.getByRole('complementary', { name: 'Receipt of your visit' })
+    expect(receipt).toHaveTextContent('/home')
+    expect(receipt).toHaveTextContent('SECRETS FOUND')
+    // a cent a key: three presses before printing
+    expect(receipt).toHaveTextContent('3 × KEY PRESS @ $0.01')
+    expect(receipt).toHaveTextContent(/TOTAL\s*\$0\.03/)
+    expect(JSON.parse(window.localStorage.getItem('eo-eggs'))).toContain('print')
+  })
+
+  it('pops the 67 clip when 7 follows 6 fast, and only then', () => {
+    vi.useFakeTimers()
+    renderAt('/home')
+    fireEvent.keyDown(window, { key: '6' })
+    act(() => { vi.advanceTimersByTime(1000) })
+    fireEvent.keyDown(window, { key: '7' })
+    // the player is always mounted (preloaded); aria-hidden says whether it's up
+    expect(document.querySelector('.six7')).toHaveAttribute('aria-hidden', 'true')
+    fireEvent.keyDown(window, { key: '6' })
+    fireEvent.keyDown(window, { key: '7' })
+    expect(document.querySelector('.six7')).toHaveAttribute('aria-hidden', 'false')
+    expect(document.querySelector('.six7 video')).toHaveAttribute('src', '/clips/67.mp4')
+    expect(screen.getByText('67 × 1')).toBeInTheDocument()
+    expect(JSON.parse(window.localStorage.getItem('eo-eggs'))).toContain('sixseven')
+  })
+
+  it('gives touch screens the site keyboard instead of the native one', () => {
+    // pretend to be a phone: coarse pointer, everything else off
+    vi.stubGlobal('matchMedia', (query) => ({ matches: query.includes('coarse'), addEventListener() {}, removeEventListener() {} }))
+    window.sessionStorage.setItem('eo-printed', '1')
+    renderAt('/home')
+    fireEvent.keyDown(window, { key: '/' })
+    const input = screen.getByRole('textbox')
+    expect(input).toHaveAttribute('inputmode', 'none')
+    fireEvent.focus(input)
+    const press = (name) => fireEvent.pointerDown(screen.getByRole('button', { name }))
+    ;['l', 's'].forEach(press)
+    expect(input).toHaveValue('ls')
+    press('Run')
+    expect(screen.getByText(/home\/\s+work\//)).toBeInTheDocument()
+    // keys still count as typing: a fast 6 then 7 pops the clip
+    press('6')
+    press('7')
+    expect(document.querySelector('.six7')).toHaveAttribute('aria-hidden', 'false')
+    // a blur (what every tap does on iPhone) must not close it; only ▾ or a tap elsewhere does
+    fireEvent.blur(input)
+    expect(screen.getByRole('group', { name: 'Keyboard' })).toBeInTheDocument()
+    press('Hide keyboard')
+    expect(screen.queryByRole('group', { name: 'Keyboard' })).not.toBeInTheDocument()
   })
 
   it('triggers god mode with the konami code', () => {

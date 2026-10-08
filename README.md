@@ -35,7 +35,7 @@ encoded at 720×540.
 
 - `src/data/projects.js`: projects (a new object gets a route at `/work/<slug>`).
 - `src/pages/AboutPage.jsx`: bio + facts.
-- `src/data/life.js`: the life page. `days` is the digicam roll (one object per camera date), `chapters` is the phone roll (newest first). Items are `kind: 'photo' | 'clip'`; `wide: true` makes a landscape photo span two columns.
+- `src/data/life.js`: the life page. `days` is the digicam roll (one object per camera date), `chapters` is the phone roll (one chapter, newest first). Items are `kind: 'photo' | 'clip'`; `wide: true` makes a landscape photo span two columns.
 - `src/components/Clip.jsx`: muted looping video with a sound toggle; falls back to controls under reduced motion.
 - `src/pages/ContactPage.jsx`: email + social links.
 - `src/components/SiteShell.jsx`: header, footer, location.
@@ -49,5 +49,6 @@ All under `src/fx/`. Press `?` on the site for controls.
 - `FxProvider.jsx`: keyboard shortcuts, typed words, konami code, easter egg tracking.
 - `Terminal.jsx`: `/` opens a fake shell.
 - `Overlays.jsx`: key pops, toasts, controls panel, grid, rain, idle screensaver.
+- `Lightbox.jsx`: click any photo. It develops from a blur, ripples the dot field, and arrow keys walk every photo on the page. Pass `interactive={false}` to `Placeholder` to opt out.
 
 Easter eggs (spoilers): konami code, typing `evan`, clicking the logo 7×, idling 45s, `sudo` in the terminal, shaking the mouse, visiting a 404. Typing `neo` or `hello` also does things.
