@@ -29,7 +29,7 @@ chmod -R a+rX dist
 SOCK="$(mktemp -u "${TMPDIR:-/tmp}/eo-deploy.XXXXXX")"
 SSH="ssh -o ControlMaster=auto -o ControlPath=$SOCK -o ControlPersist=60"
 trap '$SSH -O exit "$HOST" 2>/dev/null || true' EXIT
-echo "twin lemme connect to $HOST real quick run me that password u feel me"
+echo "twin lemme connect to $HOST real quick, run me that password u feel me"
 $SSH -fN "$HOST"
 
 # order matters, so nobody gets a page whose files aren't there yet:
@@ -41,4 +41,4 @@ rsync -az -e "$SSH" dist/index.html "$HOST:$DEST/index.html"
 rsync -az --delete -e "$SSH" dist/ "$HOST:$DEST/"
 # and on the server too, in case anything already there is unreadable
 $SSH "$HOST" "chmod -R a+rX '$DEST'"
-echo "all good, hope everything looks fabulous n shii"
+echo "all good"
