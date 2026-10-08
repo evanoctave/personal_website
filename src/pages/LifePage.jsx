@@ -33,8 +33,8 @@ export default function LifePage() {
     <section className="page life">
       {/* KNOB: heading, lede, and intro note (App.test.jsx expects the h1 'life'). phoneCount counts itself */}
       <h1>life</h1>
-      {/* KNOB: the digicam photo up top */}
-      <Placeholder alt="A small silver digicam sitting on a desk next to a keyboard" className="life-cam" ratio="4 / 5" src="/photos/digicam.jpg" />
+      {/* KNOB: the photo up top, from the digicam roll. position = crop focus (far right: building, lamp, date stamp) */}
+      <Placeholder alt="A parking lot at night, a lit apartment building and street lamps glowing behind the cars" className="life-cam" position="100% 50%" ratio="4 / 5" src="/photos/PICT0024.jpg" />
       <p className="lede">Places, friends, campus, baseball, trees, snacks.</p>
       <p className="muted">
         little bits of life :)

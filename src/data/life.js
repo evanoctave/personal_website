@@ -5,7 +5,7 @@
 // feeds the /life page (src/pages/LifePage.jsx). App.test.jsx checks a few of these srcs
 // (pitch.jpg, dodgers-night.jpg, MOVI0002.mp4 + .jpg) and the first date, so keep those in sync.
 
-// KNOB: the digicam days, in order. date (YYYY-MM-DD, becomes the heading "08 20 2026"),
+// KNOB: the digicam days, in order. date (YYYY-MM-DD, becomes the heading "09 27 2026"),
 // title + note (the line under the date), items (that day's clips / photos, in order)
 export const days = [
   {
