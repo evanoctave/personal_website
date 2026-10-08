@@ -7,11 +7,7 @@ import { getProjectBySlug } from '../data/projects.js'
 import Cursor from '../fx/Cursor.jsx'
 import DotField from '../fx/DotField.jsx'
 import { EGGS, useFx } from '../fx/FxProvider.jsx'
-<<<<<<< HEAD
-import Orbs from '../fx/Orbs.jsx'
-=======
 import Lightbox from '../fx/Lightbox.jsx'
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 import Overlays from '../fx/Overlays.jsx'
 import Receipt from '../fx/Receipt.jsx'
 import SixSeven from '../fx/SixSeven.jsx'
