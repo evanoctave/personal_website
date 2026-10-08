@@ -3,7 +3,6 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Loader from '../fx/Loader.jsx'
-import Orbs from '../fx/Orbs.jsx'
 
 // what the intro printer spits out, in order. target is where each sticker lands on this page
 const PRINTS = [
@@ -24,7 +23,6 @@ export default function ConstructionPage() {
 
   return (
     <div className="construction">
-      <Orbs atom />
       <Loader prints={PRINTS} />
       <a className="skip-link" href="#construction-content">Skip to content</a>
       <header className="construction-header">
@@ -45,16 +43,16 @@ export default function ConstructionPage() {
           <Link className="construction-link" to="/home">npx ts-node portfolio.ts</Link>
         </section>
 
-        {/* KNOB: the three photos + captions (files in public/photos/). App.test.jsx expects 3 images. */}
+        {/* KNOB: the two photos the sticker printer lands on. App.test.jsx expects 2 images. */}
         {/* the --wide / --tall / --close classes pick each spot in site.css */}
-       {/*  <section aria-label="Recent signs of life" className="construction-gallery">
+        <section aria-label="Recent signs of life" className="construction-gallery">
           <figure className="construction-photo construction-photo--wide">
             <img alt="Evan with arms out wide in an empty parking lot at night" src="/photos/PICT0025-smooth.jpg" />
           </figure>
           <figure className="construction-photo">
             <img alt="Mario flying through space past a yellow Luma and tiny planets" src="/assets/marioio.jpg" />
           </figure>
-        </section> */}
+        </section>
       </main>
 
       {/* KNOB: footer line */}

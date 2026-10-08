@@ -213,12 +213,8 @@ main { min-height: 60vh; padding-bottom: 60px; }
   display: grid;
   /* KNOB: two columns, text on the left, gallery on the right (gallery never under 320px) */
   grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr);
-<<<<<<< HEAD
-  align-items: start;
-=======
   align-items: center;
   /* KNOB: gap between text and gallery */
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
   gap: clamp(40px, 8vw, 112px);
   /* KNOB: max width of the construction layout */
   max-width: 1280px;
@@ -243,22 +239,6 @@ main { min-height: 60vh; padding-bottom: 60px; }
 }
 .construction h1 {
   margin: 0;
-<<<<<<< HEAD
-  font-family: var(--serif);
-  width: max-content;
-  font-size: clamp(2.4rem, 6.6vw, 7rem);
-  font-weight: 400;
-  line-height: .9;
-  letter-spacing: -.03em;
-  transform: translate(-15%, -10%);
-}
-.construction-lede { max-width: 31ch;
-  margin: clamp(30px, 5vw, 56px) 0 18px;
-  font-size: clamp(1.25rem, 2.4vw, 1.8rem);
-  line-height: 1.18;
-}
-
-=======
   font-family: var(--sans);
   /* KNOB: giant headline size, weight, line spacing, letter tightness */
   font-size: clamp(3.7rem, 9vw, 8.7rem);
@@ -268,7 +248,6 @@ main { min-height: 60vh; padding-bottom: 60px; }
 }
 /* KNOB: construction lede size + width */
 .construction-lede { max-width: 31ch; margin: clamp(30px, 5vw, 56px) 0 18px; font-size: clamp(1.25rem, 2.4vw, 1.8rem); line-height: 1.18; }
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 .construction-copy { max-width: 48ch; color: var(--muted); }
 .construction-link {
   display: inline-block;
@@ -280,7 +259,6 @@ main { min-height: 60vh; padding-bottom: 60px; }
 }
 .construction-link:hover { background: var(--fg); color: var(--bg); }
 
-<<<<<<< HEAD
 /* every photo keeps its own aspect ratio, so nothing gets cropped */
 .construction-gallery { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; gap: 12px; align-self: stretch; }
 .construction-photo { position: relative; margin: 0; overflow: hidden; border: 1px solid var(--line); background: var(--ph); aspect-ratio: 16 / 10; }
@@ -288,26 +266,6 @@ main { min-height: 60vh; padding-bottom: 60px; }
 .construction-photo--wide { width: 85%; aspect-ratio: 4 / 3; }
 .construction-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.08); transition: filter .7s, opacity .5s; }
 .construction-photo:hover img { filter: none; }
-=======
-.construction-gallery {
-  display: grid;
-  /* KNOB: construction gallery grid: wide photo on the left spans both rows */
-  grid-template-columns: 1.2fr .8fr;
-  grid-template-rows: 1fr 1fr;
-  /* KNOB: gap between construction photos */
-  gap: 12px;
-  /* KNOB: gallery height */
-  min-height: min(66vw, 620px);
-}
-.construction-photo { position: relative; min-height: 0; margin: 0; overflow: hidden; border: 1px solid var(--line); background: var(--ph); }
-.construction-photo--wide { grid-row: span 2; }
-/* KNOB: photo filter (black and white) + hover zoom speed/easing */
-.construction-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.08); transition: transform .7s cubic-bezier(.16, 1, .3, 1); }
-.construction-photo--wide img { object-position: 50% 40%; }
-.construction-photo--tall img { object-position: 30% center; }
-/* KNOB: crop zoom on the close-up photo, and the hover zoom amounts below */
-.construction-photo--close img { transform: scale(1.4); object-position: 45% 55%; }
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 .construction-photo figcaption { position: absolute; right: 8px; bottom: 7px; left: 8px; margin: 0; color: #f4f3ef; font: 11px var(--sans); text-shadow: 0 1px 10px #0d0d0d; }
 .construction-footer { max-width: 1280px; margin: 0 auto; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); letter-spacing: 0; text-transform: none; }
 
@@ -577,41 +535,10 @@ main { min-height: 60vh; padding-bottom: 60px; }
 
 /* life: full width, photos drifting in space */
 
-<<<<<<< HEAD
-main:has(> .life) { max-width: none; }
-.life-intro, .chapter-head, .day-head { max-width: 680px; margin-inline: auto; }
-.life-intro { display: flow-root; }
-=======
 /* LifePage.jsx */
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 .life .lede { margin-bottom: .4rem; }
 /* KNOB: width of the floated camera photo */
 .page .life-cam { float: right; width: 150px; margin: 6px 0 16px 24px; }
-<<<<<<< HEAD
-
-.life-nav {
-  position: sticky;
-  top: 0;
-  z-index: 3;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 4px 22px;
-  margin-top: 48px;
-  padding: 10px 0;
-  background: var(--bg);
-  border-bottom: 1px solid var(--line);
-  font: 13px var(--mono);
-}
-.life-nav a { color: var(--muted); text-decoration: none; }
-.life-nav a:hover { color: var(--fg); text-decoration: underline; }
-
-.chapter { margin-top: 110px; scroll-margin-top: 60px; }
-.chapter-head { margin-bottom: 18px; }
-.chapter-head h2 { margin: 0 0 4px; }
-.chapter-head p { margin: 0; font-size: .95rem; }
-.day { margin-top: 56px; }
-=======
 /* KNOB: space between chapters */
 .chapter { clear: both; margin-top: 72px; }
 .chapter-head { margin-bottom: 18px; }
@@ -619,46 +546,10 @@ main:has(> .life) { max-width: none; }
 .chapter-head p { margin: 0; font-size: .95rem; }
 /* KNOB: space between days */
 .day { margin-top: 40px; }
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 .day-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin-bottom: 14px; }
 /* KNOB: day label font + orange accent color (same orange as the lightbox counter) */
 .day-head h3 { margin: 0; font: 15px var(--mono); letter-spacing: .04em; color: #ff8a3d; }
 .day-head p { margin: 0; font-size: .95rem; }
-<<<<<<< HEAD
-
-.roll {
-  list-style: none;
-  max-width: 1500px;
-  margin: 0 auto;
-  padding: 24px 0 48px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  gap: clamp(32px, 4vw, 64px) clamp(20px, 3.5vw, 56px);
-}
-/* size, offset, tilt and drift speed each cycle on a different prime so the field never looks like a grid */
-.shot { --s: 14rem; --y: 0px; --r: 0deg; --t: 9s; position: relative; width: min(var(--s), 100%); margin: var(--y) 0 0; animation: drift var(--t) ease-in-out calc(var(--t) * -.6) infinite alternate; }
-.shot--clip, .shot--wide { width: min(var(--s) * 1.55, 100%); }
-.shot:nth-child(5n+2) { --s: 17rem; }
-.shot:nth-child(5n+3) { --s: 11rem; opacity: .8; }
-.shot:nth-child(5n+4) { --s: 15.5rem; }
-.shot:nth-child(5n) { --s: 12.5rem; opacity: .9; }
-.shot:nth-child(3n+2) { --y: 64px; }
-.shot:nth-child(3n) { --y: 26px; }
-.shot:nth-child(7n+1) { --r: -1.6deg; }
-.shot:nth-child(7n+3) { --r: 1.2deg; }
-.shot:nth-child(7n+4) { --r: -.6deg; }
-.shot:nth-child(7n+6) { --r: 2deg; }
-.shot:nth-child(4n+2) { --t: 11s; }
-.shot:nth-child(4n+3) { --t: 7.5s; }
-.shot:nth-child(4n) { --t: 13s; }
-.shot:hover, .shot:focus-within { z-index: 2; opacity: 1; animation-play-state: paused; }
-.shot figure { margin: 0; transition: transform .5s cubic-bezier(.16, 1, .3, 1); }
-.shot:hover figure { transform: scale(1.06); }
-.shot .photo { box-shadow: 0 20px 45px rgb(0 0 0 / .45); }
-.shot figcaption { margin-top: 8px; font: 12px var(--mono); color: var(--muted); }
-=======
 /* KNOB: life roll grid: 2 columns, gap is rows then columns */
 .roll { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: dense; gap: 12px 10px; align-items: start; }
 .shot { margin: 0; }
@@ -666,7 +557,6 @@ main:has(> .life) { max-width: none; }
 .shot figcaption { margin-top: 5px; font: 12px var(--mono); color: var(--muted); }
 /* KNOB: which shots span the full row (clips and wide photos) */
 .shot--clip, .shot--wide { grid-column: span 2; }
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 .shot .when { color: var(--muted); opacity: .7; }
 @keyframes drift {
   from { transform: translate3d(0, 0, 0) rotate(var(--r)); }
@@ -712,10 +602,6 @@ main:has(> .life) { max-width: none; }
 }
 .photo { width: 100%; object-fit: cover; }
 
-<<<<<<< HEAD
-.reveal { opacity: 0; transform: translateY(18px); filter: blur(6px); transition: opacity .7s, transform .7s cubic-bezier(.16, 1, .3, 1), filter .7s; transition-delay: var(--delay); }
-.reveal.is-in { opacity: 1; transform: none; filter: none; }
-=======
 /* clickable photos */
 
 .photo-btn {
@@ -822,7 +708,6 @@ main:has(> .life) { max-width: none; }
 /* KNOB: slide distance + fade speed; --delay comes from Reveal.jsx */
 .reveal { opacity: 0; transform: translateY(10px); transition: opacity .6s, transform .6s; transition-delay: var(--delay); }
 .reveal.is-in { opacity: 1; transform: none; }
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 
 /* ---- fx ---- */
 
@@ -1000,200 +885,11 @@ main:has(> .life) { max-width: none; }
   75% { transform: translateX(-3px); }
 }
 
-<<<<<<< HEAD
-/* ---- floating stuff ---- */
-
-.fx-orbs { --mx: 0; --my: 0; --sy: 0; --px: 50vw; --py: 30vh; position: fixed; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
-:root[data-fx-inverted="true"] .fx-orbs { filter: invert(1); }
-.construction { isolation: isolate; }
-.construction .fx-orbs { z-index: -1; }
-
-/* the light that follows the cursor */
-.fx-orbs::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 46rem;
-  aspect-ratio: 1;
-  translate: calc(var(--px) - 50%) calc(var(--py) - 50%);
-  background: radial-gradient(closest-side, rgb(232 230 225 / .08), transparent);
-}
-
-/* --d is depth: nearer orbs lean further from the pointer. translate does the parallax so transform is free to bob */
-.fx-orbs i {
-  --s: 5rem; --d: 30; --t: 14s;
-  position: absolute;
-  width: var(--s);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--chrome);
-  box-shadow: 0 30px 60px rgb(0 0 0 / .5);
-  translate: calc(var(--mx) * var(--d) * -1px) calc((var(--my) * -1 + var(--sy)) * var(--d) * 1px);
-  transition: translate .9s cubic-bezier(.16, 1, .3, 1);
-  animation: bob var(--t) ease-in-out calc(var(--t) * -.4) infinite alternate;
-}
-.fx-orbs i:nth-child(1) { --s: 15rem; --d: 70; --t: 19s; top: 16%; left: -5rem; }
-.fx-orbs i:nth-child(2) { --d: 30; top: 11%; right: 9%; }
-.fx-orbs i:nth-child(3) { --s: 9rem; --d: 50; --t: 16s; top: 58%; right: -2.5rem; }
-.fx-orbs i:nth-child(4) { --s: 3rem; --d: 20; --t: 11s; top: 74%; left: 11%; }
-.fx-orbs i:nth-child(5) { --s: 22rem; --d: 90; --t: 23s; right: 16%; bottom: -13rem; filter: blur(6px); opacity: .7; }
-.fx-orbs i:nth-child(6) { --s: 1.6rem; --d: 14; --t: 9s; top: 31%; left: 47%; }
-@keyframes bob {
-  from { transform: translate3d(0, 0, 0) rotate(0); }
-  to { transform: translate3d(14px, -34px, 0) rotate(24deg); }
-}
-/* construction page: bohr model. the page is the nucleus, each <i> is an orbit carrying one electron.
-   two on the inner shell, four on the outer (carbon). --p is where on the orbit an electron starts.
-   electrons are points of light dragging a comet tail round the orbit */
-.fx-orbs.fx-orbs--atom i {
-  --b: .8rem; --p: 0;
-  inset: 50% auto auto 50%;
-  margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2);
-  background: none;
-  box-shadow: none;
-  filter: none;
-  opacity: 1;
-  rotate: calc(var(--p) * 1turn);
-  animation: orbit var(--t) linear infinite;
-}
-/* the tail: a sweep of light that ends at the electron, masked down to the width of the orbit line */
-.fx-orbs.fx-orbs--atom i::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: 50%;
-  background: conic-gradient(transparent 0 82%, rgb(232 230 225 / .85));
-  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
-}
-.fx-orbs.fx-orbs--atom i::after {
-  content: "";
-  position: absolute;
-  top: calc(var(--b) / -2);
-  left: calc(50% - var(--b) / 2);
-  width: var(--b);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 10px 2px #fff, 0 0 34px 10px rgb(232 230 225 / .4), 0 0 90px 24px rgb(232 230 225 / .12);
-}
-.fx-orbs.fx-orbs--atom i:nth-child(-n+2) { --s: 58vmax; --d: 24; --t: 20s; }
-.fx-orbs.fx-orbs--atom i:nth-child(n+3) { --s: 96vmax; --d: 44; --t: 46s; --b: 1.1rem; }
-.fx-orbs.fx-orbs--atom i:nth-child(1), .fx-orbs.fx-orbs--atom i:nth-child(3) { border: 1px solid rgb(232 230 225 / .12); }
-.fx-orbs.fx-orbs--atom i:nth-child(1) { --p: .1; }
-.fx-orbs.fx-orbs--atom i:nth-child(2) { --p: .6; }
-.fx-orbs.fx-orbs--atom i:nth-child(3) { --p: .05; }
-.fx-orbs.fx-orbs--atom i:nth-child(4) { --p: .3; }
-.fx-orbs.fx-orbs--atom i:nth-child(5) { --p: .55; }
-.fx-orbs.fx-orbs--atom i:nth-child(6) { --p: .8; }
-/* the nucleus breathes behind the status stamp */
-.fx-orbs.fx-orbs--atom::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 22rem;
-  aspect-ratio: 1;
-  margin: -11rem 0 0 -11rem;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, rgb(232 230 225 / .22), rgb(232 230 225 / .05) 45%, transparent);
-  animation: nucleus 4s ease-in-out infinite alternate;
-}
-@keyframes nucleus { from { scale: .8; opacity: .5; } to { scale: 1.15; opacity: 1; } }
-@keyframes orbit { to { transform: rotate(1turn); } }
-
-/* ---- orb travel: a little 3d space on the home page. each orb is a page, clicking one flies the camera into it ---- */
-
-.space { --mx: 0; --my: 0; --k: 1; position: relative; height: clamp(300px, 52vh, 480px); margin-top: 16px; perspective: 900px; }
-/* these orbs are the floating stuff on the home page, so the background ones sit this page out */
-.site:has(.home) .fx-orbs i { display: none; }
-.space.is-traveling { z-index: 5; }
-.space-hint { position: absolute; top: 0; left: 0; margin: 0; font: 12px var(--mono); color: var(--muted); }
-
-/* idle: the world leans with the pointer. traveling: it slides so the chosen orb sits dead centre, right up against the camera */
-.space-world {
-  position: absolute;
-  inset: 0;
-  transform-style: preserve-3d;
-  transform: rotateX(calc(var(--my) * -8deg)) rotateY(calc(var(--mx) * 12deg));
-  transition: transform .9s cubic-bezier(.16, 1, .3, 1);
-}
-.space.is-traveling .space-world { transform: translate3d(var(--tx), var(--ty), var(--tz)); transition: transform 1.5s cubic-bezier(.7, 0, .25, 1); }
-
-.orb {
-  position: absolute;
-  top: calc(50% + var(--y));
-  left: calc(50% + var(--x));
-  width: calc(var(--size) * var(--k));
-  aspect-ratio: 1;
-  margin: calc(var(--size) * var(--k) / -2) 0 0 calc(var(--size) * var(--k) / -2);
-  border-radius: 50%;
-  transform: translateZ(var(--z));
-  text-decoration: none;
-  transition: opacity .4s;
-}
-.orb-ball {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: var(--chrome);
-  box-shadow: 0 30px 60px rgb(0 0 0 / .5);
-  transition: scale .5s cubic-bezier(.16, 1, .3, 1);
-  animation: orb-bob 7s ease-in-out infinite alternate;
-}
-:root[data-fx-inverted="true"] .orb-ball { filter: invert(1); }
-.orb:nth-child(2n) .orb-ball { animation-duration: 9s; animation-delay: -4s; }
-.orb:hover .orb-ball, .orb:focus-visible .orb-ball { scale: 1.1; }
-@keyframes orb-bob { from { translate: 0 6px; } to { translate: 0 -8px; } }
-
-.orb-label { position: absolute; top: calc(100% + 14px); left: 50%; translate: -50%; text-align: center; white-space: nowrap; font-size: 1.1rem; line-height: 1.2; transition: opacity .3s; }
-.orb-label small { display: block; font: 11px var(--mono); color: var(--muted); }
-
-/* arriving: the orb goes to the page colour as it fills the screen, so the next page fades up out of it */
-.orb::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--bg); opacity: 0; transition: opacity .6s .8s; }
-.orb.is-target::after { opacity: 1; }
-.space.is-traveling .orb-ball { animation-play-state: paused; }
-.space.is-traveling .orb:not(.is-target), .space.is-traveling .orb-label, .space.is-traveling .space-hint { opacity: 0; }
-
-/* everything else gets out of the way, and the giant orb can't cause scrollbars */
-.site { overflow: clip; }
-.site-header, .site-footer, .home > * { transition: opacity .5s; }
-.is-traveling .site-header, .is-traveling .site-footer, .is-traveling .home > :not(.space) { opacity: 0; }
-.is-traveling .fx-orbs { opacity: 0; transition: opacity .5s; }
-
-/* photos everywhere get the life-roll drift, turned down */
-.photos .photo, .gallery .photo, .about-bit > .photo, .construction-photo {
-  --r: -1deg; --t: 9s;
-  box-shadow: 0 20px 45px rgb(0 0 0 / .45);
-  transition: scale .5s cubic-bezier(.16, 1, .3, 1);
-  animation: drift var(--t) ease-in-out calc(var(--t) * -.6) infinite alternate;
-}
-.photos .photo:nth-child(2n), .gallery .photo:nth-child(2n), .construction-photo:nth-child(2n) { --r: 1.2deg; --t: 11s; }
-.photos .photo:nth-child(3n), .gallery .photo:nth-child(3n) { --r: -.5deg; --t: 7.5s; }
-.photos .photo:hover, .gallery .photo:hover, .about-bit > .photo:hover, .construction-photo:hover { scale: 1.04; animation-play-state: paused; }
-.construction-gallery .construction-photo { --r: 0deg; animation-delay: 0s; }
-
-/* pages float up on arrival. translate (not transform) and no forwards fill, so fixed/sticky children are untouched after */
-main > * { animation: page-in .6s cubic-bezier(.16, 1, .3, 1) backwards; }
-@keyframes page-in { from { opacity: 0; translate: 0 16px; } }
-
-.work-list a { transition: padding-left .35s cubic-bezier(.16, 1, .3, 1); }
-.work-list a:hover, .work-list a:focus-visible { padding-left: 12px; }
-.site-header nav a { display: inline-block; transition: translate .25s, color .25s; }
-.site-header nav a:hover { translate: 0 -2px; }
-
-=======
 /* KNOB: phone breakpoint (600px): smaller type, one-column about, two-up galleries */
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 @media (max-width: 600px) {
   /* KNOB: body text size on phones */
   body { font-size: 17px; }
-<<<<<<< HEAD
-  .fx-orbs:not(.fx-orbs--atom) i:nth-child(n+4) { display: none; }
-  .space { --k: .55; }
-=======
   /* KNOB: name + h1 sizes on phones */
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
   .name { font-size: 2.4rem; }
   h1 { font-size: 2rem; }
   .about-bit { grid-template-columns: 1fr; }
@@ -1206,51 +902,7 @@ main > * { animation: page-in .6s cubic-bezier(.16, 1, .3, 1) backwards; }
   .page .life-cam { width: 110px; margin-left: 16px; }
 }
 
-<<<<<<< HEAD
-/* desktop: pages spread out sideways. under 900px everything stays the single column above */
-@media (min-width: 900px) {
-  .site-header, main, .site-footer, .fx-grid { max-width: 1240px; padding-left: 40px; padding-right: 40px; }
-  .page p { max-width: 68ch; }
-
-  .home { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 72px; align-items: start; }
-  .home > .space, .home > [aria-labelledby="photos-title"], .home > [aria-labelledby="contact-title"] { grid-column: 1 / -1; }
-  .home .photos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-
-  .work { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(0, 2.2fr); column-gap: 72px; align-items: start; }
-  .work-head { position: sticky; top: 24px; }
-  .work .work-list ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; }
-
-  /* bio spans three rows; the 1fr row soaks up its extra height so "right now" and "school" stay stacked tight */
-  .about {
-    display: grid;
-    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-    grid-template-rows: auto auto 1fr auto auto;
-    grid-template-areas: "bio now" "bio school" "bio ." "field desk" "foot foot";
-    column-gap: 72px;
-  }
-  .about-bio { grid-area: bio; }
-  .about-now { grid-area: now; }
-  .about-now h2 { margin-top: .5rem; }
-  .about-school { grid-area: school; }
-  .about-field { grid-area: field; align-self: end; margin-top: 56px; }
-  .about-desk { grid-area: desk; align-self: end; margin-top: 56px; }
-  .about-desk h2 { margin-top: 0; }
-  .about-foot { grid-area: foot; margin-top: 24px; }
-
-  .contact { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); column-gap: 72px; align-items: start; }
-  .contact h1 { grid-column: 1 / -1; }
-  .contact-elsewhere h2 { margin-top: 0; }
-
-  .life-intro, .chapter-head, .day-head { max-width: 1160px; }
-  .chapter-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 20px; }
-
-  .project { max-width: 900px; }
-  .project .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-
-=======
 /* KNOB: reduced motion: don't remove, accessibility. kills every animation for people who ask for less */
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .reveal { opacity: 1; transform: none; filter: none; }

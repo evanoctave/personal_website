@@ -27,18 +27,13 @@ describe('site', () => {
     renderAt('/hello')
     expect(screen.getByRole('heading', { level: 1, name: 'HELLO_WORLD' })).toBeInTheDocument()
     expect(screen.getByText('As of Sunday, September 27, 2026')).toBeInTheDocument()
-<<<<<<< HEAD
     expect(screen.getAllByRole('img')).toHaveLength(2)
-    expect(screen.getByRole('link', { name: 'Enter unfinished site anyway' })).toHaveAttribute('href', '/home')
-=======
-    expect(screen.queryAllByRole('img')).toHaveLength(0)
     expect(screen.getByRole('link', { name: 'npx ts-node portfolio.ts' })).toHaveAttribute('href', '/home')
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
   })
 
   it('covers the construction page with the sticker printer, then gets out of the way', () => {
     vi.useFakeTimers()
-    renderAt('/')
+    renderAt('/hello')
     expect(document.querySelector('.printer-screen')).toHaveTextContent('evo.jpg')
     act(() => { vi.advanceTimersByTime(4000) })
     expect(document.querySelector('.printer-screen')).toHaveTextContent('mario.jpg')
@@ -66,16 +61,10 @@ describe('site', () => {
     expect(screen.getByRole('heading', { level: 3, name: '09 27 2026' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 2, name: 'before the camera' })).toBeInTheDocument()
     expect(screen.getByRole('img', { name: /mid-pitch on the mound/ })).toHaveAttribute('src', '/photos/pitch.jpg')
-<<<<<<< HEAD
-    expect(screen.getByRole('img', { name: /arms out wide/ })).toHaveAttribute('src', '/photos/PICT0025-smooth.jpg')
-    const clip = document.querySelector('video[src="/clips/MOVI0007.mp4"]')
-    expect(clip).toHaveAttribute('poster', '/clips/MOVI0007.jpg')
-=======
     expect(screen.getByRole('img', { name: /Dodger Stadium under the lights/ })).toHaveAttribute('src', '/photos/dodgers-night.jpg')
     expect(screen.queryByRole('img', { name: /Ghost cherry limeade/ })).not.toBeInTheDocument()
     const clip = document.querySelector('video[src="/clips/MOVI0002.mp4"]')
     expect(clip).toHaveAttribute('poster', '/clips/MOVI0002.jpg')
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
     expect(clip.muted).toBe(true)
     const [sound] = screen.getAllByRole('button', { name: 'sound' })
     await user.click(sound)
@@ -142,16 +131,6 @@ describe('site', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'me' })).toBeInTheDocument()
     expect(main).toHaveFocus()
     expect(document.title).toBe('About | Evan Octave')
-  })
-
-  it('travels to a page through its orb', () => {
-    vi.useFakeTimers()
-    renderAt('/home')
-    fireEvent.click(screen.getByRole('link', { name: 'Travel to Life' }))
-    expect(screen.getByText('heading to life…')).toBeInTheDocument()
-    act(() => { vi.advanceTimersByTime(1500) })
-    expect(screen.getByRole('heading', { level: 1, name: 'life' })).toBeInTheDocument()
-    expect(document.body).not.toHaveClass('is-traveling')
   })
 
   it('opens the controls panel with ? and navigates with number keys', () => {

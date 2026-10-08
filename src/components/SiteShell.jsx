@@ -71,7 +71,6 @@ export default function SiteShell() {
     <div className={`site${pathname === '/home' ? ' site--wide' : ''}`}>
       <a className="skip-link" href="#main-content">Skip to content</a>
       <DotField />
-      <Orbs />
       <header className="site-header">
         {/* KNOB: the name in the top-left (links to /home) */}
         <NavLink aria-label="Evan Octave home" className="home-link" end onClick={onLogo} to="/home">Evan Octave</NavLink>
