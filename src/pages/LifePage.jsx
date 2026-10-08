@@ -35,16 +35,16 @@ export default function LifePage() {
       <h1>life</h1>
       {/* KNOB: the digicam photo up top */}
       <Placeholder alt="A small silver digicam sitting on a desk next to a keyboard" className="life-cam" ratio="4 / 5" src="/photos/digicam.jpg" />
-      <p className="lede">Places, friends, campus, baseball, dogs, snacks.</p>
+      <p className="lede">Places, friends, campus, baseball, trees, snacks.</p>
       <p className="muted">
-        One week on a $30 digicam, then {phoneCount} from my phone going back to senior year.
+        little bits of life :)
         Clips are muted until you say otherwise. The nerd stuff is on the <Link to="/about">about page</Link>.
       </p>
 
       <section aria-labelledby="chapter-digicam" className="chapter">
         {/* KNOB: digicam chapter heading + note. the days themselves are `days` in src/data/life.js */}
         <header className="chapter-head">
-          <h2 id="chapter-digicam">aug 2026 · the digicam</h2>
+          <h2 id="chapter-digicam">sep 2026 · keychain camera</h2>
           <p className="muted">One week, dated by the camera.</p>
         </header>
         {days.map((day) => (
