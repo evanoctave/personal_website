@@ -31,22 +31,6 @@ export default function LifePage() {
 
   return (
     <section className="page life">
-<<<<<<< HEAD
-      <div className="life-intro">
-        <h1>life</h1>
-        <Placeholder alt="A small silver digicam sitting on a desk next to a keyboard" className="life-cam" ratio="4 / 5" src="/photos/digicam.jpg" />
-        <p className="lede">Friends, campus, baseball, dogs, snacks.</p>
-        <p className="muted">
-          {digicamCount} shots from a $30 digicam, then {phoneCount} from my phone going back to senior year.
-          Clips are muted until you say otherwise. The nerd stuff is on the <Link to="/about">about page</Link>.
-        </p>
-      </div>
-
-      <nav aria-label="Chapters" className="life-nav">
-        <a href="#chapter-digicam">digicam</a>
-        {chapters.map((chapter) => <a href={`#chapter-${chapter.id}`} key={chapter.id}>{chapter.title}</a>)}
-      </nav>
-=======
       {/* KNOB: heading, lede, and intro note (App.test.jsx expects the h1 'life'). phoneCount counts itself */}
       <h1>life</h1>
       {/* KNOB: the photo up top, from the digicam roll. position = crop focus (far right: building, lamp, date stamp) */}
@@ -56,7 +40,6 @@ export default function LifePage() {
         little bits of life :)
         Clips are muted until you say otherwise. The nerd stuff is on the <Link to="/about">about page</Link>.
       </p>
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
 
       <section aria-labelledby="chapter-digicam" className="chapter">
         {/* KNOB: digicam chapter heading + note. the days themselves are `days` in src/data/life.js */}

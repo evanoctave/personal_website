@@ -10,18 +10,6 @@ export default function WorkPage() {
   const shown = tag === 'All' ? projects : projects.filter((project) => project.tags.includes(tag))
 
   return (
-<<<<<<< HEAD
-    <section className="page work">
-      <header className="work-head">
-        <h1>Work</h1>
-        <p className="muted">Things I've built, newest ones first. There's more that isn't up yet.</p>
-        <div className="filters" role="group" aria-label="Filter projects">
-          {getProjectTags().map((item) => (
-            <button aria-pressed={tag === item} key={item} onClick={() => setTag(item)} type="button">{item}</button>
-          ))}
-        </div>
-      </header>
-=======
     <section className="page">
       {/* KNOB: heading + intro line (App.test.jsx expects the h1 'Work') */}
       <h1>Work</h1>
@@ -32,7 +20,6 @@ export default function WorkPage() {
           <button aria-pressed={tag === item} key={item} onClick={() => setTag(item)} type="button">{item}</button>
         ))}
       </div>
->>>>>>> e40714470f4fba5e211438db5dd8d45e6deddfa2
       <WorkList projects={shown} />
     </section>
   )
