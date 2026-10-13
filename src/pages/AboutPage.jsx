@@ -48,6 +48,12 @@ export default function AboutPage() {
         <Placeholder alt="Two monitors and a laptop with code on a home desk" position="50% 50%" ratio="2 / 3" src="/photos/desk-setup.jpg" />
         <Placeholder alt="A laptop taken apart with its motherboard exposed" caption="They did surgery on a laptop" position="50% 50%" ratio="2 / 3" src="/photos/laptop-guts.jpg" />
       </div>
+      {/* KNOB: second row: the home server (same files as the evoserver project page, public/work/evoserver/) */}
+      <div className="gallery gallery--three">
+        <Placeholder alt="Front of a Lenovo ThinkCentre Tiny with a plywood drive shelf sitting on top" caption="evoserver" position="50% 50%" ratio="2 / 3" src="/work/evoserver/front.jpg" />
+        <Placeholder alt="Side view of two 3.5-inch drives in a plywood cradle stacked on the ThinkCentre" caption="plywood is a valid chassis" position="50% 50%" ratio="2 / 3" src="/work/evoserver/side.jpg" />
+        <Placeholder alt="A Western Digital Red Pro 6TB drive seen from above under blue light" caption="absolute terminal." position="50% 50%" ratio="2 / 3" src="/work/evoserver/drive-blue.jpg" />
+      </div>
       <p className="muted">Non-nerd stuff lives on the <Link to="/life">life page</Link>.</p>
     </section>
   )
