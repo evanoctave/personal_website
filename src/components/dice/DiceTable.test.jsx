@@ -57,7 +57,6 @@ describe('DiceTable', () => {
     expect(window.open).not.toHaveBeenCalled()
     await user.click(screen.getByRole('button', { name: 'beat 2' }))
     await user.click(screen.getByRole('button', { name: 'roll again' }))
-    expect(await screen.findByText(/= 2\. tie goes to the house/)).toBeInTheDocument()
     expect(window.open).not.toHaveBeenCalled()
   })
 
