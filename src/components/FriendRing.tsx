@@ -13,7 +13,7 @@ export default function FriendRing({ self, src }: Props) {
     let live = true
     loadRing(src)
       .then((friends) => { if (live) setList(friends) })
-      .catch((err) => console.warn('friendsites: list unavailable', err))
+      .catch((err) => console.warn('friendsites: no friends... :(', err))
     return () => { live = false }
   }, [src])
 
