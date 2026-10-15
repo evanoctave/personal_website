@@ -8,6 +8,7 @@ import Placeholder from '../components/Placeholder.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Scramble from '../components/Scramble.jsx'
 import WorkList from '../components/WorkList.jsx'
+import DiceTable from '../components/dice/DiceTable.jsx'
 import { prefersReducedMotion } from '../fx/FxProvider.jsx'
 import PrinterIntro, { willPrint } from '../fx/PrinterIntro.jsx'
 import Terminal from '../fx/Terminal.jsx'
@@ -157,6 +158,8 @@ export default function HomePage() {
           Or go to the <Link to="/contact">contact page</Link>. Here&apos;s my{' '}
           <a href={RESUME} rel="noreferrer" target="_blank">résumé</a>, too.
         </p>
+        {/* the dice gate to friends' sites. rules in components/dice/odds.js, 3D in components/dice/scene.js */}
+        <DiceTable />
       </section>
     </div>
   )
