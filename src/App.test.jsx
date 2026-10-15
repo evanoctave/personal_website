@@ -34,8 +34,21 @@ describe('site', () => {
     renderAt('/hello')
     expect(screen.getByRole('heading', { level: 1, name: 'HELLO_WORLD' })).toBeInTheDocument()
     expect(screen.getByText('As of Sunday, September 27, 2026')).toBeInTheDocument()
-    expect(screen.queryAllByRole('img')).toHaveLength(0)
+    expect(screen.getAllByRole('img')).toHaveLength(2)
     expect(screen.getByRole('link', { name: 'npx ts-node portfolio.ts' })).toHaveAttribute('href', '/home')
+  })
+
+  it('covers the construction page with the sticker printer, then gets out of the way', () => {
+    vi.useFakeTimers()
+    renderAt('/hello')
+    expect(document.querySelector('.printer-screen')).toHaveTextContent('evo.jpg')
+    act(() => { vi.advanceTimersByTime(4000) })
+    expect(document.querySelector('.printer-screen')).toHaveTextContent('mario.jpg')
+    expect(document.querySelector('.construction-photo--wide img')).toHaveStyle({ opacity: 1 })
+    act(() => { vi.advanceTimersByTime(4000) })
+    expect(document.querySelector('.loader')).toHaveClass('is-leaving')
+    act(() => { vi.advanceTimersByTime(800) })
+    expect(document.querySelector('.loader')).not.toBeInTheDocument()
   })
 
   it('renders home with skip link, nav, and real photos', () => {

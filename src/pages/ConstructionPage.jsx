@@ -2,6 +2,13 @@
 // its link goes to /home (the real site). App.jsx routes "/" here; App.test.jsx checks its text.
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import Loader from '../fx/Loader.jsx'
+
+// what the intro printer spits out, in order. target is where each sticker lands on this page
+const PRINTS = [
+  { src: '/photos/PICT0025-smooth.jpg', label: 'evo.jpg', ratio: '4 / 3', target: '.construction-photo--wide img' },
+  { src: '/assets/marioio.jpg', label: 'mario.jpg', ratio: '16 / 10', target: '.construction-photo:not(.construction-photo--wide) img' },
+]
 
 export default function ConstructionPage() {
   const date = new Date()
@@ -16,6 +23,7 @@ export default function ConstructionPage() {
 
   return (
     <div className="construction">
+      <Loader prints={PRINTS} />
       <a className="skip-link" href="#construction-content">Skip to content</a>
       <header className="construction-header">
         {/* KNOB: name in the top bar */}
@@ -35,22 +43,16 @@ export default function ConstructionPage() {
           <Link className="construction-link" to="/home">npx ts-node portfolio.ts</Link>
         </section>
 
-        {/* KNOB: the three photos + captions (files in public/photos/). App.test.jsx expects 3 images. */}
+        {/* KNOB: the two photos the sticker printer lands on. App.test.jsx expects 2 images. */}
         {/* the --wide / --tall / --close classes pick each spot in site.css */}
-       {/*  <section aria-label="Recent signs of life" className="construction-gallery">
+        <section aria-label="Recent signs of life" className="construction-gallery">
           <figure className="construction-photo construction-photo--wide">
-            <img alt="Evan with arms out wide in an empty parking lot at night" src="/photos/PICT0025.jpg" />
-            <figcaption>Evidence of activity, maybe.</figcaption>
+            <img alt="Evan with arms out wide in an empty parking lot at night" src="/photos/PICT0025-smooth.jpg" />
           </figure>
-          <figure className="construction-photo construction-photo--tall">
-            <img alt="Whiteboard with thin film interference equations" src="/photos/PICT0016.jpg" />
-            <figcaption>Habitat under repair.</figcaption>
+          <figure className="construction-photo">
+            <img alt="Mario flying through space past a yellow Luma and tiny planets" src="/assets/marioio.jpg" />
           </figure>
-          <figure className="construction-photo construction-photo--close">
-            <img alt="Hand splayed over packs of stew meat" src="/photos/PICT0010.jpg" />
-            <figcaption>Do not feed after midnight.</figcaption>
-          </figure>
-        </section> */}
+        </section>
       </main>
 
       {/* KNOB: footer line */}

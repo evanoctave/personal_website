@@ -11,7 +11,7 @@ export const days = [
   {
     date: '2026-09-27',
     title: 'Thursday',
-    note: 'Walmart run with the boys. Ghost cherry limeade for the road.',
+    note: 'Walmart run + Cherry Limeade Ghost',
     items: [
       // KNOB: item fields: src, poster (clips only, the still before it plays), alt (screen readers + lightbox),
       // caption (text under it)
