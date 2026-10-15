@@ -92,7 +92,7 @@ export default function HomePage() {
         </h1>
         {/* KNOB: the line under the heading (your title) */}
         <p>
-          Aspiring Software Engineer / Current IT Assistant at Associated Students Inc., Cal State Fullerton
+          Goated Software Engineer / Insane IT Assistant at Associated Students Inc., Cal State Fullerton
         </p>
         {/* KNOB: the small note under that */}
         <p className="muted">
