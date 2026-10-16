@@ -164,6 +164,21 @@ export const projects = [
     featured: false,
   },
   {
+    slug: 'nasa-SUITS',
+    title: 'NASA SUITS',
+    eyebrow: 'NASA space suit design challenge',
+    year: '2025',
+    role: 'Software Developer, Research Lead -- in collaboration with <a href="https://www.linkedin.com/in/aidan-rus/">Aidan Rus</a>, <a href="https://www.linkedin.com/in/rylandwilliams/">Ryland Williams</a>, and others.',
+    stack: ['Python', 'Figma', 'OpenCV', 'WebGL', 'Three.js', 'Augmented Reality hardware', ],
+    tags: ['AI', 'Product', 'Data', 'Web'],
+    summary: 'A NASA challenge to design a next-generation space suit for astronauts, implementing an AI assistant, rover interface, and spacesuit interface + skeleton.',
+    challenge: 'NASA wanted a next-generation spacesuit design that could be used for future missions, with a focus on usability, safety, and efficiency. Our team was tasked with creating an abstract that incorporated AI assistance, rover interface design, and spacesuit interface + skeleton implementation.',
+    solution: 'We designed an abstract that incorporated said items and ideas above.',
+    outcome: 'Our team was recognized for its innovative approach to space suit design and its potential impact on future space exploration.',
+    // public copy of the submitted proposal; teammate contact info and NASA boilerplate removed
+    proposalUrl: '/nasa-suits-proposal.pdf',
+  },
+  {
     slug: 'gspot-eats',
     title: 'GSpot Eats',
     eyebrow: 'CSUF dining companion',
