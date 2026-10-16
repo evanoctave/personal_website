@@ -23,6 +23,7 @@ export default function ProjectPage() {
     project.codeUrl && ['Source', project.codeUrl],
     project.githubUrl && ['GitHub', project.githubUrl],
     project.devpostUrl && ['Devpost', project.devpostUrl],
+    project.proposalUrl && ['Proposal (PDF)', project.proposalUrl],
   ].filter(Boolean)
   const shots = (
     <div className={`gallery${phone ? ' gallery--phones' : gallery.length === 2 ? ' gallery--two' : ''}`}>
