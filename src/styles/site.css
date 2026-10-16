@@ -529,6 +529,79 @@ main { min-height: 60vh; padding-bottom: 60px; }
 }
 .copy:hover { color: var(--fg); }
 
+/* dice gate under "Say hi" on /home (components/dice/DiceTable.jsx) */
+.dice {
+  display: grid;
+  gap: 12px;
+  /* KNOB: space above the dice box, its padding, border, corner */
+  margin-top: 22px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: 13px var(--sans);
+  color: var(--muted);
+}
+.dice-pitch { margin: 0; }
+.dice-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.dice-site select {
+  font: 13px var(--sans);
+  color: var(--fg);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+.dice-nums { display: flex; flex-wrap: wrap; gap: 4px; }
+.dice-nums button {
+  /* KNOB: size of the 1–12 buttons */
+  min-width: 26px;
+  height: 24px;
+  padding: 0 4px;
+  font: 12px var(--mono);
+  color: var(--muted);
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  cursor: pointer;
+}
+.dice-nums button:hover { color: var(--fg); border-color: var(--fg); }
+.dice-nums button[aria-pressed="true"] { color: var(--bg); background: var(--fg); border-color: var(--fg); }
+.dice-nums button:disabled { cursor: default; opacity: .6; }
+.dice-tray {
+  position: relative;
+  /* KNOB: shape of the dice tray */
+  aspect-ratio: 2 / 1;
+  background: var(--ph);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.dice-tray canvas { display: block; width: 100% !important; height: 100% !important; }
+.dice-flat {
+  margin: 0;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  /* KNOB: size of the flat fallback dice */
+  font-size: 64px;
+  line-height: 1;
+  color: var(--fg);
+}
+.dice-result { margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.dice-result a { color: var(--fg); }
+.dice-roll {
+  font: 13px var(--sans);
+  color: var(--bg);
+  background: var(--fg);
+  border: 1px solid var(--fg);
+  border-radius: 3px;
+  padding: 3px 12px;
+  cursor: pointer;
+}
+.dice-roll:hover:not(:disabled) { background: var(--bg); color: var(--fg); }
+.dice-roll:disabled { opacity: .5; cursor: default; }
+
 /* 404 page (NotFoundPage.jsx) */
 /* KNOB: size of the big 404 */
 .four-oh-four { font-size: 7rem; line-height: 1; margin: 20px 0; color: var(--muted); }
@@ -1416,6 +1489,29 @@ main { min-height: 60vh; padding-bottom: 60px; }
 /* KNOB: the footer's bait admin link */
 .footer-admin { margin-left: 10px; color: var(--muted); opacity: .5; text-decoration: none; }
 .footer-admin:hover { opacity: 1; text-decoration: underline; }
+
+/* friendsites webring (FriendRing.tsx): its own row at the bottom of the footer */
+.friendring {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  /* KNOB: gap between the ring links, and space above the row */
+  gap: 0 14px;
+  margin-top: 12px;
+}
+.friendring-label { font: 11px var(--mono); letter-spacing: .08em; text-transform: uppercase; opacity: .6; }
+.friendring a, .friendring button {
+  font: inherit;
+  color: var(--muted);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+}
+.friendring button { text-decoration: underline dotted; text-underline-offset: 3px; }
+.friendring :is(a, button):hover { color: var(--fg); text-decoration: underline; }
 
 /* 67 (SixSeven.jsx): the clip pops up in the middle of the screen */
 /* no animation: the clip appears the moment it starts playing and vanishes the moment it ends. the player

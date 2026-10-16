@@ -6,9 +6,16 @@ import App from './App'
 
 const renderAt = (path) => render(<MemoryRouter initialEntries={[path]}><App /></MemoryRouter>)
 
+const FRIENDS = [
+  { displayName: 'Anjelo Go', url: 'www.anjelogo.com' },
+  { displayName: 'Evan Octave', url: 'www.evanoctave.dev' },
+]
+
 describe('site', () => {
   beforeEach(() => {
     vi.stubGlobal('scrollTo', vi.fn())
+    // the footer webring fetches the shared friendsites list; keep tests off the network
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, status: 200, json: async () => FRIENDS }))
     window.localStorage.clear()
   })
 
@@ -52,6 +59,18 @@ describe('site', () => {
     expect(screen.getByLabelText(/sits down in front of the camera and waves/)).toHaveAttribute('src', '/clips/wave.mp4')
     expect(screen.queryByRole('img', { name: /Image placeholder/ })).not.toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'the whole roll' })).toHaveAttribute('href', '/life')
+    // the dice gate sits under Say hi
+    expect(screen.getByRole('group', { name: 'number to beat' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'beat 7', pressed: true })).toBeInTheDocument()
+  })
+
+  it('links to the neighbouring friendsites in the footer', async () => {
+    renderAt('/about')
+    const ring = await screen.findByRole('navigation', { name: 'friendsites' })
+    expect(ring).toHaveTextContent('friends')
+    expect(screen.getByRole('link', { name: '← Anjelo Go' })).toHaveAttribute('href', 'https://www.anjelogo.com')
+    expect(screen.getByRole('link', { name: 'Anjelo Go →' })).toHaveAttribute('href', 'https://www.anjelogo.com')
+    expect(fetch).toHaveBeenCalledWith('https://raw.githubusercontent.com/ilovetcp/friendsites/main/list.json')
   })
 
   it('shows the life page as a dated roll of photos and muted clips', async () => {

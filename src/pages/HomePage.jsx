@@ -8,6 +8,7 @@ import Placeholder from '../components/Placeholder.jsx'
 import Reveal from '../components/Reveal.jsx'
 import Scramble from '../components/Scramble.jsx'
 import WorkList from '../components/WorkList.jsx'
+import DiceTable from '../components/dice/DiceTable.jsx'
 import { prefersReducedMotion } from '../fx/FxProvider.jsx'
 import PrinterIntro, { willPrint } from '../fx/PrinterIntro.jsx'
 import Terminal from '../fx/Terminal.jsx'
@@ -91,7 +92,7 @@ export default function HomePage() {
         </h1>
         {/* KNOB: the line under the heading (your title) */}
         <p>
-          Aspiring Software Engineer / Current IT Assistant at Associated Students Inc., Cal State Fullerton
+          Goated Software Engineer / Insane IT Assistant at Associated Students Inc., Cal State Fullerton
         </p>
         {/* KNOB: the small note under that */}
         <p className="muted">
@@ -157,6 +158,8 @@ export default function HomePage() {
           Or go to the <Link to="/contact">contact page</Link>. It&apos;s got my{' '}
           <a href={RESUME} rel="noreferrer" target="_blank">resume</a>, too.
         </p>
+        {/* the dice gate to friends' sites. rules in components/dice/odds.js, 3D in components/dice/scene.js */}
+        <DiceTable />
       </section>
     </div>
   )

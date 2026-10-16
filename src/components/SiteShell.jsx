@@ -4,6 +4,7 @@
 import { useEffect, useRef } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { getProjectBySlug } from '../data/projects.js'
+import FriendRing from './FriendRing.tsx'
 import Cursor from '../fx/Cursor.jsx'
 import DotField from '../fx/DotField.jsx'
 import { EGGS, useFx } from '../fx/FxProvider.jsx'
@@ -98,6 +99,8 @@ export default function SiteShell() {
           {/* KNOB: the bait link to the fake admin page */}
           {' '}<NavLink className="footer-admin" to="/admin">admin</NavLink>
         </p>
+        {/* webring with friends' sites: the list and this site's host are KNOBs in components/friendsites.ts */}
+        <FriendRing />
       </footer>
 
       <Cursor />

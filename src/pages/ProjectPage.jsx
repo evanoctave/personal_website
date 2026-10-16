@@ -17,6 +17,8 @@ export default function ProjectPage() {
   const gallery = project.gallery ?? []
   // phone apps lead with a row of screenshots instead of a cropped 16:9 cover
   const phone = project.layout === 'phone'
+  // layout: 'grid' keeps the cover and shows the gallery three-up (photos instead of wide screenshots)
+  const grid = project.layout === 'grid'
   // KNOB: link labels on a project page (App.test.jsx expects 'GitHub'). a new *Url field needs a line here
   const links = [
     project.liveUrl && ['Live site', project.liveUrl],
@@ -26,7 +28,7 @@ export default function ProjectPage() {
     project.proposalUrl && ['Proposal (PDF)', project.proposalUrl],
   ].filter(Boolean)
   const shots = (
-    <div className={`gallery${phone ? ' gallery--phones' : gallery.length === 2 ? ' gallery--two' : ''}`}>
+    <div className={`gallery${phone ? ' gallery--phones' : grid ? ' gallery--three' : gallery.length === 2 ? ' gallery--two' : ''}`}>
       {/* KNOB: '16 / 10' = screenshot shape when a gallery item has no ratio */}
       {gallery.map((item, i) => (
         <Placeholder alt={item.alt} caption={item.caption} key={item.src ?? i} label={item.label ?? 'screenshot'} position={item.position} ratio={item.ratio ?? '16 / 10'} src={item.src} />
