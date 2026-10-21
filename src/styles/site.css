@@ -1490,6 +1490,54 @@ main { min-height: 60vh; padding-bottom: 60px; }
 .footer-admin { margin-left: 10px; color: var(--muted); opacity: .5; text-decoration: none; }
 .footer-admin:hover { opacity: 1; text-decoration: underline; }
 
+/* binary tree translator (pages/BinaryTreeTranslator.jsx, components/bintree/TreeFigure.jsx) */
+.bintree-key { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 28px 0 20px; font: 13px var(--sans); color: var(--muted); }
+.bintree-key input,
+.bintree-box textarea {
+  font: 14px/1.5 var(--mono);
+  color: var(--fg);
+  background: var(--ph);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 6px 10px;
+}
+/* KNOB: key box width (8 mono chars + padding) and spacing */
+.bintree-key input { width: 7.5em; letter-spacing: .12em; }
+.bintree-key input:focus,
+.bintree-box textarea:focus { outline: none; border-color: var(--fg); }
+/* KNOB: the two boxes: side by side, stacking on phones */
+.bintree-boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.bintree-box { display: grid; gap: 6px; font: 13px var(--sans); color: var(--muted); }
+.bintree-box textarea { width: 100%; box-sizing: border-box; resize: vertical; word-break: break-all; }
+.bintree-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; font: 12px var(--mono); }
+/* the tree: breaks out of the 720px column up to 1240px wide (KNOB), draws at full size and scrolls sideways
+   when the window is narrower than that */
+.bintree-figure {
+  width: min(1240px, 100vw - 40px);
+  margin: 28px 0 20px calc(50% - min(620px, 50vw - 20px));
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+}
+.bintree-figure svg { display: block; width: 100%; height: auto; }
+.bintree-figure line { stroke: var(--line); stroke-width: 1.2; transition: stroke .2s; }
+.bintree-figure .is-lit line { stroke: var(--fg); stroke-width: 2; }
+.bintree-bit { font: 10px var(--mono); fill: var(--muted); text-anchor: middle; dominant-baseline: middle; }
+.bintree-figure .is-lit .bintree-bit { fill: var(--fg); }
+.bintree-branch circle { fill: var(--muted); }
+.bintree-branch.is-lit circle { fill: var(--fg); }
+.bintree-leaf rect { fill: var(--bg); stroke: var(--muted); stroke-width: 1; transition: fill .2s; }
+.bintree-leaf text { font: 11px var(--mono); fill: var(--fg); text-anchor: middle; dominant-baseline: middle; }
+.bintree-leaf:hover rect { stroke: var(--fg); }
+.bintree-leaf.is-lit rect { fill: var(--fg); stroke: var(--fg); }
+.bintree-leaf.is-lit text { fill: var(--bg); }
+.bintree-note { font-size: .9rem; }
+.bintree-note code { font: .85em var(--mono); }
+@media (max-width: 600px) {
+  .bintree-boxes { grid-template-columns: 1fr; }
+}
+
 /* friendsites webring (FriendRing.tsx): its own row at the bottom of the footer */
 .friendring {
   flex-basis: 100%;

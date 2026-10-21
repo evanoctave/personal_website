@@ -17,12 +17,20 @@ export const EGGS = {
   admin: 'Tried the admin page',
   print: 'Tried to print the page',
   sixseven: 'Typed 67',
+  tree: 'Found the tree',
 }
 
 // KNOB: localStorage key for found eggs — renaming it resets everyone's progress
 const EGG_KEY = 'eo-eggs'
 // KNOB: the konami sequence (lowercased key names) that triggers god mode
 const KONAMI = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a']
+// KNOB: typed secret words (lowercase letters only, 12 or shorter). what each one does is in onKey below;
+// while the last letters typed are the start of one, single-key shortcuts pause so the word can finish
+const WORDS = ['evan', 'neo', 'hello', 'binarytree']
+const midWord = (typed) => WORDS.some((word) => {
+  for (let n = Math.min(typed.length, word.length - 1); n >= 2; n -= 1) if (word.startsWith(typed.slice(-n))) return true
+  return false
+})
 // KNOB: number keys → pages for the 1–5 shortcuts (the ? panel text lives in Overlays.jsx SHORTCUTS)
 export const ROUTES = { 1: '/home', 2: '/work', 3: '/about', 4: '/life', 5: '/contact' }
 
@@ -164,8 +172,9 @@ export function FxProvider({ children }) {
       }
       if (!keysEnabled || event.repeat) return
 
-      // KNOB: typed words — 'evan', 'neo', 'hello' and their popups. buffer keeps the last 12 letters,
-      // so a new secret word must be 12 letters or shorter
+      // KNOB: typed words (WORDS above) and their popups. buffer keeps the last 12 letters,
+      // so a new secret word must be 12 letters or shorter. any other character breaks the word
+      if (key.length === 1 && !/[a-z]/.test(key)) buffer.current = ''
       if (key.length === 1 && /[a-z]/.test(key)) {
         buffer.current = (buffer.current + key).slice(-12)
         if (buffer.current.endsWith('evan')) {
@@ -180,6 +189,18 @@ export function FxProvider({ children }) {
         }
         if (buffer.current.endsWith('hello')) {
           pop('hi', { x: 50, y: 45 })
+          return
+        }
+        // the hidden translator page (pages/BinaryTreeTranslator.jsx), through the normal page warp
+        if (buffer.current.endsWith('binarytree')) {
+          buffer.current = ''
+          pop('01', { x: 50, y: 45 })
+          navigate('/binarytree')
+          return
+        }
+        // part way through a secret word: just pop the letter, so typing "binarytree" doesn't invert on the i
+        if (midWord(buffer.current)) {
+          pop(event.key.toUpperCase())
           return
         }
       }

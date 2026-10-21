@@ -24,7 +24,7 @@ export default function FriendRing({ self, src }: Props) {
   return (
     <nav aria-label="friendsites" className="friendring">
       {/* KNOB: the label in front of the ring links */}
-      <span className="friendring-label">friends</span>
+      <span className="friendring-label">the goats</span>
       <a href={href(ring.prev.url)}>← {ring.prev.displayName}</a>
       <button onClick={() => { window.location.href = href(ring.random().url) }} type="button">random</button>
       <a href={href(ring.next.url)}>{ring.next.displayName} →</a>

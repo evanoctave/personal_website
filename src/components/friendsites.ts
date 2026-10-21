@@ -28,7 +28,7 @@ export async function loadRing(src: string = RING_URL): Promise<Friend[]> {
   const res = await fetch(src)
   if (!res.ok) throw new Error(`friendsites: ${res.status} from ${src}`)
   const data: unknown = await res.json()
-  if (!Array.isArray(data)) throw new Error('friendsites: list.json is not an array')
+  if (!Array.isArray(data)) throw new Error('friendsites: list.json is not an array idiot')
   return data.filter(isFriend)
 }
 

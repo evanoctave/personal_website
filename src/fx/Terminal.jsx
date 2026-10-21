@@ -14,6 +14,8 @@ import TouchKeyboard from './TouchKeyboard.jsx'
 
 // KNOB: pages `ls` lists and `cd <page>` can jump to
 const PAGES = { home: '/home', work: '/work', about: '/about', life: '/life', contact: '/contact', admin: '/admin' }
+// KNOB: pages only `ls -a` shows (as dotfiles); `cd` still reaches them
+const HIDDEN = { binarytree: '/binarytree' }
 // KNOB: line(s) shown when the terminal first opens
 const GREETING = [
   'eo-shell v2.6 — type `help` to see commands.',
@@ -121,11 +123,15 @@ export default function Terminal({ inline = false }) {
           '…and a few commands I won’t list.',
         ]
       case 'ls':
+        if (/^-\w*a/.test(args[0] ?? '')) {
+          return [['.', '..', ...Object.keys(HIDDEN).map((page) => `.${page}/`), ...Object.keys(PAGES).map((page) => `${page}/`)].join('   ')]
+        }
         return [Object.keys(PAGES).map((page) => `${page}/`).join('   ')]
       case 'cd': {
         const page = arg.replace(/[/~.]/g, '') || 'home'
-        if (!PAGES[page]) return [`cd: no such page: ${arg}`]
-        go(PAGES[page])
+        const path = PAGES[page] ?? HIDDEN[page]
+        if (!path) return [`cd: no such page: ${arg}`]
+        go(path)
         return []
       }
       case 'work':

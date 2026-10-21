@@ -24,6 +24,7 @@ const destination = (pathname) => {
     if (project) return { name: project.title.toLowerCase(), index: 1.5, number: 'work / case study' }
   }
   if (pathname === '/admin') return { name: 'admin', index: -1, number: '403 / forbidden' }
+  if (pathname === '/binarytree') return { name: 'binary tree', index: -1, number: '01 / 10' }
   return { name: 'lost', index: -1, number: '404' }
 }
 

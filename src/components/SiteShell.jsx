@@ -25,6 +25,7 @@ const getPageTitle = (pathname) => {
   if (pathname === '/life') return 'Life'
   if (pathname === '/contact') return 'Contact'
   if (pathname === '/admin') return 'Admin'
+  if (pathname === '/binarytree') return 'Binary Tree'
   if (pathname.startsWith('/work/')) return getProjectBySlug(pathname.slice('/work/'.length))?.title ?? 'Lost'
   return 'Lost'
 }

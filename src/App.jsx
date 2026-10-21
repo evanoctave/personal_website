@@ -8,6 +8,7 @@ import { FxProvider, prefersReducedMotion } from './fx/FxProvider.jsx'
 import PageWarp from './fx/PageWarp.jsx'
 import { willPrint } from './fx/PrinterIntro.jsx'
 import AboutPage from './pages/AboutPage.jsx'
+import BinaryTreeTranslator from './pages/BinaryTreeTranslator.jsx'
 import ContactPage from './pages/ContactPage.jsx'
 import FakeAdmin from './pages/FakeAdmin.jsx'
 import ConstructionPage from './pages/ConstructionPage.jsx'
@@ -90,6 +91,8 @@ export default function App() {
           <Route path="life" element={<LifePage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="admin" element={<FakeAdmin />} />
+          {/* hidden: no nav link. reached by typing "binarytree" on /home or `ls -a` in the terminal */}
+          <Route path="binarytree" element={<BinaryTreeTranslator />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </WarpRoutes>
