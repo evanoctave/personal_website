@@ -73,8 +73,8 @@ export default function BinaryTreeTranslator() {
       {/* KNOB: page title + blurb. App.test.jsx expects the heading */}
       <h1>Binary tree</h1>
       <p className="lede">
-        Every tree below spells the alphabet differently. Left is 0, right is 1, root to leaf is a letter.
-        Send someone the key and a pile of bits and they get your message back. Without the key it&apos;s noise.
+        Every tree below spells the alphabet differently. Left is 0, right is 1, a root-to-leaf sequence completes as a letter.
+        Send someone the key and a pile of bits and they get your message back. don't get the key wrong or it'll look like scrambled eggs....scramble....something I wish Matthew Stafford knew how to do....
       </p>
 
       <div className="bintree-key">
@@ -130,8 +130,8 @@ export default function BinaryTreeTranslator() {
 
       {/* KNOB: the small print */}
       <p className="muted bintree-note">
-        A toy, not encryption: there are 36<sup>8</sup> trees and a patient computer tries them all before lunch.
-        Lowercase letters, digits, space and <code>. , ! ? &apos;</code> only; anything else is dropped.{' '}
+        36<sup>8</sup> possible trees, pretty cool.
+        Please do not use this as a means of encryption in any way, shape, or form. I can decode your keys and steal your data. Don't try it.
         <Link to="/home">back home</Link>.
       </p>
     </section>
