@@ -132,7 +132,9 @@ export default function BinaryTreeTranslator() {
       <p className="muted bintree-note">
         36<sup>8</sup> possible trees, pretty cool.
         Please do not use this as a means of encryption in any way, shape, or form. I can decode your keys and steal your data. Don't try it.
-        <Link to="/home">back home</Link>.
+
+
+        <Link to="/home">home</Link>.
       </p>
     </section>
   )

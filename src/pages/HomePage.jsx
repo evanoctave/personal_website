@@ -96,7 +96,7 @@ export default function HomePage() {
         </p>
         {/* KNOB: the small note under that */}
         <p className="muted">
-          My work, my projects, and a little bit of me. Press <kbd>?</kbd> for...idk, figure it out.
+          My work, my projects, and a little bit of me. Press <kbd>?</kbd> or <kbd>/</kbd> to navigate using the terminal!
         </p>
         {/* KNOB: replay button text (hidden when reduced motion is on) */}
         {!prefersReducedMotion() && (
@@ -127,9 +127,9 @@ export default function HomePage() {
           <h2 id="about-title">About</h2>
           <p>
             Most of what I do professionally is mashing a keyboard, keeping my GitHub green, and plugging in cables.
-            Ask me about TypeScript, gcc vs. clang, or bit-packing. <a href="https://madibarreau.com" rel="noreferrer" target="_blank">Or my sister's art!</a></p>
+            Ask me about TypeScript, gcc vs. clang, bit-packing, c++ compilation, or literally anything else. Also, <a href="https://madibarreau.com" rel="noreferrer" target="_blank">my sister's art!</a></p>
             
-            <p>Don't ask me about LeBron leaving the Lakers. I'm heartbroken, too.
+            <p>Don't ask me about Dodgers getting swept by Milwaukee in 2026. I'm heartbroken, too.
           </p>
           <p><Link to="/about">More about me</Link></p>
         </Reveal>
@@ -141,7 +141,7 @@ export default function HomePage() {
         {/* KNOB: section heading + link text (App.test.jsx expects 'the whole roll' linking to /life) */}
         <div className="block-head">
           <h2 id="photos-title">Photos</h2>
-          <Link to="/life">the whole roll</Link>
+          <Link to="/life">the whoooole roll</Link>
         </div>
         <div className="photos">
           {snapshots.map((snap) => (
