@@ -31,7 +31,7 @@ export default function LifePage() {
 
   return (
     <section className="page life">
-      {/* KNOB: heading, lede, and intro note (App.test.jsx expects the h1 'life'). phoneCount counts itself */}
+      {/* KNOB: heading, lede, and intro note (free to change). phoneCount counts itself */}
       <h1>life</h1>
       {/* KNOB: the photo up top, from the digicam roll. position = crop focus (far right: building, lamp, date stamp) */}
       <Placeholder alt="A parking lot at night, a lit apartment building and street lamps glowing behind the cars" className="life-cam" position="100% 50%" ratio="4 / 5" src="/photos/PICT0024.jpg" />

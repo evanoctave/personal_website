@@ -6,7 +6,7 @@ import Placeholder from '../components/Placeholder.jsx'
 export default function AboutPage() {
   return (
     <section className="page">
-      {/* KNOB: heading + subheading (App.test.jsx expects the h1 to say 'me') */}
+      {/* KNOB: heading + subheading (free to change) */}
       <h1>me</h1>
       <h2>Evan Barreau, but you can call me ev</h2>
       {/* KNOB: the main about photo: src (file in public/photos/), alt, crop (position), shape (ratio) */}

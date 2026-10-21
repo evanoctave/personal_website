@@ -11,7 +11,7 @@ export default function WorkPage() {
 
   return (
     <section className="page">
-      {/* KNOB: heading + intro line (App.test.jsx expects the h1 'Work') */}
+      {/* KNOB: heading + intro line (free to change) */}
       <h1>Work</h1>
       <p className="muted">Things I've built, newest ones first. There's more that isn't up yet.</p>
       {/* KNOB: filter buttons are built from every project's tags. edit tags in src/data/projects.js */}

@@ -18,7 +18,7 @@ export default function ContactPage() {
 
   return (
     <section className="page">
-      {/* KNOB: heading + the email line (App.test.jsx expects the h1 'Contact') */}
+      {/* KNOB: heading + the email line (free to change) */}
       <h1>Contact</h1>
       <p className="lede">
         Email is best: <a href={`mailto:${EMAIL}`}>{EMAIL}</a>{' '}

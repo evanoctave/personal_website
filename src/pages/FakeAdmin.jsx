@@ -11,7 +11,7 @@ export default function FakeAdmin() {
     findEgg('admin')
   }, [findEgg])
 
-  // KNOB: the roast. App.test.jsx checks the heading
+  // KNOB: the roast. say whatever; tests only check an h1 and the home link exist
   return (
     <section className="page">
       <p className="nice-try">nice try.</p>

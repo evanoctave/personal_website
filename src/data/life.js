@@ -29,7 +29,7 @@ export const days = [
   },
 ]
 
-// KNOB: phone chapters. id (used in the html id), title (heading; App.test.jsx expects 'before the digicam'),
+// KNOB: phone chapters. id (used in the html id), title (heading, free to change),
 // note (line under it), items (photos, newest first)
 export const chapters = [
   // phone roll. a handful, newest first.

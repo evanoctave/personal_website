@@ -1,5 +1,5 @@
 // Under-construction gate at "/", the first thing visitors land on. no nav, just a stamp + 3 photos.
-// its link goes to /home (the real site). App.jsx routes "/" here; App.test.jsx checks its text.
+// its link goes to /home (the real site). App.jsx routes "/hello" here; App.test.jsx only checks the date format, 2 images and the home link.
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Loader from '../fx/Loader.jsx'
@@ -34,8 +34,7 @@ export default function ConstructionPage() {
       <main id="construction-content">
         <section className="construction-intro" aria-labelledby="construction-title">
           {/* KNOB: the gate copy: stamp, big heading, lede, follow-up, link text. */}
-          {/* App.test.jsx checks the heading, */}
-          {/* the 'Enter unfinished site anyway' text, and that it links to /home */}
+          {/* only the link to /home is tested */}
           <p className="construction-stamp">im a useless box</p>
           <h1 id="construction-title">HELLO_WORLD</h1>
           <p className="construction-lede">Portfolio currently contains about 18% content, 34% loose cables, and 48% super mario galaxy mentions. Go ahead, snoop around. No judging here.</p>

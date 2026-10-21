@@ -85,7 +85,6 @@ export default function HomePage() {
       />
       <section className="intro">
         {/* KNOB: the big heading: text and scramble speed (duration 3 = 3x slower). */}
-        {/* App.test.jsx expects "What's up" */}
         <h1 className="name">
           <Scramble duration={3} text="What's" />{' '}
           <Scramble duration={3} text="up" />
@@ -138,7 +137,7 @@ export default function HomePage() {
       </section>
 
       <section className="block home-photos" aria-labelledby="photos-title">
-        {/* KNOB: section heading + link text (App.test.jsx expects 'the whole roll' linking to /life) */}
+        {/* KNOB: section heading + link text (App.test.jsx only needs a link to /life here) */}
         <div className="block-head">
           <h2 id="photos-title">Photos</h2>
           <Link to="/life">the whoooole roll</Link>

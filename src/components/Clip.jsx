@@ -45,7 +45,7 @@ export default function Clip({ alt, className = '', poster, ratio = '4 / 3', src
           onClick={() => setMuted((value) => !value)}
           type="button"
         >
-          {/* KNOB: the sound button labels (App.test.jsx clicks 'sound' and expects 'mute' after) */}
+          {/* KNOB: the sound button labels (App.test.jsx only checks the label changes on click) */}
           {muted ? 'sound' : 'mute'}
         </button>
       )}

@@ -70,7 +70,7 @@ export default function BinaryTreeTranslator() {
 
   return (
     <section className="page bintree">
-      {/* KNOB: page title + blurb. App.test.jsx expects the heading */}
+      {/* KNOB: page title + blurb */}
       <h1>Binary tree</h1>
       <p className="lede">
         Every tree below spells the alphabet differently. Left is 0, right is 1, a root-to-leaf sequence completes as a letter.
